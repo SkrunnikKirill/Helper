@@ -7,8 +7,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.navigationDrawer.NewsFragment.OnListFragmentInteractionListener;
-import com.example.alex.helppeopletogether.navigationDrawer.NewsItem.DummyItem;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsFragment;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsFragment.OnListFragmentInteractionListener;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsItem.DummyItem;
 
 import java.util.List;
 

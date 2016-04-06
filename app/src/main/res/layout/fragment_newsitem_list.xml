@@ -10,4 +10,5 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="com.example.zaknifen.helptogether.navigationDrawer.NewsFragment"
-    tools:listitem="@layout/fragment_news_item" />
+    tools:listitem="@layout/fragment_news_item"
+    />

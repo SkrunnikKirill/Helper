@@ -1,4 +1,4 @@
-package com.example.alex.helppeopletogether.navigationDrawer;
+package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 import java.util.ArrayList;
 import java.util.HashMap;

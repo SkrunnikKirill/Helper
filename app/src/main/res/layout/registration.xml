@@ -16,6 +16,7 @@
             android:id="@+id/registration_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:hint="login" />
 
         <EditText
@@ -23,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/registration_login"
+            android:singleLine="true"
             android:hint="email"
             android:inputType="textEmailAddress" />
 
@@ -30,6 +32,7 @@
             android:id="@+id/registration_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:layout_below="@+id/registration_email"
             android:hint="password" />
 

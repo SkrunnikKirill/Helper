@@ -1,8 +1,9 @@
-package com.example.alex.helppeopletogether.navigationDrawer;
+package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,14 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.navigationDrawer.NewsItem.DummyItem;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsItem.DummyItem;
+import com.example.alex.helppeopletogether.navigationDrawer.NewsRecyclerViewAdapter;
 
-/**
- * A fragment representing a list of Items.
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
+
 public class NewsFragment extends Fragment {
 
     // TODO: Customize parameter argument names
@@ -73,16 +70,16 @@ public class NewsFragment extends Fragment {
     }
 
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
-        }
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        if (context instanceof OnListFragmentInteractionListener) {
+//            mListener = (OnListFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnListFragmentInteractionListener");
+//        }
+//    }
 
     @Override
     public void onDetach() {

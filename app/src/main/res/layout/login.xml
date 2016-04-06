@@ -16,12 +16,15 @@
             android:id="@+id/login_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:hint="login" />
 
         <EditText
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:singleLine="true"
             android:layout_below="@+id/login_login"
             android:hint="password" />
 

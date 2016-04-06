@@ -1,9 +1,12 @@
 package com.example.alex.helppeopletogether.navigationDrawer;
 
+import android.app.DialogFragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,11 +16,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.alex.helppeopletogether.DatePicker;
+import android.support.v7.app.ActionBarActivity;
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Advertisement;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.ExitFragment;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.FriendFragment;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.MessageFragment;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsFragment;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.PostAdvertisementFragment;
 
 
 public class NewsNavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Advertisement advertisement;
+    FriendFragment friend;
+    MessageFragment message;
+    NewsFragment news;
+    PostAdvertisementFragment postAdvertisement;
+    ExitFragment exit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +42,10 @@ public class NewsNavigationDrawer extends AppCompatActivity
         setContentView(R.layout.activity_news_navigation_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+//        DialogFragment dateDialog = new PostAdvertisementFragment();
+//        dateDialog.show(getFragmentManager(), "datePicker");
+       // dateDialog.s;
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -43,6 +64,13 @@ public class NewsNavigationDrawer extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        advertisement = new Advertisement();
+        friend = new FriendFragment();
+        message = new MessageFragment();
+        news = new NewsFragment();
+        postAdvertisement = new PostAdvertisementFragment();
+        exit = new ExitFragment();
     }
 
     @Override
@@ -82,20 +110,21 @@ public class NewsNavigationDrawer extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        FragmentTransaction ftrans = getFragmentManager().beginTransaction();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
+        if (id == R.id.nav_my_advertisement) {
+            ftrans.replace(R.id.container, advertisement);
+        } else if (id == R.id.nav_my_friend) {
+            ftrans.replace(R.id.container, friend);
+        } else if (id == R.id.nav_my_message) {
+            ftrans.replace(R.id.container, message);
+        } else if (id == R.id.nav_news) {
+            ftrans.replace(R.id.container,news);
+        } else if (id == R.id.nav_post_advertisement) {
+            ftrans.replace(R.id.container,postAdvertisement);
+        } else if (id == R.id.nav_exit) {
+            ftrans.replace(R.id.container, exit);
+        }ftrans.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

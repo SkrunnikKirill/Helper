@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_marginTop="60dp">
+
+
+    <EditText
+        android:id="@+id/post_advertisement_second_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:hint="Фамилия" />
+
+    <EditText
+        android:id="@+id/post_advertisement_fist_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/post_advertisement_second_name"
+        android:singleLine="true"
+        android:hint="Имя" />
+
+        <EditText
+            android:id="@+id/post_advertisement_therd_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_advertisement_fist_name"
+            android:singleLine="true"
+            android:hint="Очество" />
+
+        <EditText
+            android:id="@+id/post_advertisement_date_of_birth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_advertisement_therd_name"
+            android:hint="Дата рождения"
+            />
+        <AutoCompleteTextView
+            android:id="@+id/post_advertisement_region"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:completionThreshold="2"
+            android:imeOptions="actionGo"
+            android:layout_below="@+id/post_advertisement_date_of_birth"
+            android:hint="Область" />
+        <AutoCompleteTextView
+            android:id="@+id/post_advertisement_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:completionThreshold="2"
+            android:layout_below="@+id/post_advertisement_region"
+            android:hint="Город" />
+        <EditText
+            android:id="@+id/post_advertisement_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:inputType="phone"
+            android:layout_below="@+id/post_advertisement_city"
+            android:hint="Телефон" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/post_advertisement_phone_number"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/post_advertisement_next"
+            android:onClick=" onClick"
+            android:text="Далее"/>
+
+
+
+</LinearLayout>
