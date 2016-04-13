@@ -25,10 +25,17 @@
 
             android:label="Соглашение"
             android:theme="@style/AppTheme.NoActionBar" />
+
         <activity
-            android:name=".navigationDrawer.NewsNavigationDrawer"
+            android:name=".fragmentsFormNavigationDrawer.NewsNavigationDrawer"
             android:label="@string/title_activity_news_navigation_drawer"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".fragmentsFormNavigationDrawer.NewsDeatils"
+            android:label="NewsDeatils" />
+        <activity
+            android:name=".fragmentsFormNavigationDrawer.NextPostAdvertisementFragment"
+            android:label="NextPostAdvertisementFragment" />
 
     </application>
 

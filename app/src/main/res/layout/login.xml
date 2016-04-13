@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -16,18 +17,17 @@
             android:id="@+id/login_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:hint="login" />
+            android:hint="login"
+            android:singleLine="true" />
 
         <EditText
             android:id="@+id/login_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:singleLine="true"
             android:layout_below="@+id/login_login"
-            android:hint="password" />
-
+            android:hint="password"
+            android:inputType="textPassword"
+            android:singleLine="true" />
         <Button
             android:id="@+id/login_button_login"
             android:layout_width="match_parent"

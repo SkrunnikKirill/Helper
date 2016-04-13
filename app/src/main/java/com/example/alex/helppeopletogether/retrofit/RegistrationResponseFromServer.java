@@ -5,6 +5,8 @@ package com.example.alex.helppeopletogether.retrofit;
  */
 public class RegistrationResponseFromServer {
     public Integer response;
+    public Integer user_id;
     //public String login;
    public Integer response_login;
+    public Integer response_add_user_information;
 }

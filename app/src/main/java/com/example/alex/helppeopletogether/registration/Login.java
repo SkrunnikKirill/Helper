@@ -9,7 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.navigationDrawer.NewsNavigationDrawer;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsNavigationDrawer;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
@@ -28,6 +28,7 @@ public class Login extends Activity implements View.OnClickListener {
     private Intent intentNextStep;
     private LinkedHashMap<String, String> loginData;
     private Integer responseFromServiseLogin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

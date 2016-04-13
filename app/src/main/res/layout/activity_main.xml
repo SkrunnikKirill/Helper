@@ -9,8 +9,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.alex.helppeopletogether.MainActivity">
 
+
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/tvDate"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:clickable="true"
+        android:onClick="onclick"
+        android:text="Дата рождения"
+        android:textSize="22sp"></TextView>
 </RelativeLayout>

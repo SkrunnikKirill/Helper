@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsNavigationDrawer;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.PostAdvertisementFragment;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
@@ -24,17 +26,18 @@ import retrofit.client.Response;
 
 
 public class Registration extends Activity implements View.OnClickListener {
+    public static Integer responseFromServiseRegistrationId;
+    Intent intent;
+    Integer responseFromServiseRegistration;
     private EditText login;
     private EditText email;
     private EditText password;
     private Button buttonRegistration;
     private HashMap<String, String> data;
     private String regularExprensionsEmail;
+    private String regularExprensionsLogin;
     private boolean result;
     private String response;
-    Intent intent;
-    Integer responseFromServiseRegistration;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class Registration extends Activity implements View.OnClickListener {
         password = (EditText) findViewById(R.id.registration_password);
         buttonRegistration = (Button) findViewById(R.id.registration_button_registration);
         buttonRegistration.setOnClickListener(this);
+
     }
 
     @Override
@@ -52,9 +56,11 @@ public class Registration extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.registration_button_registration:
                 sendRegistrationInformationToServer();
+
                 break;
         }
     }
+
 
     public void sendRegistrationInformationToServer() {
 
@@ -62,7 +68,7 @@ public class Registration extends Activity implements View.OnClickListener {
         data = new HashMap<>();
 
         if (login.getText().length() < 6) {
-            Toast.makeText(getApplication(), "Логин, должен быть больше 6 символов", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplication(), "Логин, должен быть больше 6 символов, и должен быть коректным", Toast.LENGTH_LONG).show();
         } else if (resultRegularExprensionsEmail() == false) {
             Toast.makeText(getApplication(), "Email, некоректный", Toast.LENGTH_LONG).show();
         } else if (password.getText().length() < 6) {
@@ -79,7 +85,7 @@ public class Registration extends Activity implements View.OnClickListener {
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                     Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
                     responseFromServiseRegistration = registrationResponseFromServer.response;
-
+                    responseFromServiseRegistrationId = registrationResponseFromServer.user_id;
                     if (responseFromServiseRegistration == 3){
                         Toast.makeText(Registration.this,"Логин занят",Toast.LENGTH_LONG).show();
                     }else if (responseFromServiseRegistration ==1){
@@ -139,6 +145,15 @@ public class Registration extends Activity implements View.OnClickListener {
         result = mCheckEmail.matches();
         return result;
     }
+
+//    private boolean resultRegularExprensionsLogin(){
+//        regularExprensionsLogin = " /^[a-z0-9_-]{3,16}$/";
+//        Pattern pCheckLogin = Pattern.compile(regularExprensionsLogin);
+//        Matcher mCheckLogin = pCheckLogin.matcher(login.getText().toString());
+//        result = mCheckLogin.matches();
+//        return result;
+//
+//    }
 
 
 }
