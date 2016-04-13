@@ -104,6 +104,7 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:clickable="true"
+                    android:onClick="onclick"
                     android:src="@drawable/vupiska" />
 
                 <TextView

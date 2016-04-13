@@ -21,12 +21,10 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-/**
- * Created by rishabh on 31-01-2016.
- */
+
 public class ReadRss extends AsyncTask<Void, Void, Void> {
     Context context;
-    String address = "http://www.sciencemag.org/rss/news_current.xml";
+    String address = " http://testpb.alscon-clients.com/rss.xml";
     ProgressDialog progressDialog;
     ArrayList<FeedItem> feedItems;
     RecyclerView recyclerView;

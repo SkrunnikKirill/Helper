@@ -10,12 +10,4 @@
     tools:context="com.example.alex.helppeopletogether.MainActivity">
 
 
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:onClick="onclick"
-        android:text="Дата рождения"
-        android:textSize="22sp"></TextView>
 </RelativeLayout>
