@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
@@ -24,7 +25,7 @@ public class Login extends Activity implements View.OnClickListener {
     private EditText login;
     private EditText password;
     private Button buttonNext;
-    private Button buttonNextStepRegistration;
+    private TextView buttonNextStepRegistration;
     private Intent intentNextStep;
     private LinkedHashMap<String, String> loginData;
     private Integer responseFromServiseLogin;
@@ -37,7 +38,7 @@ public class Login extends Activity implements View.OnClickListener {
         login = (EditText) findViewById(R.id.login_login);
         password = (EditText) findViewById(R.id.login_password);
         buttonNext = (Button) findViewById(R.id.login_button_login);
-        buttonNextStepRegistration = (Button) findViewById(R.id.login_button_registration);
+        buttonNextStepRegistration = (TextView) findViewById(R.id.login_view_registration);
         buttonNext.setOnClickListener(this);
         buttonNextStepRegistration.setOnClickListener(this);
     }
@@ -48,7 +49,7 @@ public class Login extends Activity implements View.OnClickListener {
             case R.id.login_button_login:
                 checkData();
                 break;
-            case R.id.login_button_registration:
+            case R.id.login_view_registration:
                 intentNextStep = new Intent(Login.this, Registration.class);
                 startActivity(intentNextStep);
                 break;

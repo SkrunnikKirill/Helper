@@ -1,16 +1,23 @@
 package com.example.alex.helppeopletogether.retrofit;
 
+import android.widget.ImageView;
+
+import java.util.ArrayList;
 import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.http.Field;
 import retrofit.http.FieldMap;
 import retrofit.http.FormUrlEncoded;
+import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.GET;
+import retrofit.http.Part;
 import retrofit.http.PartMap;
 import retrofit.http.Query;
 import retrofit.http.QueryMap;
+import retrofit.mime.TypedFile;
 
 /**
  * Created by Alex on 30.03.2016.
@@ -20,6 +27,7 @@ public class Retrofit {
     private static PostInterfaceRegistration postInterfaceRegistration;
     private static PostInterfaceLogin postInterfaceLogin;
     private static PostInterfaseAdvertisement postInterfaseAdvertisement;
+    private static PostInterfaceNextPostAdvertisementFragment postInterfaceNextPostAdvertisementFragment;
 
     static {
         init();
@@ -33,6 +41,7 @@ public class Retrofit {
         postInterfaceRegistration =postAdapter.create(PostInterfaceRegistration.class);
         postInterfaceLogin = postAdapter.create(PostInterfaceLogin.class);
         postInterfaseAdvertisement = postAdapter.create(PostInterfaseAdvertisement.class);
+        postInterfaceNextPostAdvertisementFragment = postAdapter.create(PostInterfaceNextPostAdvertisementFragment.class);
     }
 
       public static void sendRegistrationData(Map<String, String> datas, Callback<RegistrationResponseFromServer> callback){
@@ -47,10 +56,18 @@ public class Retrofit {
         postInterfaseAdvertisement.sendAdvertisementData(advertisementDatas, callback);
     }
 
+    public static void sendNextPostImage(Map<String, TypedFile> imageData, Callback<RegistrationResponseFromServer> callback) {
+        postInterfaceNextPostAdvertisementFragment.sendNextPostImage(imageData, callback);
+    }
 
+    interface PostInterfaceNextPostAdvertisementFragment {
+        @Multipart
+        @POST("/upload_files.php")
+        void sendNextPostImage(@PartMap Map<String, TypedFile> imageData, Callback<RegistrationResponseFromServer> callback);
+    }
 
     interface PostInterfaceRegistration {
-       // @FormUrlEncoded
+        // @FormUrlEncoded
         @POST("/registration.php")
          void sendRegistrationData(@QueryMap Map<String, String> datas, Callback<RegistrationResponseFromServer> callback);
     }

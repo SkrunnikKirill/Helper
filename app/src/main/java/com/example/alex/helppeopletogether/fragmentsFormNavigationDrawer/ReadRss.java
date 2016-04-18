@@ -24,7 +24,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 public class ReadRss extends AsyncTask<Void, Void, Void> {
     Context context;
-    String address = " http://testpb.alscon-clients.com/rss.xml";
+    String address = "http://testpb.alscon-clients.com/rss.xml";
     ProgressDialog progressDialog;
     ArrayList<FeedItem> feedItems;
     RecyclerView recyclerView;

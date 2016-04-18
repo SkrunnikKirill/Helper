@@ -20,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
@@ -28,7 +30,7 @@ import java.util.Calendar;
 
 
 public class NewsNavigationDrawer extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     Advertisement advertisement;
     FriendFragment friend;
     MessageFragment message;
@@ -42,6 +44,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_navigation_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         //   savedInstanceState= intent5.getStringExtra();
         //  setSupportActionBar(toolbar);
 
@@ -135,4 +138,13 @@ public class NewsNavigationDrawer extends AppCompatActivity
     }
 
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imageView:
+                Intent intent = new Intent(NewsNavigationDrawer.this, DescriptionProblem.class);
+                startActivity(intent);
+                break;
+        }
+    }
 }

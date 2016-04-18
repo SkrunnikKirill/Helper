@@ -104,7 +104,6 @@
                     android:layout_width="170dp"
                     android:layout_height="100dp"
                     android:clickable="true"
-                    android:onClick="onclick"
                     android:src="@drawable/vupiska" />
 
                 <TextView
@@ -113,7 +112,18 @@
                     android:text="Выписка с Приватбанка"
                     android:textSize="16dp" />
 
+
             </LinearLayout>
+
+            <Button
+                android:id="@+id/next_post_advertisement_fragment_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/page3_checkBox"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:text="Далее" />
 
 
         </LinearLayout>

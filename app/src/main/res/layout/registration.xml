@@ -1,50 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="#1976d2"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="120dp"
-        android:orientation="vertical">
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <EditText
-            android:id="@+id/registration_login"
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="25dp"
+            android:src="@drawable/photoicon" />
+
+        <LinearLayout
+            android:id="@+id/line4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:hint="login" />
+            android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/registration_email"
+            <ImageView
+                android:id="@+id/thumb_img3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_name" />
+
+            <EditText
+                android:id="@+id/registration_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="login"
+                android:padding="10dp" />
+
+
+        </LinearLayout>
+
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/registration_login"
-            android:singleLine="true"
-            android:hint="email"
-            android:inputType="textEmailAddress" />
+            android:src="@drawable/divider" />
 
-        <EditText
-            android:id="@+id/registration_password"
+        <LinearLayout
+            android:id="@+id/line5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:layout_below="@+id/registration_email"
-            android:hint="password" />
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:id="@+id/thumb_img4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_name" />
+
+            <EditText
+                android:id="@+id/registration_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/registration_login"
+                android:background="@null"
+                android:hint="email"
+                android:inputType="textEmailAddress"
+                android:padding="10dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/divider" />
+
+        <LinearLayout
+            android:id="@+id/line6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/thumb_img5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_action_name" />
+
+            <EditText
+                android:id="@+id/registration_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/registration_email"
+                android:background="@null"
+                android:hint="password"
+                android:padding="10dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/divider" />
 
         <Button
             android:id="@+id/registration_button_registration"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/registration_password"
+            android:background="@drawable/button_registration"
             android:text="Зарегестрироваться" />
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
-</LinearLayout>
+</RelativeLayout>
