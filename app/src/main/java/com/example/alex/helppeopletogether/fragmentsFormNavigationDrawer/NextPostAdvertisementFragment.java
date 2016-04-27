@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -41,6 +42,8 @@ public class NextPostAdvertisementFragment extends Activity implements View.OnCl
     private static final int GALLERY_REQUEST_COPYING = 2;
     Uri selectedCopying;
     Uri selectedPassport;
+    Bitmap bitmapPassport;
+    Bitmap bitmapCopying;
     private EditText serialPassport;
     private EditText numberPassport;
     private EditText account;
@@ -107,42 +110,54 @@ public class NextPostAdvertisementFragment extends Activity implements View.OnCl
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bitmapPassport = null;
-        Bitmap bitmapCopying = null;
+
 
         switch (requestCode) {
 
             case GALLERY_REQUEST_PASSPORT:
-                imagePassport.setImageBitmap(null);
                 if (resultCode == RESULT_OK) {
                     selectedPassport = data.getData();
-                    //if (selectedPassport == null)
+                    // bitmapPassport.recycle();
                     try {
-                        bitmapPassport = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedPassport);
+                        imagePassport.setImageBitmap(null);
+                        if (bitmapPassport == null) {
+                            bitmapPassport = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedPassport);
+                        } else {
+                            bitmapPassport.recycle();
+                            bitmapPassport = null;
+                            bitmapPassport = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedPassport);
+                        }
+                        imagePassport.setImageBitmap(bitmapPassport);
+                        bitmapPassport.recycle();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    imagePassport.setImageBitmap(bitmapPassport);
+
+
                 }
                 break;
+
             case GALLERY_REQUEST_COPYING:
                 if (resultCode == RESULT_OK) {
-                    imageCopying.setImageBitmap(null);
-                    if (selectedCopying == null) {
-                        selectedCopying = data.getData();
-                    } else if (selectedCopying != null) {
-                        selectedCopying = null;
-                        selectedCopying = data.getData();
-                    }
+                    selectedCopying = data.getData();
                     try {
-                        bitmapCopying = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedCopying);
+                        imageCopying.setImageBitmap(null);
+                        if (bitmapCopying == null) {
+                            bitmapCopying = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedCopying);
+                        } else {
+                            bitmapCopying.recycle();
+                            bitmapCopying = null;
+                            bitmapCopying = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedCopying);
+                        }
 
+                        imageCopying.setImageBitmap(bitmapCopying);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    imageCopying.setImageBitmap(bitmapCopying);
                 }
+
         }
+
     }
 
     public String getPath(Uri uri) {

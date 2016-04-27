@@ -41,7 +41,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder holder, int position) {
         YoYo.with(Techniques.FadeIn).playOn(holder.cardView);
         final FeedItem current = feedItems.get(position);
-        holder.Title.setText(current.getTitle());
+//        holder.Title.setText(current.getTitle());
         holder.Description.setText(current.getDescription());
         holder.Date.setText(current.getPubDate());
         Picasso.with(context).load(current.getThumbnailUrl()).into(holder.Thumbnail);

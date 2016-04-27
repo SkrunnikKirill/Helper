@@ -11,4 +11,7 @@
     <string name="description">Description_item</string>
     <string name="birth_day">Выберите дату рождения</string>
     <string name="ready">Готово</string>
+    <integer name="com_vk_sdk_AppId">5425061</integer>
+    <string name="facebook_app_id">553314641516849</string>
+
 </resources>
