@@ -9,7 +9,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="78dp"
+        android:layout_marginTop="10dp"
         android:text="В Х О Д"
         android:textColor="#F8F8FF"
         android:textSize="35dp" />
@@ -135,7 +135,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/login_button_login"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="55dp"
+            android:layout_marginTop="10dp"
             android:text="ВОЙТИ С ПОМОЩЮ"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#F8F8FF" />

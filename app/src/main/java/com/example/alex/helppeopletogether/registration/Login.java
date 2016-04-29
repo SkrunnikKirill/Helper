@@ -1,10 +1,12 @@
 package com.example.alex.helppeopletogether.registration;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
@@ -21,12 +23,19 @@ import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServ
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.gson.Gson;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
@@ -39,6 +48,8 @@ import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.util.VKUtil;
+
+import org.json.JSONException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -54,10 +65,12 @@ import retrofit.client.Response;
 
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
+    private static final int RC_SIGN_IN = 9001;
     String fistName, secondName, id, name, linkUri;
+    LoginManager loginManager;
     private EditText login;
     private EditText password;
-    private Button buttonNext, facebook, vk;
+    private Button buttonNext, facebook, vk, googlePlus;
     private TextView buttonNextStepRegistration;
     private Intent intentNextStep;
     private LinkedHashMap<String, String> loginData;
@@ -74,12 +87,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         login = (EditText) findViewById(R.id.login_login);
         facebook = (Button) findViewById(R.id.login_button_facebook);
         vk = (Button) findViewById(R.id.login_button_vk);
+        googlePlus = (Button) findViewById(R.id.login_button_google_plus);
         password = (EditText) findViewById(R.id.login_password);
         buttonNext = (Button) findViewById(R.id.login_button_login);
         buttonNextStepRegistration = (TextView) findViewById(R.id.login_view_registration);
         buttonNext.setOnClickListener(this);
         facebook.setOnClickListener(this);
         vk.setOnClickListener(this);
+        googlePlus.setOnClickListener(this);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
         buttonNextStepRegistration.setOnClickListener(this);
         String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
         System.out.println(Arrays.toString(fingerprints));
@@ -100,48 +117,54 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 startActivity(intentNextStep);
                 break;
             case R.id.login_button_facebook:
-                FacebookSdk.sdkInitialize(getApplicationContext());
-                callbackManager = CallbackManager.Factory.create();
-                LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile", "user_friends", "login"));
-                LoginManager.getInstance().registerCallback(callbackManager,
+                //AccessToken.getCurrentAccessToken().getPermissions();
+
+                loginManager = LoginManager.getInstance();
+                loginManager.logInWithReadPermissions(this, Arrays.asList(new String[]{"public_profile", "user_friends"}));
+                loginManager.registerCallback(callbackManager,
                         new FacebookCallback<LoginResult>() {
                             @Override
+
                             public void onSuccess(LoginResult loginResult) {
+                                //  String ddddd = loginResult.getAccessToken().getUserId();
                                 Profile profile = Profile.getCurrentProfile();
                                 String user = profile.getFirstName();
                                 String user1 = profile.getLastName();
                                 String id = profile.getId();
                                 String name = profile.getName();
+                                Toast.makeText(getApplication(), name, Toast.LENGTH_LONG).show();
 
 
                             }
 
                             @Override
                             public void onCancel() {
-
+                                finish();
+                                Toast.makeText(Login.this, "Беда не приходит одна", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onError(FacebookException exception) {
-
+                                if (exception instanceof FacebookAuthorizationException) {
+                                    if (AccessToken.getCurrentAccessToken() != null) {
+                                        LoginManager.getInstance().logOut();
+                                    }
+                                }
                             }
+
                         });
-                try {
-                    PackageInfo info = getPackageManager().getPackageInfo(
-                            "com.facebook.samples.loginhowto",
-                            PackageManager.GET_SIGNATURES);
-                    for (Signature signature : info.signatures) {
-                        MessageDigest md = MessageDigest.getInstance("SHA");
-                        md.update(signature.toByteArray());
-                        Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-                    }
-                } catch (PackageManager.NameNotFoundException e) {
 
-                } catch (NoSuchAlgorithmException e) {
-
-                }
 
                 break;
+            case R.id.login_button_google_plus:
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(getIntent());
+                GoogleSignInAccount acct = result.getSignInAccount();
+                String personName = acct.getDisplayName();
+                String personEmail = acct.getEmail();
+                String personId = acct.getId();
+                Uri personPhoto = acct.getPhotoUrl();
+                break;
+
             case R.id.login_button_vk:
                 VKSdk.login(this, scope);
                 break;
@@ -151,8 +174,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
 
     @Override
-    protected void onActivityResult(int requestCode, final int resultCode, Intent data) {
-
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
@@ -184,7 +206,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             public void onError(VKError error) {
                 Toast.makeText(getApplicationContext(), "very very bad", Toast.LENGTH_LONG).show();
             }
-        })) {
+        }))
+//            if (requestCode == RC_SIGN_IN) {
+//                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+//                //handleSignInResult(result);
+//            }
+        {
             super.onActivityResult(requestCode, resultCode, data);
         }
 

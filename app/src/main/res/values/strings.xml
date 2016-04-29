@@ -13,5 +13,6 @@
     <string name="ready">Готово</string>
     <integer name="com_vk_sdk_AppId">5425061</integer>
     <string name="facebook_app_id">553314641516849</string>
+    <string name="server_client_id">536185004941-35tglcricshs507svvbtjimmg6fl90r4.apps.googleusercontent.com</string>
 
 </resources>
