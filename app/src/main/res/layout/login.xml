@@ -6,8 +6,8 @@
 
     <TextView
         android:id="@+id/textView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="В Х О Д"
@@ -28,9 +28,9 @@
 
         <LinearLayout
             android:id="@+id/line1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/thumb_img"
@@ -41,8 +41,8 @@
 
             <EditText
                 android:id="@+id/login_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="9dp"
                 android:background="@null"
                 android:hint="login"
@@ -65,17 +65,17 @@
             android:layout_below="@+id/line1"
             android:layout_marginTop="20dp">
 
-        <ImageView
-            android:id="@+id/thumb_img2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="3dp"
-            android:src="@drawable/ic_lock_open_white_36dp" />
+            <ImageView
+                android:id="@+id/thumb_img2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="3dp"
+                android:src="@drawable/ic_lock_open_white_36dp" />
 
             <EditText
                 android:id="@+id/login_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="9dp"
                 android:layout_marginTop="5dp"
                 android:background="@null"
@@ -139,42 +139,43 @@
             android:text="ВОЙТИ С ПОМОЩЮ"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#F8F8FF" />
-    <RelativeLayout
-        android:id="@+id/login_seti"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView6"
-        android:layout_marginTop="23dp"
-        android:gravity="center"
-        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/login_button_facebook"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/login_seti"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
-            android:background="@drawable/facebook" />
+            android:layout_below="@+id/textView6"
+            android:layout_marginTop="23dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/login_button_vk"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="2dp"
-            android:layout_toEndOf="@+id/login_button_google_plus"
-            android:layout_toRightOf="@+id/login_button_google_plus"
-            android:background="@drawable/vk" />
+            <Button
+                android:id="@+id/login_button_facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/facebook" />
 
-        <Button
-            android:id="@+id/login_button_google_plus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="2dp"
-            android:layout_toEndOf="@+id/login_button_facebook"
-            android:layout_toRightOf="@+id/login_button_facebook"
-            android:background="@drawable/google" />
-    </RelativeLayout>
+            <Button
+                android:id="@+id/login_button_vk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="2dp"
+                android:layout_toEndOf="@+id/login_button_google_plus"
+                android:layout_toRightOf="@+id/login_button_google_plus"
+                android:background="@drawable/vk" />
+
+            <Button
+                android:id="@+id/login_button_google_plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="2dp"
+                android:layout_toEndOf="@+id/login_button_facebook"
+                android:layout_toRightOf="@+id/login_button_facebook"
+                android:background="@drawable/google" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/login_view_registration"

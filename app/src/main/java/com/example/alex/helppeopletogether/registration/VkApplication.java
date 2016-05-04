@@ -1,9 +1,11 @@
 package com.example.alex.helppeopletogether.registration;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.support.multidex.MultiDex;
 import android.util.Base64;
 import android.util.Log;
 
@@ -38,8 +40,12 @@ public class VkApplication extends android.app.Application {
         vkAccessTokenTracker.startTracking();
         VKSdk.initialize(this);
 
+
     }
 
-
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 }
