@@ -25,6 +25,7 @@ import retrofit.mime.TypedFile;
 public class Retrofit {
     private static final String ENDPOINT = "http://testpb.alscon-clients.com";
     private static PostInterfaceRegistration postInterfaceRegistration;
+    private static PostInterfaceSocialNetworks postInterfaceSocialNetworks;
     private static PostInterfaceLogin postInterfaceLogin;
     private static PostInterfaseAdvertisement postInterfaseAdvertisement;
     private static PostInterfaceNextPostAdvertisementFragment postInterfaceNextPostAdvertisementFragment;
@@ -42,10 +43,15 @@ public class Retrofit {
         postInterfaceLogin = postAdapter.create(PostInterfaceLogin.class);
         postInterfaseAdvertisement = postAdapter.create(PostInterfaseAdvertisement.class);
         postInterfaceNextPostAdvertisementFragment = postAdapter.create(PostInterfaceNextPostAdvertisementFragment.class);
+        postInterfaceSocialNetworks = postAdapter.create(PostInterfaceSocialNetworks.class);
     }
 
-      public static void sendRegistrationData(Map<String, String> datas, Callback<RegistrationResponseFromServer> callback){
-          postInterfaceRegistration.sendRegistrationData(datas, callback);
+    public static void sendSocialNetworks(Map<String, String> social, Callback<RegistrationResponseFromServer> callback) {
+        postInterfaceSocialNetworks.sendSocialNetworks(social, callback);
+    }
+
+    public static void sendRegistrationData(Map<String, String> datas, TypedFile file, Callback<RegistrationResponseFromServer> callback) {
+        postInterfaceRegistration.sendRegistrationData(datas, file, callback);
       }
 
     public static void sendLoginData(Map<String, String> loginDatas, Callback<RegistrationResponseFromServer> callback){
@@ -66,10 +72,16 @@ public class Retrofit {
         void sendNextPostImage(@PartMap Map<String, TypedFile> imageData, Callback<RegistrationResponseFromServer> callback);
     }
 
+    interface PostInterfaceSocialNetworks {
+        @POST("/auth_social.php")
+        void sendSocialNetworks(@QueryMap Map<String, String> social, Callback<RegistrationResponseFromServer> callback);
+    }
+
     interface PostInterfaceRegistration {
         // @FormUrlEncoded
+        @Multipart
         @POST("/registration.php")
-         void sendRegistrationData(@QueryMap Map<String, String> datas, Callback<RegistrationResponseFromServer> callback);
+        void sendRegistrationData(@QueryMap Map<String, String> datas, @Part("imageFile") TypedFile file, Callback<RegistrationResponseFromServer> callback);
     }
 
     interface PostInterfaceLogin{

@@ -1,21 +1,26 @@
 package com.example.alex.helppeopletogether.registration;
 
 
-import android.accounts.AccountManager;
-import android.app.ProgressDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.ExitFragment;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsFragment;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsItem;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsNavigationDrawer;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
@@ -34,15 +39,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.PlusShare;
-import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
 import com.vk.sdk.VKScope;
@@ -55,7 +55,6 @@ import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.util.VKUtil;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -65,18 +64,19 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class Login extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class Login extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
     private static final int RC_SIGN_IN = 0;
     private static final String TAG = "Login";
     private static final int PROFILE_PIC_SIZE = 400;
     LoginManager loginManager;
-    private EditText login;
+    Context context;
+    private EditText email;
     private EditText password;
     private Button buttonNext, facebook, vk, googlePlus;
     private TextView buttonNextStepRegistration;
     private Intent intentNextStep;
-    private LinkedHashMap<String, String> loginData;
-    private Integer responseFromServiseLogin;
+    private LinkedHashMap<String, String> loginData, socialUserData;
+    private Integer responseFromServiseLogin, responseFromServiseSocialNetwork;
     private CallbackManager callbackManager;
     private FacebookCallback<LoginResult> mCallback;
     private String[] scope = new String[]{VKScope.EMAIL, VKScope.PHOTOS, VKScope.MESSAGES, VKScope.FRIENDS};
@@ -86,19 +86,19 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private boolean mSignInClicked;
     private ConnectionResult mConnectionResult;
     private SignInButton btnSignIn;
+    private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.login);
-        login = (EditText) findViewById(R.id.login_login);
+        email = (EditText) findViewById(R.id.login_email);
         facebook = (Button) findViewById(R.id.login_button_facebook);
         vk = (Button) findViewById(R.id.login_button_vk);
         googlePlus = (Button) findViewById(R.id.login_button_google_plus);
         password = (EditText) findViewById(R.id.login_password);
         buttonNext = (Button) findViewById(R.id.login_button_login);
-
         buttonNextStepRegistration = (TextView) findViewById(R.id.login_view_registration);
         buttonNext.setOnClickListener(this);
         facebook.setOnClickListener(this);
@@ -109,7 +109,39 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         buttonNextStepRegistration.setOnClickListener(this);
         String[] fingerprints = VKUtil.getCertificateFingerprint(this, this.getPackageName());
         System.out.println(Arrays.toString(fingerprints));
+        loginGoogle();
+        loginManager = LoginManager.getInstance();
+        context = getApplicationContext();
 
+    }
+
+    private void loginGoogle() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .requestId()
+                .requestProfile()
+                .build();
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.connect();
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 
 
@@ -128,18 +160,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                 break;
 
             case R.id.login_button_vk:
-
                 VKSdk.login(this, scope);
                 break;
 
             case R.id.login_button_google_plus:
-                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
-                        .build();
-                mGoogleApiClient = new GoogleApiClient.Builder(this)
-                        .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
-                        .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                        .build();
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
 
@@ -149,7 +173,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     }
 
     private void loginFacebook() {
-        loginManager = LoginManager.getInstance();
         loginManager.logInWithReadPermissions(this, Arrays.asList(new String[]{"public_profile", "user_friends"}));
         loginManager.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
@@ -162,6 +185,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                         facebookSecondName = profile.getLastName();
                         facebookId = profile.getId();
 
+
+                        facebookSocialName = "Facebook";
+                        socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId);
 
                     }
 
@@ -183,6 +209,37 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                 });
     }
 
+    public void socialNetworksRegistration(String firstName, String secondName, String nameSocial, String idSocial) {
+        socialUserData = new LinkedHashMap<>();
+        socialUserData.put("first_name", firstName);
+        socialUserData.put("second_name", secondName);
+        socialUserData.put("social_network", nameSocial);
+        socialUserData.put("social_id", String.valueOf(idSocial));
+        Retrofit.sendSocialNetworks(socialUserData, new Callback<RegistrationResponseFromServer>() {
+            @Override
+            public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
+                responseFromServiseSocialNetwork = registrationResponseFromServer.response;
+                if (responseFromServiseSocialNetwork == 1) {
+                    newsFragment();
+
+                } else if (responseFromServiseSocialNetwork == 2) {
+                    intentNextStep = new Intent(Login.this, Agreement.class);
+                    startActivity(intentNextStep);
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Toast.makeText(Login.this, "Данные пользователя соц сети не отправились", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void newsFragment() {
+        Intent intent = new Intent(Login.this, NewsNavigationDrawer.class);
+        startActivity(intent);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -198,7 +255,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                 vkId = res.userId;
 
 
-                VKRequest request = VKApi.users().get(VKParameters.from(VKApiConst.FIELDS, "first_name,last_name"));
+                VKRequest request = VKApi.users().get(VKParameters.from(VKApiConst.FIELDS, "first_name,last_name", "photo_id,"));
                 request.executeSyncWithListener(new VKRequest.VKRequestListener() {
                     @Override
                     public void onError(VKError error) {
@@ -211,6 +268,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                         super.onComplete(response);
                         String json = response.responseString;
                         vkjson(json);
+                        vkSocialName = "Vk";
+                        socialNetworksRegistration(vkFirstName, vkSecondName, vkSocialName, vkId);
                     }
 
                 });
@@ -240,11 +299,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
 
     public void checkData() {
-        if (login.getText().length() < 6 || password.getText().length() < 6) {
+        Registration loginEmail = new Registration();
+        if (loginEmail.resultRegularExprensionsEmail(email) == false || password.getText().length() < 6) {
             Toast.makeText(Login.this, "Не правильно введен логин или пароль", Toast.LENGTH_LONG).show();
         } else {
             loginData = new LinkedHashMap<>();
-            loginData.put("login", String.valueOf(login.getText()));
+            loginData.put("email", String.valueOf(email.getText()));
             loginData.put("password", String.valueOf(password.getText()));
             Retrofit.sendLoginData(loginData, new Callback<RegistrationResponseFromServer>() {
                 @Override
@@ -252,7 +312,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
                     responseFromServiseLogin = responseLogin.response_login;
                     if (responseFromServiseLogin == 1) {
-                        Toast.makeText(Login.this, "Не правильно введен логин или пароль", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
                     } else if (responseFromServiseLogin == 2) {
                         intentNextStep = new Intent(Login.this, NewsNavigationDrawer.class);
                         startActivity(intentNextStep);
@@ -270,33 +330,40 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     }
 
 
-    @Override
-    public void onConnected(Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
+    private void handleSignInResult(GoogleSignInResult result) {
+//        result.getSignInAccount().getEmail();
+        //      result.getSignInAccount().getId();
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            GoogleSignInAccount acct = result.getSignInAccount();
+            String email = acct.getEmail();
+            googleId = acct.getId();
+            String name = acct.getDisplayName();
+            if (name != null) {
+                String[] arrayName = name.split(" ");
+                googleFirstName = arrayName[0];
+                googleSecondName = arrayName[1];
+            }
+            googleSocialName = "Google";
+            socialNetworksRegistration(googleFirstName, googleSecondName, googleSocialName, googleId);
+        } else {
+            Toast.makeText(Login.this, "Интернет соеденение отсутствует", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-        if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = result.getSignInAccount();
-            String email = acct.getEmail();
-            String id = acct.getId();
-
-        } else {
-
-
+        if (connectionResult.hasResolution()) {
+            try {
+                // !!!
+                connectionResult.startResolutionForResult(this, ConnectionResult.DEVELOPER_ERROR);
+            } catch (IntentSender.SendIntentException e) {
+                mGoogleApiClient.connect();
+            }
         }
+
+        mConnectionResult = connectionResult;
+
     }
 }
 

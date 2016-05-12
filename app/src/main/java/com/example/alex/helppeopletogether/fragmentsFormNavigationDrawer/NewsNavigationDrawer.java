@@ -2,6 +2,7 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +38,8 @@ public class NewsNavigationDrawer extends AppCompatActivity
     NewsFragment news;
     PostAdvertisementFragment postAdvertisement;
     ExitFragment exit;
+    android.support.v4.app.FragmentTransaction ft;
+    android.support.v4.app.FragmentManager fragmentManager;
 
 
     @Override
@@ -44,19 +47,19 @@ public class NewsNavigationDrawer extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_navigation_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        advertisement = new Advertisement();
+        friend = new FriendFragment();
+        message = new MessageFragment();
+        news = new NewsFragment();
+        postAdvertisement = new PostAdvertisementFragment();
+        exit = new ExitFragment();
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().add(R.id.container, news).commit();
+        //savedInstanceState= intent5.getStringExtra();
+        setSupportActionBar(toolbar);
 
-        //   savedInstanceState= intent5.getStringExtra();
-        //  setSupportActionBar(toolbar);
 
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,12 +70,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        advertisement = new Advertisement();
-        friend = new FriendFragment();
-        message = new MessageFragment();
-        news = new NewsFragment();
-        postAdvertisement = new PostAdvertisementFragment();
-        exit = new ExitFragment();
+
 
 
     }
@@ -89,12 +87,12 @@ public class NewsNavigationDrawer extends AppCompatActivity
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.news_navigation_drawer, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.news_navigation_drawer, menu);
+//        return true;
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -120,8 +118,6 @@ public class NewsNavigationDrawer extends AppCompatActivity
 
         if (id == R.id.nav_my_advertisement) {
             ftrans.replace(R.id.container, advertisement);
-        } else if (id == R.id.nav_my_friend) {
-            ftrans.replace(R.id.container, friend);
         } else if (id == R.id.nav_my_message) {
             ftrans.replace(R.id.container, message);
         } else if (id == R.id.nav_news) {

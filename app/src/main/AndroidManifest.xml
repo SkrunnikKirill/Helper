@@ -36,7 +36,6 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".registration.Agreement"
-
             android:label="Соглашение"
             android:theme="@style/AppTheme.NoActionBar" />
 

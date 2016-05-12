@@ -7,6 +7,7 @@ public class RegistrationResponseFromServer {
     public Integer response;
     public Integer status;
     public Integer user_id;
+    public String full_name;
     //public String login;
    public Integer response_login;
     public Integer response_add_user_information;

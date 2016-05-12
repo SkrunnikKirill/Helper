@@ -40,12 +40,13 @@
                 android:src="@drawable/ic_perm_identity_white_36dp" />
 
             <EditText
-                android:id="@+id/login_login"
+                android:id="@+id/login_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="9dp"
                 android:background="@null"
-                android:hint="login"
+                android:hint="email"
+                android:inputType="textEmailAddress"
                 android:padding="9dp"
                 android:singleLine="true"
                 android:textColorHint="#F8F8FF" />
@@ -192,5 +193,6 @@
 
 
     </RelativeLayout>
+
 
 </RelativeLayout>

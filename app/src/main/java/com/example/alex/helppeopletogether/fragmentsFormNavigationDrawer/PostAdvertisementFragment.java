@@ -201,7 +201,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     }
 
     private void nextActivity() {
-        Intent intent = new Intent(getActivity(), NextPostAdvertisementFragment.class);
+        Intent intent = new Intent(getActivity(), DescriptionProblem.class);
         startActivity(intent);
     }
 }

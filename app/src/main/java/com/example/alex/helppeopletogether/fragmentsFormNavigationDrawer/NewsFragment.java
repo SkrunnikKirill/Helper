@@ -25,6 +25,7 @@ public class NewsFragment extends Fragment {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
+    private static NewsFragment newsFragment = new NewsFragment();
     RecyclerView recyclerView;
     // TODO: Customize parameters
     private int mColumnCount = 1;
@@ -35,6 +36,10 @@ public class NewsFragment extends Fragment {
      * fragment (e.g. upon screen orientation changes).
      */
     public NewsFragment() {
+    }
+
+    public static NewsFragment getInstance() {
+        return newsFragment;
     }
 
     // TODO: Customize parameter initialization
@@ -96,6 +101,12 @@ public class NewsFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
     }
 
     /**

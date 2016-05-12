@@ -19,9 +19,7 @@ import com.vk.sdk.api.model.VKApiUser;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-/**
- * Created by Alex on 20.04.2016.
- */
+
 public class VkApplication extends android.app.Application {
     VKAccessTokenTracker vkAccessTokenTracker = new VKAccessTokenTracker() {
         @Override
