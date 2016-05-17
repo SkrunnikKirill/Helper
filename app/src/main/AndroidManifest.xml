@@ -51,8 +51,9 @@
             android:label="NextPostAdvertisementFragment" />
         <activity
             android:name=".fragmentsFormNavigationDrawer.DescriptionProblem"
-            android:label="DescriptionProblem" />
-        <activity
+            android:parentActivityName=".fragmentsFormNavigationDrawer.NewsDeatils"
+            android:label="Информация объявления" />
+
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"

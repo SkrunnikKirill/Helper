@@ -81,6 +81,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private FacebookCallback<LoginResult> mCallback;
     private String[] scope = new String[]{VKScope.EMAIL, VKScope.PHOTOS, VKScope.MESSAGES, VKScope.FRIENDS};
     private String vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId, token;
+    public static int userId;
     private GoogleApiClient mGoogleApiClient;
     private boolean mIntentInProgress;
     private boolean mSignInClicked;
@@ -219,6 +220,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                 responseFromServiseSocialNetwork = registrationResponseFromServer.response;
+                userId = registrationResponseFromServer.user_id;
+
                 if (responseFromServiseSocialNetwork == 1) {
                     newsFragment();
 
@@ -311,6 +314,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                 public void success(RegistrationResponseFromServer responseLogin, Response response) {
                     Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
                     responseFromServiseLogin = responseLogin.response_login;
+                    userId = responseLogin.user_id;
                     if (responseFromServiseLogin == 1) {
                         Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
                     } else if (responseFromServiseLogin == 2) {
@@ -364,6 +368,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
         mConnectionResult = connectionResult;
 
+    }
+    public static  int getUserId() {
+        return userId;
     }
 }
 

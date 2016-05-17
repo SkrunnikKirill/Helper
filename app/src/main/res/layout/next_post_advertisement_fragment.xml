@@ -61,14 +61,7 @@
 
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/next_post_advertisement_fragment_account"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:hint="Номер расчетного счета Приватбанка"
-                android:singleLine="true" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"

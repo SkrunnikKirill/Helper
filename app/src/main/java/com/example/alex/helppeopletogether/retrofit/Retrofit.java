@@ -2,6 +2,8 @@ package com.example.alex.helppeopletogether.retrofit;
 
 import android.widget.ImageView;
 
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.DescriptionProblem;
+
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -29,6 +31,7 @@ public class Retrofit {
     private static PostInterfaceLogin postInterfaceLogin;
     private static PostInterfaseAdvertisement postInterfaseAdvertisement;
     private static PostInterfaceNextPostAdvertisementFragment postInterfaceNextPostAdvertisementFragment;
+    private static PostInterfaceDescriptionProblem postInterfaceDescriptionProblem;
 
     static {
         init();
@@ -44,6 +47,7 @@ public class Retrofit {
         postInterfaseAdvertisement = postAdapter.create(PostInterfaseAdvertisement.class);
         postInterfaceNextPostAdvertisementFragment = postAdapter.create(PostInterfaceNextPostAdvertisementFragment.class);
         postInterfaceSocialNetworks = postAdapter.create(PostInterfaceSocialNetworks.class);
+        postInterfaceDescriptionProblem = postAdapter.create(PostInterfaceDescriptionProblem.class);
     }
 
     public static void sendSocialNetworks(Map<String, String> social, Callback<RegistrationResponseFromServer> callback) {
@@ -65,6 +69,9 @@ public class Retrofit {
     public static void sendNextPostImage(Map<String, TypedFile> imageData, Callback<RegistrationResponseFromServer> callback) {
         postInterfaceNextPostAdvertisementFragment.sendNextPostImage(imageData, callback);
     }
+    public static void sendAdvertisement(Map<String, String> dataAdvertisement, TypedFile file, Callback<RegistrationResponseFromServer> callback){
+        postInterfaceDescriptionProblem.sendAdvertisement(dataAdvertisement, file, callback);
+    }
 
     interface PostInterfaceNextPostAdvertisementFragment {
         @Multipart
@@ -75,6 +82,13 @@ public class Retrofit {
     interface PostInterfaceSocialNetworks {
         @POST("/auth_social.php")
         void sendSocialNetworks(@QueryMap Map<String, String> social, Callback<RegistrationResponseFromServer> callback);
+    }
+
+    interface PostInterfaceDescriptionProblem{
+        @Multipart
+        @POST("/add_adver.php")
+        void sendAdvertisement(@QueryMap Map<String, String> dataAdvertisement, @Part("imageAdvertisement") TypedFile file, Callback<RegistrationResponseFromServer> callback);
+
     }
 
     interface PostInterfaceRegistration {

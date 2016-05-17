@@ -54,6 +54,8 @@ public class Registration extends Activity implements View.OnClickListener {
     private String regularExprensionsLogin;
     private boolean result;
     private String response;
+    private File file;
+    private TypedFile imageFace;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +173,7 @@ public class Registration extends Activity implements View.OnClickListener {
         image.setImageBitmap(bm);
     }
 
-    protected String getPath(Uri uri) {
+    public String getPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
         if (cursor == null) return null;
@@ -192,9 +194,12 @@ public class Registration extends Activity implements View.OnClickListener {
         } else if (password.getText().length() < 6) {
             Toast.makeText(getApplication(), "Пароль, должен быть больше 6 символов", Toast.LENGTH_LONG).show();
         } else {
-            File file = new File(getPath(selectedImageUri));
-            TypedFile imageFace = new TypedFile("image/*", file);
-
+            if (selectedImageUri == null){
+                Toast.makeText(Registration.this,"Установите фотографию",Toast.LENGTH_LONG).show();
+            }else {
+                 file = new File(getPath(selectedImageUri));
+                 imageFace = new TypedFile("image/*", file);
+            }
             data.put("first_name", String.valueOf(firstName.getText()));
             data.put("second_name", String.valueOf(secondName.getText()));
             data.put("email", String.valueOf(email.getText()));

@@ -8,7 +8,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_news_navigation_drawer">Новости</string>
     <string name="title">Title_item</string>
-    <string name="description">Description_item</string>
+    <string name="description">Информация объявления</string>
     <string name="birth_day">Выберите дату рождения</string>
     <string name="ready">Готово</string>
     <integer name="com_vk_sdk_AppId">5425061</integer>

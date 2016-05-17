@@ -56,7 +56,7 @@ public class ReadRss extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        ProcessXml(Getdata());
+        //ProcessXml(Getdata());
 
         return null;
     }
