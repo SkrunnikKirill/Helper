@@ -42,7 +42,7 @@ public class Registration extends Activity implements View.OnClickListener {
     public static Integer responseFromServiseRegistrationId;
     Intent intent;
     Integer responseFromServiseRegistration;
-    String responseFromServiseFullName;
+    String responseFromServiseFullName, responseFromServiseImage;
     Uri selectedImageUri;
     String selectedImagePath;
     int REQUEST_CAMERA = 0, SELECT_FILE = 1;
@@ -213,6 +213,7 @@ public class Registration extends Activity implements View.OnClickListener {
                     responseFromServiseRegistration = registrationResponseFromServer.response;
                     responseFromServiseRegistrationId = registrationResponseFromServer.user_id;
                     responseFromServiseFullName = registrationResponseFromServer.full_name;
+                    responseFromServiseImage = registrationResponseFromServer.avatar;
                     if (responseFromServiseRegistration == 3){
                         Toast.makeText(Registration.this,"Логин занят",Toast.LENGTH_LONG).show();
                     }else if (responseFromServiseRegistration ==1){
@@ -227,7 +228,8 @@ public class Registration extends Activity implements View.OnClickListener {
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Toast.makeText(getApplication(), "Data don't sent. Check internet connection", Toast.LENGTH_LONG).show();
+                    System.out.println(error.toString());
+                    Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_LONG).show();
                 }
             });
 

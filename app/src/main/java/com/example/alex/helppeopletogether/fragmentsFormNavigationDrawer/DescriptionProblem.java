@@ -2,6 +2,9 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,11 +16,18 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
@@ -31,6 +41,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 
 import retrofit.Callback;
@@ -43,6 +54,11 @@ import retrofit.mime.TypedFile;
  */
 public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener {
     static final int GALLERY_REQUEST_IMAGE = 1;
+    int DIALOG_DATE = 1;
+    Calendar calendar = Calendar.getInstance();
+    int myYear = calendar.get(Calendar.YEAR);
+    int myMonth = Calendar.getInstance().get(Calendar.MONTH);
+    int myDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
     ImageView imageAdvertisement;
     int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     Uri selectedImageUri;
@@ -50,13 +66,16 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     Registration registration;
     Login login;
     Integer userid;
+    String[] currency = {"usd", "eur", "grn"};
     private Toolbar toolbar;
+    private TextView day;
 
-    private EditText theme, shortDescription, fullDescription, money, day, account;
+    private EditText theme, shortDescription, fullDescription, money,  account;
     private Button locate;
     private LinkedHashMap<String, String> dataAdvertisement;
     android.support.v4.app.FragmentTransaction ft;
     android.support.v4.app.FragmentManager fragmentManager;
+    Calendar dateAndTime=Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,16 +86,34 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         shortDescription = (EditText) findViewById(R.id.description_problem_short_description);
         fullDescription = (EditText) findViewById(R.id.description_problem_full_description);
         money = (EditText) findViewById(R.id.description_problem_money);
-        day = (EditText) findViewById(R.id.description_problem_day);
+        day = (TextView) findViewById(R.id.description_problem_day);
         account = (EditText)findViewById(R.id.description_problem_account);
         locate = (Button) findViewById(R.id.description_problem_locate);
         registration = new Registration();
         imageAdvertisement.setOnClickListener(this);
         locate.setOnClickListener(this);
-        toolbar.setOnClickListener(this);
         login = new Login();
         userid = login.userId;
         initToolbar();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, currency);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Spinner spinner = (Spinner) findViewById(R.id.spinnerstate);
+        spinner.setAdapter(adapter);
+        spinner.setPrompt("Title");
+        // выделяем элемент
+        spinner.setSelection(2);
+        // устанавливаем обработчик нажатия
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                // показываем позиция нажатого элемента
+                Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
 
 
     }
@@ -84,12 +121,14 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     private void initToolbar() {
         toolbar = (Toolbar)findViewById(R.id.toolbar_description);
         toolbar.setTitle(R.string.description);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
       toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_action_errow));
         toolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportActionBar().setDisplayShowHomeEnabled(true);
-                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
             }
         });
@@ -210,26 +249,56 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     }
 
     private void sendDescriptionInformationFromServise() {
-        dataAdvertisement = new LinkedHashMap<>();
-        dataAdvertisement.put("title",String.valueOf(theme.getText()));
-        dataAdvertisement.put("short_description",String.valueOf(shortDescription.getText()));
-        dataAdvertisement.put("description",String.valueOf(fullDescription.getText()));
-        dataAdvertisement.put("expected_amount",String.valueOf(money.getText()));
-        dataAdvertisement.put("final_date", String.valueOf(day.getText()));
-        dataAdvertisement.put("payment_account", String.valueOf(account.getText()));
-        dataAdvertisement.put("user_id",String.valueOf(userid));
-        File file = new File(getPath(selectedImageUri));
-        TypedFile image = new TypedFile("image/*", file);
-        Retrofit.sendAdvertisement(dataAdvertisement, image, new Callback<RegistrationResponseFromServer>() {
-            @Override
-            public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-                Toast.makeText(DescriptionProblem.this, "Все ok", Toast.LENGTH_LONG).show();
-            }
+        if (theme.getText().length()>0 && shortDescription.getText().length()>0 && fullDescription.getText().length()>0&&
+                money.getText().length()>0 && day.getText().length()>0 && account.getText().length()>0 && selectedImageUri != null){
+            dataAdvertisement = new LinkedHashMap<>();
+            dataAdvertisement.put("title",String.valueOf(theme.getText()));
+            dataAdvertisement.put("short_description",String.valueOf(shortDescription.getText()));
+            dataAdvertisement.put("description", String.valueOf(fullDescription.getText()));
+            dataAdvertisement.put("expected_amount",String.valueOf(money.getText()));
+            dataAdvertisement.put("final_date", String.valueOf(day.getText()));
+            dataAdvertisement.put("payment_account", String.valueOf(account.getText()));
+            dataAdvertisement.put("user_id",String.valueOf(userid));
+            File file = new File(getPath(selectedImageUri));
+            TypedFile image = new TypedFile("image/*", file);
 
-            @Override
-            public void failure(RetrofitError error) {
-                Toast.makeText(DescriptionProblem.this, "Все плохо", Toast.LENGTH_LONG).show();
-            }
-        });
+            Retrofit.sendAdvertisement(dataAdvertisement, image, new Callback<RegistrationResponseFromServer>() {
+                @Override
+                public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
+                    Toast.makeText(DescriptionProblem.this, "Все ok", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Toast.makeText(DescriptionProblem.this, "Все плохо", Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(DescriptionProblem.this, "Заполните все поля и установите изображение", Toast.LENGTH_LONG).show();
+        }
+
     }
+    public void onclick(View view) {
+        showDialog(DIALOG_DATE);
+    }
+
+
+    protected Dialog onCreateDialog(int id) {
+        if (id == DIALOG_DATE) {
+            DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, myYear, myMonth, myDay);
+            return tpd;
+        }
+        return super.onCreateDialog(id);
+    }
+
+    DatePickerDialog.OnDateSetListener myCallBack = new DatePickerDialog.OnDateSetListener() {
+
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            myYear = year;
+            myMonth = monthOfYear+1;
+            myDay = dayOfMonth;
+            day.setText(myDay + "/" + myMonth + "/" + myYear);
+        }
+    };
 }

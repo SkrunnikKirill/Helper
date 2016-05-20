@@ -10,17 +10,22 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
+import com.example.alex.helppeopletogether.retrofit.Retrofit;
+
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 /**
  * Created by Alex on 04.04.2016.
  */
-public class FriendFragment extends Fragment {
-    private TextView fiendText;
+public class MyAdvertisement extends Fragment {
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.friend_fragment,container,false);
-        fiendText = (TextView) root.findViewById(R.id.friend_fragment_text);
+        View root = inflater.inflate(R.layout.my_advertisement,container,false);
         return root;
     }
 }

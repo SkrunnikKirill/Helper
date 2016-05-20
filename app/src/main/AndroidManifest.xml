@@ -44,20 +44,19 @@
             android:label="@string/title_activity_news_navigation_drawer"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
-            android:name=".fragmentsFormNavigationDrawer.NewsDeatils"
-            android:label="NewsDeatils" />
-        <activity
             android:name=".fragmentsFormNavigationDrawer.NextPostAdvertisementFragment"
             android:label="NextPostAdvertisementFragment" />
         <activity
             android:name=".fragmentsFormNavigationDrawer.DescriptionProblem"
             android:parentActivityName=".fragmentsFormNavigationDrawer.NewsDeatils"
             android:label="Информация объявления" />
-
+<activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity android:name=".fragmentsFormNavigationDrawer.DetailNews"
+            android:label="Нвость"/>
 
     </application>
 

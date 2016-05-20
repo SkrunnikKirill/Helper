@@ -1,40 +1,25 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
-import android.app.DatePickerDialog;
-import android.app.DialogFragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
-
-import java.util.Calendar;
 
 
 public class NewsNavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     Advertisement advertisement;
-    FriendFragment friend;
-    MessageFragment message;
+
+    MyAdvertisement message;
     NewsFragment news;
     PostAdvertisementFragment postAdvertisement;
     ExitFragment exit;
@@ -48,8 +33,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
         setContentView(R.layout.activity_news_navigation_drawer);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         advertisement = new Advertisement();
-        friend = new FriendFragment();
-        message = new MessageFragment();
+        message = new MyAdvertisement();
         news = new NewsFragment();
         postAdvertisement = new PostAdvertisementFragment();
         exit = new ExitFragment();

@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Advertised"
-        android:textSize="30dp"
-        android:id="@+id/advertised_text"/>
+        android:id="@+id/my_advertisement_list">
+
+    </ListView>
 
 </LinearLayout>

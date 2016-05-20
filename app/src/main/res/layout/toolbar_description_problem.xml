@@ -6,5 +6,6 @@
     android:layout_height="wrap_content"
     android:minHeight="?attr/actionBarSize"
     android:background="@color/colorPrimary"
+    android:onClick="onClick"
     >
 </android.support.v7.widget.Toolbar>

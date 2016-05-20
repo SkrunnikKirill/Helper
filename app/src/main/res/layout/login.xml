@@ -33,7 +33,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/thumb_img"
+                android:id="@+id/detail_news_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
@@ -154,7 +154,7 @@
                 android:id="@+id/login_button_facebook"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="2dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/facebook" />
 
             <Button
@@ -162,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="2dp"
+                android:layout_marginRight="5dp"
                 android:layout_toEndOf="@+id/login_button_google_plus"
                 android:layout_toRightOf="@+id/login_button_google_plus"
                 android:background="@drawable/vk" />
@@ -172,7 +172,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_marginRight="2dp"
+                android:layout_marginRight="5dp"
                 android:layout_toEndOf="@+id/login_button_facebook"
                 android:layout_toRightOf="@+id/login_button_facebook"
                 android:background="@drawable/google" />

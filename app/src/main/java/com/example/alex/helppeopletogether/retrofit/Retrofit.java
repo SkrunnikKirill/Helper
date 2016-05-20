@@ -1,23 +1,16 @@
 package com.example.alex.helppeopletogether.retrofit;
 
-import android.widget.ImageView;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.MyAdvertisement;
 
-import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.DescriptionProblem;
-
-import java.util.ArrayList;
 import java.util.Map;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
-import retrofit.http.Field;
-import retrofit.http.FieldMap;
-import retrofit.http.FormUrlEncoded;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.GET;
 import retrofit.http.Part;
 import retrofit.http.PartMap;
-import retrofit.http.Query;
 import retrofit.http.QueryMap;
 import retrofit.mime.TypedFile;
 
@@ -32,6 +25,8 @@ public class Retrofit {
     private static PostInterfaseAdvertisement postInterfaseAdvertisement;
     private static PostInterfaceNextPostAdvertisementFragment postInterfaceNextPostAdvertisementFragment;
     private static PostInterfaceDescriptionProblem postInterfaceDescriptionProblem;
+    private static NewsJsonArray arrays;
+    private static MyAdvertisementJsonArray myAdvertisementArrays;
 
     static {
         init();
@@ -48,6 +43,8 @@ public class Retrofit {
         postInterfaceNextPostAdvertisementFragment = postAdapter.create(PostInterfaceNextPostAdvertisementFragment.class);
         postInterfaceSocialNetworks = postAdapter.create(PostInterfaceSocialNetworks.class);
         postInterfaceDescriptionProblem = postAdapter.create(PostInterfaceDescriptionProblem.class);
+        arrays = postAdapter.create(NewsJsonArray.class);
+        myAdvertisementArrays = postAdapter.create(MyAdvertisementJsonArray.class);
     }
 
     public static void sendSocialNetworks(Map<String, String> social, Callback<RegistrationResponseFromServer> callback) {
@@ -71,6 +68,23 @@ public class Retrofit {
     }
     public static void sendAdvertisement(Map<String, String> dataAdvertisement, TypedFile file, Callback<RegistrationResponseFromServer> callback){
         postInterfaceDescriptionProblem.sendAdvertisement(dataAdvertisement, file, callback);
+    }
+    public static void getArrays(Callback<RegistrationResponseFromServer> callback){
+        arrays.getArrays(callback);
+    }
+    public  static void getMyAdvertisementArrays(String userId, Callback<RegistrationResponseFromServer> callback){
+        myAdvertisementArrays.getMyAdvertisementArrays(userId,callback);
+    }
+
+    interface MyAdvertisementJsonArray{
+        @Multipart
+        @POST("/user_advers.php")
+        void getMyAdvertisementArrays(@Part("user_id") String userId,Callback<RegistrationResponseFromServer> callback);
+    }
+
+    interface NewsJsonArray {
+        @GET("/create_json.php")
+        void getArrays(Callback<RegistrationResponseFromServer> callback);
     }
 
     interface PostInterfaceNextPostAdvertisementFragment {

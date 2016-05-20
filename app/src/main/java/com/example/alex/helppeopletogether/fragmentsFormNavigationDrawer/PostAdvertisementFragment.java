@@ -163,11 +163,9 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     private void dateRetrofit() {
         advertisementData = new LinkedHashMap<>();
 
-        if (secondName.getText().length() <= 0 && name.getText().length() <= 0 && therdName.getText().length() <= 0 &&
-                region.getText().length() <= 0 && city.getText().length() <= 0 && phoneNumber.getText().length() <= 0 &&
-                dayOfBirth.getText().length() <= 0) {
-            Toast.makeText(getActivity(), "Не все поля заполнены, заполнети все поля", Toast.LENGTH_LONG).show();
-        } else {
+        if (secondName.getText().length() > 0 && name.getText().length() > 0 && therdName.getText().length() > 0 &&
+                region.getText().length() > 0 && city.getText().length() > 0 && phoneNumber.getText().length() > 0 &&
+                dayOfBirth.getText().length() > 0) {
             advertisementData.put("name", String.valueOf(name.getText()));
             advertisementData.put("secondName", String.valueOf(secondName.getText()));
             advertisementData.put("thirdName", String.valueOf(therdName.getText()));
@@ -184,7 +182,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                     int answer = registrationResponseFromServer.response_add_user_information;
                     if (answer == 1) {
-                        Toast.makeText(getActivity(), "Неуспех", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Данные не отпраленны", Toast.LENGTH_LONG).show();
                     } else if (answer == 2) {
                         Toast.makeText(getActivity(), "Это успех детка", Toast.LENGTH_LONG).show();
                     }
@@ -196,7 +194,9 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
                 }
             });
             nextActivity();
+        } else {
 
+            Toast.makeText(getActivity(), "Не все поля заполнены, заполнети все поля", Toast.LENGTH_LONG).show();
         }
     }
 
