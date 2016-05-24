@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.alex.helppeopletogether.R;
 
@@ -18,13 +19,14 @@ import com.example.alex.helppeopletogether.R;
 public class NewsNavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     Advertisement advertisement;
-
     MyAdvertisement message;
     NewsFragment news;
     PostAdvertisementFragment postAdvertisement;
     ExitFragment exit;
+    TextView fullName;
     android.support.v4.app.FragmentTransaction ft;
     android.support.v4.app.FragmentManager fragmentManager;
+    String name;
 
 
     @Override
@@ -37,6 +39,9 @@ public class NewsNavigationDrawer extends AppCompatActivity
         news = new NewsFragment();
         postAdvertisement = new PostAdvertisementFragment();
         exit = new ExitFragment();
+        Intent intentFullName = getIntent();
+        name = intentFullName.getStringExtra("fullName");
+        fullName = (TextView)findViewById(R.id.navigation_drawer_full_name);
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.container, news).commit();
         //savedInstanceState= intent5.getStringExtra();

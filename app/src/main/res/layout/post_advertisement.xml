@@ -16,29 +16,29 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:orientation="vertical">
-    <EditText
-        android:id="@+id/post_advertisement_second_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Фамилия"
-        android:singleLine="true" />
+    <!--<EditText-->
+        <!--android:id="@+id/post_advertisement_second_name"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:hint="Фамилия"-->
+        <!--android:singleLine="true" />-->
 
-    <EditText
-        android:id="@+id/post_advertisement_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/post_advertisement_second_name"
-        android:hint="Имя"
-        android:singleLine="true" />
+    <!--<EditText-->
+        <!--android:id="@+id/post_advertisement_name"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/post_advertisement_second_name"-->
+        <!--android:hint="Имя"-->
+        <!--android:singleLine="true" />-->
 
 
-            <EditText
-            android:id="@+id/post_advertisement_therd_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-                android:layout_below="@+id/post_advertisement_name"
-                android:hint="Очество"
-                android:singleLine="true" />
+            <!--<EditText-->
+            <!--android:id="@+id/post_advertisement_therd_name"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/post_advertisement_name"-->
+                <!--android:hint="Очество"-->
+                <!--android:singleLine="true" />-->
 
             <TextView
             android:id="@+id/post_advertisement_date_of_birth"

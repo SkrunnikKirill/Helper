@@ -107,7 +107,8 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 // показываем позиция нажатого элемента
-                Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
+                money.setText(currency[position]);
+               // Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -286,6 +287,9 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_DATE) {
             DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, myYear, myMonth, myDay);
+//            tpd.getDatePicker().setMaxDate(myYear);
+//            tpd.getDatePicker().setMaxDate(myMonth);
+//            tpd.getDatePicker().setMaxDate(myDay);
             return tpd;
         }
         return super.onCreateDialog(id);

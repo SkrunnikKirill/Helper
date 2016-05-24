@@ -1,10 +1,12 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter;
 
 import android.app.Activity;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,7 +15,7 @@ import com.example.alex.helppeopletogether.R;
 
 import java.util.ArrayList;
 
-public class CustomList extends ArrayAdapter<String>{
+public class CustomList extends ArrayAdapter<String> {
 
     private final Activity context;
     private final   ArrayList<String> shortDescription;
@@ -21,6 +23,10 @@ public class CustomList extends ArrayAdapter<String>{
     private final  ArrayList<String> datePublication;
     private final  ArrayList<String> expected_amount;
     private final  ArrayList<String> finalDate;
+
+
+
+
     public CustomList(Activity context,
                        ArrayList<String> shortDescription,   ArrayList<String> image,  ArrayList<String> datePublication,
                       ArrayList<String> expected_amount, ArrayList<String> finalDate) {
@@ -33,15 +39,27 @@ public class CustomList extends ArrayAdapter<String>{
         this.finalDate = finalDate;
 
     }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView= inflater.inflate(R.layout.datail_news_item, null, true);
+        View rowView= inflater.inflate(R.layout.datail_news_item, parent, false);
+       final ImageView like = (ImageView)rowView.findViewById(R.id.datail_news_like);
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (like.isClickable()) {
+                    like.setBackgroundResource(R.drawable.like);
+                } else {
+                    like.setImageResource(R.drawable.nolike);
+                }
+            }
+        });
+        like.setTag(position);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.detail_news_theme);
         TextView timeDate = (TextView)rowView.findViewById(R.id.date_text);
         TextView date = (TextView)rowView.findViewById(R.id.detail_news_days_left);
         TextView summa = (TextView)rowView.findViewById(R.id.detail_news_summa);
-
         ImageView imageView = (ImageView) rowView.findViewById(R.id.detail_news_image);
         timeDate.setText(datePublication.get(position));
         txtTitle.setText(shortDescription.get(position));
@@ -51,5 +69,8 @@ public class CustomList extends ArrayAdapter<String>{
 
         return rowView;
     }
+
+
+
 }
 

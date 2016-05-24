@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.registration.Login;
 import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
@@ -38,7 +39,8 @@ import retrofit.client.Response;
 public class PostAdvertisementFragment extends Fragment implements TextWatcher, View.OnClickListener {
     //  View.OnClickListener {
 
-    private EditText secondName, name, therdName, phoneNumber;
+   // private EditText secondName, name, therdName, phoneNumber;
+    private EditText  phoneNumber;
     private AutoCompleteTextView region;
     private AutoCompleteTextView city;
     private DatePicker datePicker;
@@ -65,13 +67,20 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.post_advertisement, container, false);
+        Login login = new Login();
         Registration registration = new Registration();
-        id = registration.responseFromServiseRegistrationId;
+        if (login.userId != 0){
+            id = login.userId;
+
+        }else{
+            id =  registration.responseFromServiseRegistrationId;
+        }
 
 
-        secondName = (EditText) root.findViewById(R.id.post_advertisement_second_name);
-        name = (EditText) root.findViewById(R.id.post_advertisement_name);
-        therdName = (EditText) root.findViewById(R.id.post_advertisement_therd_name);
+
+//        secondName = (EditText) root.findViewById(R.id.post_advertisement_second_name);
+//        name = (EditText) root.findViewById(R.id.post_advertisement_name);
+//        therdName = (EditText) root.findViewById(R.id.post_advertisement_therd_name);
         region = (AutoCompleteTextView) root.findViewById(R.id.post_advertisement_region);
         city = (AutoCompleteTextView) root.findViewById(R.id.post_advertisement_city);
         dayOfBirth = (TextView) root.findViewById(R.id.post_advertisement_date_of_birth);
@@ -163,12 +172,11 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     private void dateRetrofit() {
         advertisementData = new LinkedHashMap<>();
 
-        if (secondName.getText().length() > 0 && name.getText().length() > 0 && therdName.getText().length() > 0 &&
-                region.getText().length() > 0 && city.getText().length() > 0 && phoneNumber.getText().length() > 0 &&
+        if (region.getText().length() > 0 && city.getText().length() > 0 && phoneNumber.getText().length() > 0 &&
                 dayOfBirth.getText().length() > 0) {
-            advertisementData.put("name", String.valueOf(name.getText()));
-            advertisementData.put("secondName", String.valueOf(secondName.getText()));
-            advertisementData.put("thirdName", String.valueOf(therdName.getText()));
+//            advertisementData.put("name", String.valueOf(name.getText()));
+//            advertisementData.put("secondName", String.valueOf(secondName.getText()));
+//            advertisementData.put("thirdName", String.valueOf(therdName.getText()));
             advertisementData.put("region", String.valueOf(region.getText()));
             advertisementData.put("city", String.valueOf(city.getText()));
             advertisementData.put("date", String.valueOf(installedDay));

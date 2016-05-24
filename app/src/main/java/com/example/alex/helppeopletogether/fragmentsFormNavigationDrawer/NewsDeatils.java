@@ -17,7 +17,6 @@ public class NewsDeatils extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_deatils);
-
         webView = (WebView) findViewById(R.id.webview);
         Bundle bundle = getIntent().getExtras();
         webView.loadUrl(bundle.getString("Link"));

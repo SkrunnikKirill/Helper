@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 //import com.example.alex.helppeopletogether.R;
 //import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsItem.DummyItem;
@@ -27,7 +30,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment  {
     public ArrayList<String> idUser;
     public ArrayList<String> datePublication;
     public ArrayList<String> title;
@@ -36,8 +39,8 @@ public class NewsFragment extends Fragment {
     public ArrayList<String> image;
     public ArrayList<String> expectedAmount;
     public ArrayList<String> finalDate;
-
     ListView list;
+
 
 
 
@@ -47,6 +50,8 @@ public class NewsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
         list = (ListView) view.findViewById(R.id.list);
+
+
         Retrofit.getArrays(new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
@@ -75,27 +80,32 @@ public class NewsFragment extends Fragment {
     private void adapter() {
         CustomList adapter = new
                 CustomList(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate);
-        list.setAdapter(adapter);
+
+        list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                String detailNewsImage =image.get(position);
+                String detailNewsImage = image.get(position);
                 String detailNewsShortDescription = shortDescription.get(position);
                 String detailNewsExpectedAmount = expectedAmount.get(position);
                 String detailNewsFinalDate = finalDate.get(position);
                 String detailNewsDescription = description.get(position);
                 Intent news = new Intent(getActivity(), DetailNews.class);
                 news.putExtra("image", detailNewsImage);
-                news.putExtra("shortDescription",detailNewsShortDescription);
-                news.putExtra("expectedAmount",detailNewsExpectedAmount);
-                news.putExtra("finalDate",detailNewsFinalDate);
+                news.putExtra("shortDescription", detailNewsShortDescription);
+                news.putExtra("expectedAmount", detailNewsExpectedAmount);
+                news.putExtra("finalDate", detailNewsFinalDate);
                 news.putExtra("description", detailNewsDescription);
                 startActivity(news);
 
             }
         });
+
+
+
+        list.setAdapter(adapter);
     }
 
 

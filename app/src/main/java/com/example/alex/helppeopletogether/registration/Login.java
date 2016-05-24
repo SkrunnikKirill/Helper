@@ -80,8 +80,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private CallbackManager callbackManager;
     private FacebookCallback<LoginResult> mCallback;
     private String[] scope = new String[]{VKScope.EMAIL, VKScope.PHOTOS, VKScope.MESSAGES, VKScope.FRIENDS};
-    private String vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId, token;
-    public static int userId;
+    private String vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId, token, fullName;
+    public static Integer userId;
     private GoogleApiClient mGoogleApiClient;
     private boolean mIntentInProgress;
     private boolean mSignInClicked;
@@ -221,6 +221,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                 responseFromServiseSocialNetwork = registrationResponseFromServer.response;
                 userId = registrationResponseFromServer.user_id;
+                fullName = registrationResponseFromServer.full_name;
 
                 if (responseFromServiseSocialNetwork == 1) {
                     newsFragment();
@@ -240,6 +241,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
     private void newsFragment() {
         Intent intent = new Intent(Login.this, NewsNavigationDrawer.class);
+        intent.putExtra("fullName", fullName);
         startActivity(intent);
     }
 
@@ -258,7 +260,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                 vkId = res.userId;
 
 
-                VKRequest request = VKApi.users().get(VKParameters.from(VKApiConst.FIELDS, "first_name,last_name", "photo_id,"));
+                VKRequest request = VKApi.users().get(VKParameters.from(VKApiConst.FIELDS, "first_name,last_name", "photo_id"));
                 request.executeSyncWithListener(new VKRequest.VKRequestListener() {
                     @Override
                     public void onError(VKError error) {
@@ -315,11 +317,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
                     responseFromServiseLogin = responseLogin.response_login;
                     userId = responseLogin.user_id;
+                    fullName = responseLogin.full_name;
                     if (responseFromServiseLogin == 1) {
                         Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
                     } else if (responseFromServiseLogin == 2) {
-                        intentNextStep = new Intent(Login.this, NewsNavigationDrawer.class);
-                        startActivity(intentNextStep);
+                        newsFragment();
                         //Toast.makeText(Login.this,"Это успех!!!",Toast.LENGTH_LONG).show();
                     }
                 }
@@ -369,8 +371,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         mConnectionResult = connectionResult;
 
     }
-    public static  int getUserId() {
-        return userId;
-    }
+
 }
 
