@@ -18,7 +18,8 @@ public class ExitFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.exit_fragment,container,false);
-        exitText = (TextView) root.findViewById(R.id.exit_fragment_text);
+        android.os.Process.killProcess(android.os.Process.myPid());
+        System.exit(1);
         return root;
     }
 }

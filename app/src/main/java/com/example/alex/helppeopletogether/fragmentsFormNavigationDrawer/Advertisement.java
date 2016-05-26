@@ -35,14 +35,14 @@ public class Advertisement extends Fragment {
     public ArrayList<String> image;
     public ArrayList<String> expectedAmount;
     public ArrayList<String> finalDate;
+    public ArrayList<Integer> idNews;
     ListView list;
     private TextView advertisementText;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.advertisement, container, false);
-
-
+       // idNews = new ArrayList<>();
         Login login = new Login();
         String idUser = String.valueOf(login.userId);
         list = (ListView) root.findViewById(R.id.my_advertisement_list);

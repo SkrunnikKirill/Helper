@@ -45,13 +45,13 @@ public class NewsFragment extends Fragment  {
 
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
         list = (ListView) view.findViewById(R.id.list);
-
-
+       // idNews = new ArrayList<>();
         Retrofit.getArrays(new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
@@ -63,7 +63,6 @@ public class NewsFragment extends Fragment  {
                 expectedAmount = registrationResponseFromServer.expected_amount;
                 finalDate = registrationResponseFromServer.final_date;
                 adapter();
-
             }
 
             @Override
@@ -71,17 +70,12 @@ public class NewsFragment extends Fragment  {
 
             }
         });
-
-
-
         return view;
     }
 
-    private void adapter() {
+    public void adapter() {
         CustomList adapter = new
                 CustomList(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate);
-
-        list.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

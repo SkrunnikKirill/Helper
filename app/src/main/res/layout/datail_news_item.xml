@@ -6,7 +6,7 @@
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/date_text"
@@ -14,16 +14,21 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:text="Small Text" />
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="3dp"
-            android:layout_marginRight="10dp"
-            android:id="@+id/datail_news_like"
-            android:src="@drawable/nolike"
-            />
+
+            <ToggleButton
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:focusable="false"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/datail_news_like"
+                android:textOn=""
+                android:textOff=""
+                android:background="@drawable/nolike"
+                />
+
+
 
         <ImageView
             android:id="@+id/detail_news_image"
@@ -75,6 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+
                 android:text="60%"
                 android:textSize="20dp" />
 
@@ -83,7 +89,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="90dp"
                 android:text="14"
                 android:textSize="20dp" />
         </RelativeLayout>
@@ -112,6 +117,7 @@
                 android:layout_alignParentRight="true"
                 android:text="недели осталось" />
         </RelativeLayout>
+
 
 
 
