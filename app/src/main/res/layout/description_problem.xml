@@ -7,7 +7,8 @@
     layout="@layout/toolbar_description_problem"/>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -19,6 +20,7 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_gravity="center"
+
                 android:clickable="true"
                 android:src="@drawable/pasport" />
 
@@ -61,12 +63,12 @@
         android:hint="Количество денег для сбора"
         android:inputType="phone"
         android:singleLine="true" />
+
     <Spinner
         android:id="@+id/spinnerstate"
         android:layout_weight="3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
 </LinearLayout>
 
 
@@ -75,6 +77,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:textSize="19dp"
+                android:paddingTop="12dp"
                 android:gravity="center"
                 android:onClick="onclick"
                 android:hint="Количество дней для сбора"

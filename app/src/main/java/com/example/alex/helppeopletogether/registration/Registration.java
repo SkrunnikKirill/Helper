@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
@@ -57,6 +58,7 @@ public class Registration extends Activity implements View.OnClickListener {
     private File file;
     private TypedFile imageFace;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,26 @@ public class Registration extends Activity implements View.OnClickListener {
         buttonRegistration.setOnClickListener(this);
         face.setOnClickListener(this);
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("firstName", firstName.getText().toString());
+        outState.putString("secondName", secondName.getText().toString());
+        outState.putString("email",email.getText().toString());
+        outState.putString("password",password.getText().toString());
+
+
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        firstName.setText(savedInstanceState.getString("firstName"));
+        secondName.setText(savedInstanceState.getString("secondName"));
+        email.setText(savedInstanceState.getString("email"));
+        password.setText(savedInstanceState.getString("password"));
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 
 
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -75,7 +76,10 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         }else{
             id =  registration.responseFromServiseRegistrationId;
         }
-
+//        Toolbar toolbar = (Toolbar) root.findViewById(R.id.toolbar);
+//        toolbar.setTitle("Детальнее");
+//        NewsNavigationDrawer newsNavigationDrawer = (NewsNavigationDrawer)getActivity();
+//        newsNavigationDrawer.setSupportActionBar(toolbar);
 
 
 //        secondName = (EditText) root.findViewById(R.id.post_advertisement_second_name);

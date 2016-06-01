@@ -5,14 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.Fragment;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 //import com.example.alex.helppeopletogether.R;
 //import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsItem.DummyItem;
@@ -20,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter.CustomList;
+import com.example.alex.helppeopletogether.registration.Login;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
@@ -30,8 +28,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class NewsFragment extends Fragment  {
-    public ArrayList<String> idUser;
+public class NewsFragment extends Fragment {
+    public ArrayList<Integer> idServerNews;
     public ArrayList<String> datePublication;
     public ArrayList<String> title;
     public ArrayList<String> shortDescription;
@@ -39,10 +37,11 @@ public class NewsFragment extends Fragment  {
     public ArrayList<String> image;
     public ArrayList<String> expectedAmount;
     public ArrayList<String> finalDate;
+    ArrayList<Integer> likeNews;
+    public ArrayList<Integer> idNews;
     ListView list;
-
-
-
+    private Integer userId;
+    CustomList adapter;
 
 
 
@@ -51,11 +50,13 @@ public class NewsFragment extends Fragment  {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
         list = (ListView) view.findViewById(R.id.list);
-       // idNews = new ArrayList<>();
+        Login login = new Login();
+        userId = login.userId;
+        // idNews = new ArrayList<>();
         Retrofit.getArrays(new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-                idUser = registrationResponseFromServer.id;
+                idServerNews = registrationResponseFromServer.id;
                 shortDescription = registrationResponseFromServer.short_description;
                 description = registrationResponseFromServer.description;
                 datePublication = registrationResponseFromServer.created_at;
@@ -73,9 +74,11 @@ public class NewsFragment extends Fragment  {
         return view;
     }
 
+
     public void adapter() {
-        CustomList adapter = new
-                CustomList(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate);
+
+        adapter = new
+                CustomList(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate, likeNews,idServerNews, idNews);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -98,9 +101,27 @@ public class NewsFragment extends Fragment  {
         });
 
 
-
         list.setAdapter(adapter);
     }
 
+    private void sendServer() {
+        Retrofit.getLike(userId, adapter.getIdNews(), new Callback<RegistrationResponseFromServer>() {
+            @Override
+            public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
 
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sendServer();
+    }
 }

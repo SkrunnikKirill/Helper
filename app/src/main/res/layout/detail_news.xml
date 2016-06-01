@@ -3,16 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <include
+        layout="@layout/toolbar_description_problem"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/detail_news_image"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/test" />
+         />
     <TextView
         android:id="@+id/detail_news_theme"
         android:layout_width="match_parent"
@@ -59,7 +64,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="90dp"
             android:text="14"
             android:textSize="20dp" />
     </RelativeLayout>
@@ -100,6 +104,6 @@
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
-
+    </ScrollView>
 
 </LinearLayout>

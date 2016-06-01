@@ -2,6 +2,7 @@ package com.example.alex.helppeopletogether.retrofit;
 
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.MyAdvertisement;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 import retrofit.Callback;
@@ -27,6 +28,7 @@ public class Retrofit {
     private static PostInterfaceDescriptionProblem postInterfaceDescriptionProblem;
     private static NewsJsonArray arrays;
     private static MyAdvertisementJsonArray myAdvertisementArrays;
+    private static LikeNews likeNews;
 
     static {
         init();
@@ -37,7 +39,7 @@ public class Retrofit {
                 .setEndpoint(ENDPOINT)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-        postInterfaceRegistration =postAdapter.create(PostInterfaceRegistration.class);
+        postInterfaceRegistration = postAdapter.create(PostInterfaceRegistration.class);
         postInterfaceLogin = postAdapter.create(PostInterfaceLogin.class);
         postInterfaseAdvertisement = postAdapter.create(PostInterfaseAdvertisement.class);
         postInterfaceNextPostAdvertisementFragment = postAdapter.create(PostInterfaceNextPostAdvertisementFragment.class);
@@ -45,6 +47,7 @@ public class Retrofit {
         postInterfaceDescriptionProblem = postAdapter.create(PostInterfaceDescriptionProblem.class);
         arrays = postAdapter.create(NewsJsonArray.class);
         myAdvertisementArrays = postAdapter.create(MyAdvertisementJsonArray.class);
+        likeNews = postAdapter.create(LikeNews.class);
     }
 
     public static void sendSocialNetworks(Map<String, String> social, Callback<RegistrationResponseFromServer> callback) {
@@ -53,9 +56,9 @@ public class Retrofit {
 
     public static void sendRegistrationData(Map<String, String> datas, TypedFile file, Callback<RegistrationResponseFromServer> callback) {
         postInterfaceRegistration.sendRegistrationData(datas, file, callback);
-      }
+    }
 
-    public static void sendLoginData(Map<String, String> loginDatas, Callback<RegistrationResponseFromServer> callback){
+    public static void sendLoginData(Map<String, String> loginDatas, Callback<RegistrationResponseFromServer> callback) {
         postInterfaceLogin.sendLoginData(loginDatas, callback);
     }
 
@@ -66,20 +69,33 @@ public class Retrofit {
     public static void sendNextPostImage(Map<String, TypedFile> imageData, Callback<RegistrationResponseFromServer> callback) {
         postInterfaceNextPostAdvertisementFragment.sendNextPostImage(imageData, callback);
     }
-    public static void sendAdvertisement(Map<String, String> dataAdvertisement, TypedFile file, Callback<RegistrationResponseFromServer> callback){
+
+    public static void sendAdvertisement(Map<String, String> dataAdvertisement, TypedFile file, Callback<RegistrationResponseFromServer> callback) {
         postInterfaceDescriptionProblem.sendAdvertisement(dataAdvertisement, file, callback);
     }
-    public static void getArrays(Callback<RegistrationResponseFromServer> callback){
+
+    public static void getArrays(Callback<RegistrationResponseFromServer> callback) {
         arrays.getArrays(callback);
     }
-    public  static void getMyAdvertisementArrays(String userId, Callback<RegistrationResponseFromServer> callback){
-        myAdvertisementArrays.getMyAdvertisementArrays(userId,callback);
+
+    public static void getMyAdvertisementArrays(String userId, Callback<RegistrationResponseFromServer> callback) {
+        myAdvertisementArrays.getMyAdvertisementArrays(userId, callback);
     }
 
-    interface MyAdvertisementJsonArray{
+    public static void getLike(Integer userId, ArrayList<Integer> like, Callback<RegistrationResponseFromServer> callback) {
+        likeNews.getLike(userId, like, callback);
+    }
+
+    interface MyAdvertisementJsonArray {
         @Multipart
         @POST("/user_advers.php")
-        void getMyAdvertisementArrays(@Part("user_id") String userId,Callback<RegistrationResponseFromServer> callback);
+        void getMyAdvertisementArrays(@Part("user_id") String userId, Callback<RegistrationResponseFromServer> callback);
+    }
+
+    interface LikeNews {
+        @Multipart
+        @POST("/liked_advers.php")
+        void getLike(@Part("user_id") Integer userId, @Part("adver_id") ArrayList<Integer> like, Callback<RegistrationResponseFromServer> callback);
     }
 
     interface NewsJsonArray {
@@ -98,7 +114,7 @@ public class Retrofit {
         void sendSocialNetworks(@QueryMap Map<String, String> social, Callback<RegistrationResponseFromServer> callback);
     }
 
-    interface PostInterfaceDescriptionProblem{
+    interface PostInterfaceDescriptionProblem {
         @Multipart
         @POST("/add_adver.php")
         void sendAdvertisement(@QueryMap Map<String, String> dataAdvertisement, @Part("imageAdvertisement") TypedFile file, Callback<RegistrationResponseFromServer> callback);
@@ -112,7 +128,7 @@ public class Retrofit {
         void sendRegistrationData(@QueryMap Map<String, String> datas, @Part("imageFile") TypedFile file, Callback<RegistrationResponseFromServer> callback);
     }
 
-    interface PostInterfaceLogin{
+    interface PostInterfaceLogin {
 
         @POST("/login.php")
         void sendLoginData(@QueryMap Map<String, String> loginDatas, Callback<RegistrationResponseFromServer> callback);

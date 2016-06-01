@@ -19,7 +19,6 @@ public class ExitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.exit_fragment,container,false);
         android.os.Process.killProcess(android.os.Process.myPid());
-        System.exit(1);
         return root;
     }
 }

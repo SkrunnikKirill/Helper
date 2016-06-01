@@ -1,45 +1,39 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
-import com.google.android.gms.wallet.fragment.Dimension;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Dimensions;
 
 import java.util.ArrayList;
 
 public class CustomList extends ArrayAdapter<String> {
 
     private final Activity context;
-    private final   ArrayList<String> shortDescription;
-    private final  ArrayList<String> image;
-    private final  ArrayList<String> datePublication;
-    private final  ArrayList<String> expected_amount;
-    private final  ArrayList<String> finalDate;
+    private final ArrayList<String> shortDescription;
+    private final ArrayList<String> image;
+    private final ArrayList<String> datePublication;
+    private final ArrayList<String> expected_amount;
+    private final ArrayList<String> finalDate;
+    private ArrayList<Integer> likeNews;
+    private final ArrayList<Integer> idServerNews;
     private  ArrayList<Integer> idNews;
 
 
 
-
-
-
-
-
     public CustomList(Activity context,
-                       ArrayList<String> shortDescription,   ArrayList<String> image,  ArrayList<String> datePublication,
-                      ArrayList<String> expected_amount, ArrayList<String> finalDate) {
+                      ArrayList<String> shortDescription, ArrayList<String> image, ArrayList<String> datePublication,
+                      ArrayList<String> expected_amount, ArrayList<String> finalDate, ArrayList<Integer> likeNews, ArrayList<Integer> idServerNews, ArrayList<Integer> idNews) {
         super(context, R.layout.datail_news_item, shortDescription);
         this.context = context;
         this.shortDescription = shortDescription;
@@ -47,60 +41,64 @@ public class CustomList extends ArrayAdapter<String> {
         this.datePublication = datePublication;
         this.expected_amount = expected_amount;
         this.finalDate = finalDate;
-      //  this.idNews = idNews;
+        this.likeNews = likeNews;
+        this.idServerNews = idServerNews;
+        this.idNews = idNews;
 
     }
-
 
 
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView= inflater.inflate(R.layout.datail_news_item, parent, false);
-        final ToggleButton like  = (ToggleButton)rowView.findViewById(R.id.datail_news_like);
-        idNews = new ArrayList<Integer>();
-        //idNews.add(0,0);
+        View rowView = inflater.inflate(R.layout.datail_news_item, parent, false);
+        final ToggleButton like = (ToggleButton) rowView.findViewById(R.id.datail_news_like);
+        if (likeNews == null) {
+            likeNews = new ArrayList<Integer>();
+            idNews = new ArrayList<Integer>();
+        }
+
         TextView txtTitle = (TextView) rowView.findViewById(R.id.detail_news_theme);
-        TextView timeDate = (TextView)rowView.findViewById(R.id.date_text);
-        final TextView test = (TextView)rowView.findViewById(R.id.detail_news_persent);
-        final TextView date = (TextView)rowView.findViewById(R.id.detail_news_days_left);
-        TextView summa = (TextView)rowView.findViewById(R.id.detail_news_summa);
+        TextView timeDate = (TextView) rowView.findViewById(R.id.date_text);
+        final TextView test = (TextView) rowView.findViewById(R.id.detail_news_persent);
+        final TextView date = (TextView) rowView.findViewById(R.id.detail_news_days_left);
+        TextView summa = (TextView) rowView.findViewById(R.id.detail_news_summa);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.detail_news_image);
         timeDate.setText(datePublication.get(position));
         txtTitle.setText(shortDescription.get(position));
         summa.setText(expected_amount.get(position));
         date.setText(finalDate.get(position));
-        Glide.with(context).load(image.get(position)).override(756,400).centerCrop().into(imageView);
+        Dimensions dimensions = new Dimensions();
+        Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).override(dimensions.getWidth(getContext()), 400).centerCrop().into(imageView);
 
 
         like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
                 if (isChecked) {
-                    like.setTag(idNews);
                     like.setBackgroundResource(R.drawable.like);
-                    idNews.add(position);
-                   // test.setText(idNews.size());
+                    likeNews.add(position);
+                    idNews.add(idServerNews.get(position));
 
                 } else {
                     like.setBackgroundResource(R.drawable.nolike);
-                    idNews.size();
-                    for (int i = 0; i < idNews.size(); i++) {
-                        if (idNews.get(i) == position) {
-                            idNews.remove(i);
-                            //test.setText(idNews.size());
+                    likeNews.size();
+                    for (int i = 0; i < likeNews.size(); i++) {
+                        if (likeNews.get(i) == position) {
+                            likeNews.remove(i);
+                             idNews.remove(idServerNews.get(position));
                         }
                     }
-                    //  idNews.remove(idNews.indexOf(position));
+
+
                 }
             }
 
 
         });
 
-        for (int i = 0; i < idNews.size(); i++) {
-            if (idNews.get(i) == position){
+        for (int i = 0; i < likeNews.size(); i++) {
+            if (likeNews.get(i) == position) {
                 like.getText();
                 like.setBackgroundResource(R.drawable.like);
             }
@@ -108,6 +106,11 @@ public class CustomList extends ArrayAdapter<String> {
 
 
         return rowView;
+    }
+
+    public ArrayList<Integer> getIdNews() {
+
+        return idNews;
     }
 
 

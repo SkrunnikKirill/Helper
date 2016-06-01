@@ -2,54 +2,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
-    >
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="vertical">
-    <!--<EditText-->
-        <!--android:id="@+id/post_advertisement_second_name"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="Фамилия"-->
-        <!--android:singleLine="true" />-->
 
-    <!--<EditText-->
-        <!--android:id="@+id/post_advertisement_name"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/post_advertisement_second_name"-->
-        <!--android:hint="Имя"-->
-        <!--android:singleLine="true" />-->
-
-
-            <!--<EditText-->
-            <!--android:id="@+id/post_advertisement_therd_name"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-                <!--android:layout_below="@+id/post_advertisement_name"-->
-                <!--android:hint="Очество"-->
-                <!--android:singleLine="true" />-->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:orientation="vertical">
 
             <TextView
-            android:id="@+id/post_advertisement_date_of_birth"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/post_advertisement_therd_name"
+                android:id="@+id/post_advertisement_date_of_birth"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/post_advertisement_therd_name"
                 android:clickable="true"
-            android:hint="Дата рождения"
+                android:hint="Дата рождения"
                 android:padding="7dp"
-                android:textSize="20dp"
-            />
+                android:textSize="20dp" />
 
             <LinearLayout
                 android:id="@+id/post_advertisement_linear_layout"
@@ -59,7 +36,7 @@
 
                 <DatePicker
                     android:id="@+id/post_advertisement_date_picker"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:calendarViewShown="false"
                     android:spinnersShown="true"></DatePicker>
@@ -73,40 +50,42 @@
             </LinearLayout>
 
             <AutoCompleteTextView
-            android:id="@+id/post_advertisement_region"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:id="@+id/post_advertisement_region"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/post_advertisement_date_of_birth"
-            android:completionThreshold="2"
+                android:completionThreshold="2"
                 android:hint="Область"
-            android:imeOptions="actionGo"
+                android:imeOptions="actionGo"
                 android:singleLine="true" />
-        <AutoCompleteTextView
-            android:id="@+id/post_advertisement_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/post_advertisement_region"
-            android:completionThreshold="2"
-            android:hint="Город"
-            android:singleLine="true" />
-        <EditText
-            android:id="@+id/post_advertisement_phone_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/post_advertisement_city"
-            android:hint="Телефон"
-            android:inputType="phone"
-            android:singleLine="true" />
+
+            <AutoCompleteTextView
+                android:id="@+id/post_advertisement_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/post_advertisement_region"
+                android:completionThreshold="2"
+                android:hint="Город"
+                android:singleLine="true" />
+
+            <EditText
+                android:id="@+id/post_advertisement_phone_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/post_advertisement_city"
+                android:hint="Телефон"
+                android:inputType="phone"
+                android:singleLine="true" />
 
             <Button
                 android:id="@+id/post_advertisement_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/post_advertisement_phone_number"
-            android:layout_centerHorizontal="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/post_advertisement_phone_number"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-            android:text="Далее"/>
+                android:text="Далее" />
 
         </LinearLayout>
     </ScrollView>

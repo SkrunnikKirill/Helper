@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter.AdvertisementAdapter;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter.CustomList;
 import com.example.alex.helppeopletogether.registration.Login;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
@@ -38,11 +40,12 @@ public class Advertisement extends Fragment {
     public ArrayList<Integer> idNews;
     ListView list;
     private TextView advertisementText;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.advertisement, container, false);
-       // idNews = new ArrayList<>();
+        // idNews = new ArrayList<>();
         Login login = new Login();
         String idUser = String.valueOf(login.userId);
         list = (ListView) root.findViewById(R.id.my_advertisement_list);
@@ -66,10 +69,11 @@ public class Advertisement extends Fragment {
 
         return root;
     }
+
     private void adapter() {
-        CustomList adapter = new
-                CustomList(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate);
-        list.setAdapter(adapter);
+        AdvertisementAdapter adapter = new
+                AdvertisementAdapter(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate);
+        list.setAdapter((ListAdapter) adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -85,7 +89,7 @@ public class Advertisement extends Fragment {
                 news.putExtra("shortDescription", detailNewsShortDescription);
                 news.putExtra("expectedAmount", detailNewsExpectedAmount);
                 news.putExtra("finalDate", detailNewsFinalDate);
-                news.putExtra("description",detailNewsDescription);
+                news.putExtra("description", detailNewsDescription);
                 startActivity(news);
 
             }

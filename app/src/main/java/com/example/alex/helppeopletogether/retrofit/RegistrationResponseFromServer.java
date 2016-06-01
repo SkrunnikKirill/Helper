@@ -14,7 +14,7 @@ public class RegistrationResponseFromServer {
     //public String login;
    public Integer response_login;
     public Integer response_add_user_information;
-    public ArrayList<String> id;
+    public ArrayList<Integer> id;
     public ArrayList<String> created_at;
     public ArrayList<String> title;
     public ArrayList<String> short_description;

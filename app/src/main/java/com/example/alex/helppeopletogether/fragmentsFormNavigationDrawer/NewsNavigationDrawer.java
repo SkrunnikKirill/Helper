@@ -11,8 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
 
 
@@ -24,16 +26,18 @@ public class NewsNavigationDrawer extends AppCompatActivity
     PostAdvertisementFragment postAdvertisement;
     ExitFragment exit;
     TextView fullName;
+    ImageView userImage;
     android.support.v4.app.FragmentTransaction ft;
     android.support.v4.app.FragmentManager fragmentManager;
-    String name;
+    String name, foto;
+    Toolbar toolbar;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_navigation_drawer);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         advertisement = new Advertisement();
         message = new MyAdvertisement();
         news = new NewsFragment();
@@ -41,13 +45,12 @@ public class NewsNavigationDrawer extends AppCompatActivity
         exit = new ExitFragment();
         Intent intentFullName = getIntent();
         name = intentFullName.getStringExtra("fullName");
-        fullName = (TextView)findViewById(R.id.navigation_drawer_full_name);
+        foto = intentFullName.getStringExtra("foto");
+
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.container, news).commit();
         //savedInstanceState= intent5.getStringExtra();
         setSupportActionBar(toolbar);
-
-
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -57,9 +60,12 @@ public class NewsNavigationDrawer extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        fullName = (TextView) header.findViewById(R.id.navigation_drawer_full_name);
+        userImage = (ImageView)header.findViewById(R.id.navigation_drawer_user_foto);
+        Glide.with(getApplicationContext()).load(foto).override(60, 60).into(userImage);
+        fullName.setText(name);
         navigationView.setNavigationItemSelectedListener(this);
-
-
 
 
     }
@@ -106,16 +112,21 @@ public class NewsNavigationDrawer extends AppCompatActivity
         android.support.v4.app.FragmentTransaction ftrans = getSupportFragmentManager().beginTransaction();
 
         if (id == R.id.nav_my_advertisement) {
+            toolbar.setTitle("Мои Объявления");
             ftrans.replace(R.id.container, advertisement);
         } else if (id == R.id.nav_my_message) {
+            toolbar.setTitle("Избранные");
             ftrans.replace(R.id.container, message);
         } else if (id == R.id.nav_news) {
-            ftrans.replace(R.id.container,news);
+            toolbar.setTitle("Новости");
+            ftrans.replace(R.id.container, news);
         } else if (id == R.id.nav_post_advertisement) {
-            ftrans.replace(R.id.container,postAdvertisement);
+            toolbar.setTitle("Разместить объявление");
+            ftrans.replace(R.id.container, postAdvertisement);
         } else if (id == R.id.nav_exit) {
             ftrans.replace(R.id.container, exit);
-        }ftrans.commit();
+        }
+        ftrans.commit();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -126,7 +137,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.imageView:
+            case R.id.navigation_drawer_user_foto:
                 Intent intent = new Intent(NewsNavigationDrawer.this, DescriptionProblem.class);
                 startActivity(intent);
                 break;

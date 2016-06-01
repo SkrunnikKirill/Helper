@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -53,8 +54,11 @@ import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
+import com.vk.sdk.api.model.VKApiUserFull;
+import com.vk.sdk.api.model.VKList;
 import com.vk.sdk.util.VKUtil;
 
+import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -88,10 +92,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private ConnectionResult mConnectionResult;
     private SignInButton btnSignIn;
     private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId;
+    private static final String Tag = "TAG";
+    String UserPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(Tag, "onCreate");
         // FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.login);
         email = (EditText) findViewById(R.id.login_email);
@@ -116,6 +123,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(Tag, "onSaveInstanceState");
+        outState.putString("email",email.getText().toString());
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        Log.d(Tag, "onRestoreInstanceState");
+        email.setText(savedInstanceState.getString("email"));
+    }
+
     private void loginGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -131,6 +152,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d(Tag, "onStart");
         if (mGoogleApiClient != null)
             mGoogleApiClient.connect();
     }
@@ -139,12 +161,25 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     @Override
     protected void onStop() {
         super.onStop();
-
+        Log.d(Tag, "onStop");
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+        email.setText("");
+        password.setText("");
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(Tag, "onPause");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(Tag, "onDestroy");
+    }
 
     @Override
     public void onClick(View v) {
@@ -242,13 +277,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private void newsFragment() {
         Intent intent = new Intent(Login.this, NewsNavigationDrawer.class);
         intent.putExtra("fullName", fullName);
+        intent.putExtra("foto", UserPhoto);
         startActivity(intent);
     }
 
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
@@ -258,7 +294,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             public void onResult(VKAccessToken res) {
                 vkEmail = res.email;
                 vkId = res.userId;
-
 
                 VKRequest request = VKApi.users().get(VKParameters.from(VKApiConst.FIELDS, "first_name,last_name", "photo_id"));
                 request.executeSyncWithListener(new VKRequest.VKRequestListener() {
@@ -271,8 +306,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     @Override
                     public void onComplete(VKResponse response) {
                         super.onComplete(response);
+                        VKList<VKApiUserFull> list = (VKList<VKApiUserFull>) response.parsedModel;
+                        VKApiUserFull user = list.get(0);
                         String json = response.responseString;
                         vkjson(json);
+                        UserPhoto = user.home_phone;
                         vkSocialName = "Vk";
                         socialNetworksRegistration(vkFirstName, vkSecondName, vkSocialName, vkId);
                     }
@@ -282,12 +320,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
             @Override
             public void onError(VKError error) {
+
                 Toast.makeText(getApplicationContext(), "у вас, не получилось авторизироваться через VK, попробуйте еще раз", Toast.LENGTH_LONG).show();
             }
         }))
 
         {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
             super.onActivityResult(requestCode, resultCode, data);
+
         }
 
 
@@ -328,6 +369,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
                 @Override
                 public void failure(RetrofitError error) {
+                    System.out.println(error.getMessage());
                     Toast.makeText(getApplication(), "Data don't sent. Check internet connection", Toast.LENGTH_LONG).show();
                 }
             });
