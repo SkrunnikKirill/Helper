@@ -1,10 +1,12 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,11 +16,14 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Dimensions;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.SelectedNews;
+import com.example.alex.helppeopletogether.registration.Login;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.util.ArrayList;
 
 public class CustomList extends ArrayAdapter<String> {
-
     private final Activity context;
     private final ArrayList<String> shortDescription;
     private final ArrayList<String> image;
@@ -46,6 +51,7 @@ public class CustomList extends ArrayAdapter<String> {
         this.idNews = idNews;
 
     }
+
 
 
     @Override
@@ -108,10 +114,18 @@ public class CustomList extends ArrayAdapter<String> {
         return rowView;
     }
 
-    public ArrayList<Integer> getIdNews() {
 
-        return idNews;
+    public String getIdNewsJson() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        String gsonIdNews = gson.toJson(idNews);
+        return gsonIdNews;
+
     }
+    public ArrayList<Integer> getNews(){
+        return  idNews;
+    }
+
 
 
 }

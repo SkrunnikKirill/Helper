@@ -1,8 +1,10 @@
 package com.example.alex.helppeopletogether.retrofit;
 
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.MyAdvertisement;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.SelectedNews;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import retrofit.Callback;
@@ -29,6 +31,7 @@ public class Retrofit {
     private static NewsJsonArray arrays;
     private static MyAdvertisementJsonArray myAdvertisementArrays;
     private static LikeNews likeNews;
+    private static SelectedNews selectedNews;
 
     static {
         init();
@@ -48,6 +51,7 @@ public class Retrofit {
         arrays = postAdapter.create(NewsJsonArray.class);
         myAdvertisementArrays = postAdapter.create(MyAdvertisementJsonArray.class);
         likeNews = postAdapter.create(LikeNews.class);
+        selectedNews = postAdapter.create(SelectedNews.class);
     }
 
     public static void sendSocialNetworks(Map<String, String> social, Callback<RegistrationResponseFromServer> callback) {
@@ -74,7 +78,7 @@ public class Retrofit {
         postInterfaceDescriptionProblem.sendAdvertisement(dataAdvertisement, file, callback);
     }
 
-    public static void getArrays(Callback<RegistrationResponseFromServer> callback) {
+    public static void getArrays(Callback<RegistrationResponseFromServer>callback) {
         arrays.getArrays(callback);
     }
 
@@ -82,8 +86,12 @@ public class Retrofit {
         myAdvertisementArrays.getMyAdvertisementArrays(userId, callback);
     }
 
-    public static void getLike(Integer userId, ArrayList<Integer> like, Callback<RegistrationResponseFromServer> callback) {
+    public static void getLike(String userId, String like, Callback<RegistrationResponseFromServer> callback) {
         likeNews.getLike(userId, like, callback);
+    }
+
+    public static void getSelectedNews(String userId, Callback<List<com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.SelectedNews>> callback) {
+        selectedNews.getSelectedNews(userId, callback);
     }
 
     interface MyAdvertisementJsonArray {
@@ -95,12 +103,18 @@ public class Retrofit {
     interface LikeNews {
         @Multipart
         @POST("/liked_advers.php")
-        void getLike(@Part("user_id") Integer userId, @Part("adver_id") ArrayList<Integer> like, Callback<RegistrationResponseFromServer> callback);
+        void getLike(@Part("user_id") String userId, @Part("adver_id") String like, Callback<RegistrationResponseFromServer> callback);
+    }
+
+    interface SelectedNews {
+        @Multipart
+        @POST("/user_liked_advers.php")
+        void getSelectedNews(@Part("user_id") String userId, Callback<List<com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.SelectedNews>> callback);
     }
 
     interface NewsJsonArray {
         @GET("/create_json.php")
-        void getArrays(Callback<RegistrationResponseFromServer> callback);
+        void getArrays( Callback<RegistrationResponseFromServer> callback);
     }
 
     interface PostInterfaceNextPostAdvertisementFragment {
@@ -122,7 +136,6 @@ public class Retrofit {
     }
 
     interface PostInterfaceRegistration {
-        // @FormUrlEncoded
         @Multipart
         @POST("/registration.php")
         void sendRegistrationData(@QueryMap Map<String, String> datas, @Part("imageFile") TypedFile file, Callback<RegistrationResponseFromServer> callback);

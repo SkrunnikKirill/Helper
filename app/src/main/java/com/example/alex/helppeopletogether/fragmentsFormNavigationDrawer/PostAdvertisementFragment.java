@@ -3,6 +3,7 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 
 
@@ -28,6 +29,7 @@ import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServ
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 import retrofit.Callback;
@@ -98,6 +100,8 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         dayOfBirthday.setVisibility(View.GONE);
         next.setOnClickListener(this);
         dataPicker();
+        Date date = new Date();
+        //datePicker.setMaxDate(date.getYear());
 
 
         adapter = new ArrayAdapter(getActivity(), android.R.layout.simple_dropdown_item_1line, arrayRegion);

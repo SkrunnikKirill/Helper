@@ -1,6 +1,7 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -18,6 +19,7 @@ import android.widget.ListView;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter.CustomList;
 import com.example.alex.helppeopletogether.registration.Login;
+import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
@@ -40,7 +42,7 @@ public class NewsFragment extends Fragment {
     ArrayList<Integer> likeNews;
     public ArrayList<Integer> idNews;
     ListView list;
-    private Integer userId;
+    private String userId;
     CustomList adapter;
 
 
@@ -51,32 +53,39 @@ public class NewsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
         list = (ListView) view.findViewById(R.id.list);
         Login login = new Login();
-        userId = login.userId;
-        // idNews = new ArrayList<>();
-        Retrofit.getArrays(new Callback<RegistrationResponseFromServer>() {
-            @Override
-            public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-                idServerNews = registrationResponseFromServer.id;
-                shortDescription = registrationResponseFromServer.short_description;
-                description = registrationResponseFromServer.description;
-                datePublication = registrationResponseFromServer.created_at;
-                image = registrationResponseFromServer.image;
-                expectedAmount = registrationResponseFromServer.expected_amount;
-                finalDate = registrationResponseFromServer.final_date;
-                adapter();
-            }
+        Registration registration = new Registration();
 
-            @Override
-            public void failure(RetrofitError error) {
 
-            }
-        });
+
+        if (login.userId!=null) {
+            userId = String.valueOf(login.userId);
+        }else if (registration.responseFromServiseRegistrationId!=null){
+            userId = String.valueOf(registration.responseFromServiseRegistrationId);
+        }
+        idNews = new ArrayList<>();
+            Retrofit.getArrays(new Callback<RegistrationResponseFromServer>() {
+                @Override
+                public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
+                    idServerNews = registrationResponseFromServer.id;
+                    shortDescription = registrationResponseFromServer.short_description;
+                    description = registrationResponseFromServer.description;
+                    datePublication = registrationResponseFromServer.created_at;
+                    image = registrationResponseFromServer.image;
+                    expectedAmount = registrationResponseFromServer.expected_amount;
+                    finalDate = registrationResponseFromServer.final_date;
+                    adapter();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+
+                }
+            });
         return view;
     }
 
 
     public void adapter() {
-
         adapter = new
                 CustomList(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate, likeNews,idServerNews, idNews);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -105,7 +114,7 @@ public class NewsFragment extends Fragment {
     }
 
     private void sendServer() {
-        Retrofit.getLike(userId, adapter.getIdNews(), new Callback<RegistrationResponseFromServer>() {
+        Retrofit.getLike(userId, adapter.getIdNewsJson(), new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
 
@@ -119,9 +128,14 @@ public class NewsFragment extends Fragment {
     }
 
 
+
+
     @Override
     public void onPause() {
         super.onPause();
         sendServer();
+
     }
+
+
 }

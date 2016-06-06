@@ -23,6 +23,7 @@ import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.ExitFra
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsFragment;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsItem;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsNavigationDrawer;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.SaveDataFromAccount;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 import com.facebook.AccessToken;
@@ -32,6 +33,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
@@ -74,6 +76,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private static final int PROFILE_PIC_SIZE = 400;
     LoginManager loginManager;
     Context context;
+    SaveDataFromAccount saveDataFromAccount;
     private EditText email;
     private EditText password;
     private Button buttonNext, facebook, vk, googlePlus;
@@ -92,15 +95,15 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private ConnectionResult mConnectionResult;
     private SignInButton btnSignIn;
     private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId;
-    private static final String Tag = "TAG";
+    private ProfileTracker profileTracker;
     String UserPhoto;
+    Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(Tag, "onCreate");
-        // FacebookSdk.sdkInitialize(this.getApplicationContext());
         setContentView(R.layout.login);
+        saveDataFromAccount = new SaveDataFromAccount();
         email = (EditText) findViewById(R.id.login_email);
         facebook = (Button) findViewById(R.id.login_button_facebook);
         vk = (Button) findViewById(R.id.login_button_vk);
@@ -123,19 +126,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        Log.d(Tag, "onSaveInstanceState");
-        outState.putString("email",email.getText().toString());
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        Log.d(Tag, "onRestoreInstanceState");
-        email.setText(savedInstanceState.getString("email"));
-    }
 
     private void loginGoogle() {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -152,7 +142,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d(Tag, "onStart");
         if (mGoogleApiClient != null)
             mGoogleApiClient.connect();
     }
@@ -161,7 +150,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d(Tag, "onStop");
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
@@ -169,17 +157,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         password.setText("");
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d(Tag, "onPause");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d(Tag, "onDestroy");
-    }
 
     @Override
     public void onClick(View v) {
@@ -202,7 +179,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             case R.id.login_button_google_plus:
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
-
                 break;
 
         }
@@ -210,20 +186,33 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
     private void loginFacebook() {
         loginManager.logInWithReadPermissions(this, Arrays.asList(new String[]{"public_profile", "user_friends"}));
+
         loginManager.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
 
                     public void onSuccess(LoginResult loginResult) {
-                        //  String ddddd = loginResult.getAccessToken().getUserId();
-                        Profile profile = Profile.getCurrentProfile();
-                        facebookFirstName = profile.getFirstName();
-                        facebookSecondName = profile.getLastName();
-                        facebookId = profile.getId();
+                        if (Profile.getCurrentProfile() == null) {
+                            profileTracker = new ProfileTracker() {
+                                @Override
+                                protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                                    facebookFirstName = currentProfile.getFirstName();
+                                    facebookSecondName = currentProfile.getLastName();
+                                    facebookId = currentProfile.getId();
+                                    profileTracker.stopTracking();
+                                    facebookSocialName = "Facebook";
+                                    socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId);
+                                }
+                            };
+                        } else {
+                            profile = Profile.getCurrentProfile();
+                            facebookFirstName = profile.getFirstName();
+                            facebookSecondName = profile.getLastName();
+                            facebookId = profile.getId();
+                            facebookSocialName = "Facebook";
+                            socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId);
+                        }
 
-
-                        facebookSocialName = "Facebook";
-                        socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId);
 
                     }
 
@@ -254,6 +243,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         Retrofit.sendSocialNetworks(socialUserData, new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
+                if (registrationResponseFromServer == null){
+
+                }
                 responseFromServiseSocialNetwork = registrationResponseFromServer.response;
                 userId = registrationResponseFromServer.user_id;
                 fullName = registrationResponseFromServer.full_name;
@@ -278,6 +270,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         Intent intent = new Intent(Login.this, NewsNavigationDrawer.class);
         intent.putExtra("fullName", fullName);
         intent.putExtra("foto", UserPhoto);
+        //intent.putExtra("userId",userId);
         startActivity(intent);
     }
 
@@ -310,7 +303,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                         VKApiUserFull user = list.get(0);
                         String json = response.responseString;
                         vkjson(json);
-                        UserPhoto = user.home_phone;
+                        UserPhoto = user.photo_200;
                         vkSocialName = "Vk";
                         socialNetworksRegistration(vkFirstName, vkSecondName, vkSocialName, vkId);
                     }
@@ -348,33 +341,37 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         Registration loginEmail = new Registration();
         if (loginEmail.resultRegularExprensionsEmail(email) == false || password.getText().length() < 6) {
             Toast.makeText(Login.this, "Не правильно введен логин или пароль", Toast.LENGTH_LONG).show();
-        } else {
-            loginData = new LinkedHashMap<>();
-            loginData.put("email", String.valueOf(email.getText()));
-            loginData.put("password", String.valueOf(password.getText()));
-            Retrofit.sendLoginData(loginData, new Callback<RegistrationResponseFromServer>() {
-                @Override
-                public void success(RegistrationResponseFromServer responseLogin, Response response) {
-                    Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
-                    responseFromServiseLogin = responseLogin.response_login;
-                    userId = responseLogin.user_id;
-                    fullName = responseLogin.full_name;
-                    if (responseFromServiseLogin == 1) {
-                        Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
-                    } else if (responseFromServiseLogin == 2) {
-                        newsFragment();
-                        //Toast.makeText(Login.this,"Это успех!!!",Toast.LENGTH_LONG).show();
-                    }
-                }
+        } else if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
+            Toast.makeText(Login.this, "Enter value in all field", Toast.LENGTH_SHORT).show();
+        } else
+            saveDataFromAccount.setPreferences(Login.this, "status", "1");
+        String status = saveDataFromAccount.getPreferences(Login.this, "status");
+        loginData = new LinkedHashMap<>();
+        loginData.put("email", String.valueOf(email.getText()));
+        loginData.put("password", String.valueOf(password.getText()));
+        Retrofit.sendLoginData(loginData, new Callback<RegistrationResponseFromServer>() {
+            @Override
+            public void success(RegistrationResponseFromServer responseLogin, Response response) {
+                Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
+                responseFromServiseLogin = responseLogin.response_login;
+                userId = responseLogin.user_id;
+                fullName = responseLogin.full_name;
+                if (responseFromServiseLogin == 1) {
+                    Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
+                } else if (responseFromServiseLogin == 2) {
 
-                @Override
-                public void failure(RetrofitError error) {
-                    System.out.println(error.getMessage());
-                    Toast.makeText(getApplication(), "Data don't sent. Check internet connection", Toast.LENGTH_LONG).show();
+                    newsFragment();
+                    //Toast.makeText(Login.this,"Это успех!!!",Toast.LENGTH_LONG).show();
                 }
-            });
+            }
 
-        }
+            @Override
+            public void failure(RetrofitError error) {
+                System.out.println(error.getMessage());
+                Toast.makeText(getApplication(), "Data don't sent. Check internet connection", Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 
 
@@ -412,6 +409,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
         mConnectionResult = connectionResult;
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
+        startActivity(intent);
+        finish();
+        System.exit(0);
     }
 
 }

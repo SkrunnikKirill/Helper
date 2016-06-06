@@ -29,7 +29,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
     ImageView userImage;
     android.support.v4.app.FragmentTransaction ft;
     android.support.v4.app.FragmentManager fragmentManager;
-    String name, foto;
+    String name, foto, userId;
     Toolbar toolbar;
 
 
@@ -46,6 +46,11 @@ public class NewsNavigationDrawer extends AppCompatActivity
         Intent intentFullName = getIntent();
         name = intentFullName.getStringExtra("fullName");
         foto = intentFullName.getStringExtra("foto");
+//        if(intentFullName.getStringExtra("userId")==null){
+//           userId = intentFullName.getStringExtra("idUser");
+//        }else if (intentFullName.getStringExtra("idUser")==null){
+//            userId = intentFullName.getStringExtra("userId");
+//        }
 
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.container, news).commit();
@@ -79,6 +84,12 @@ public class NewsNavigationDrawer extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
+        startActivity(intent);
+        finish();
+        System.exit(0);
     }
 
 
@@ -143,4 +154,5 @@ public class NewsNavigationDrawer extends AppCompatActivity
                 break;
         }
     }
+
 }
