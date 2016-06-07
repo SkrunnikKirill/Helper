@@ -74,9 +74,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private static final int RC_SIGN_IN = 0;
     private static final String TAG = "Login";
     private static final int PROFILE_PIC_SIZE = 400;
+    public static Integer userId;
     LoginManager loginManager;
     Context context;
     SaveDataFromAccount saveDataFromAccount;
+    String UserPhoto;
+    Profile profile;
     private EditText email;
     private EditText password;
     private Button buttonNext, facebook, vk, googlePlus;
@@ -88,7 +91,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private FacebookCallback<LoginResult> mCallback;
     private String[] scope = new String[]{VKScope.EMAIL, VKScope.PHOTOS, VKScope.MESSAGES, VKScope.FRIENDS};
     private String vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId, token, fullName;
-    public static Integer userId;
     private GoogleApiClient mGoogleApiClient;
     private boolean mIntentInProgress;
     private boolean mSignInClicked;
@@ -96,8 +98,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private SignInButton btnSignIn;
     private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId;
     private ProfileTracker profileTracker;
-    String UserPhoto;
-    Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +146,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             mGoogleApiClient.connect();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        email.setText("");
+        password.setText("");
+    }
 
     @Override
     protected void onStop() {
@@ -243,19 +249,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         Retrofit.sendSocialNetworks(socialUserData, new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-                if (registrationResponseFromServer == null){
+                if (registrationResponseFromServer == null) {
+                    Toast.makeText(Login.this, R.string.error_data_from_server, Toast.LENGTH_LONG).show();
+                } else {
+                    responseFromServiseSocialNetwork = registrationResponseFromServer.response;
+                    userId = registrationResponseFromServer.user_id;
+                    fullName = registrationResponseFromServer.full_name;
 
-                }
-                responseFromServiseSocialNetwork = registrationResponseFromServer.response;
-                userId = registrationResponseFromServer.user_id;
-                fullName = registrationResponseFromServer.full_name;
+                    if (responseFromServiseSocialNetwork == 1) {
+                        newsFragment();
 
-                if (responseFromServiseSocialNetwork == 1) {
-                    newsFragment();
-
-                } else if (responseFromServiseSocialNetwork == 2) {
-                    intentNextStep = new Intent(Login.this, Agreement.class);
-                    startActivity(intentNextStep);
+                    } else if (responseFromServiseSocialNetwork == 2) {
+                        intentNextStep = new Intent(Login.this, Agreement.class);
+                        startActivity(intentNextStep);
+                    }
                 }
             }
 
@@ -352,16 +359,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         Retrofit.sendLoginData(loginData, new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer responseLogin, Response response) {
-                Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
-                responseFromServiseLogin = responseLogin.response_login;
-                userId = responseLogin.user_id;
-                fullName = responseLogin.full_name;
-                if (responseFromServiseLogin == 1) {
-                    Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
-                } else if (responseFromServiseLogin == 2) {
+                if (responseLogin == null) {
+                    Toast.makeText(Login.this, R.string.error_data_from_server, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
+                    responseFromServiseLogin = responseLogin.response_login;
+                    userId = responseLogin.user_id;
+                    fullName = responseLogin.full_name;
+                    if (responseFromServiseLogin == 1) {
+                        Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
+                    } else if (responseFromServiseLogin == 2) {
 
-                    newsFragment();
-                    //Toast.makeText(Login.this,"Это успех!!!",Toast.LENGTH_LONG).show();
+                        newsFragment();
+                        //Toast.makeText(Login.this,"Это успех!!!",Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 

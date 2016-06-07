@@ -79,8 +79,8 @@ public class Registration extends Activity implements View.OnClickListener {
         super.onSaveInstanceState(outState);
         outState.putString("firstName", firstName.getText().toString());
         outState.putString("secondName", secondName.getText().toString());
-        outState.putString("email",email.getText().toString());
-        outState.putString("password",password.getText().toString());
+        outState.putString("email", email.getText().toString());
+        outState.putString("password", password.getText().toString());
 
 
     }
@@ -92,6 +92,16 @@ public class Registration extends Activity implements View.OnClickListener {
         secondName.setText(savedInstanceState.getString("secondName"));
         email.setText(savedInstanceState.getString("email"));
         password.setText(savedInstanceState.getString("password"));
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        firstName.setText("");
+        secondName.setText("");
+        email.setText("");
+        password.setText("");
+        face.setImageResource(R.drawable.photoicon);
     }
 
     @Override
@@ -231,51 +241,35 @@ public class Registration extends Activity implements View.OnClickListener {
             Retrofit.sendRegistrationData(data, imageFace, new Callback<RegistrationResponseFromServer>() {
                 @Override
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-                    Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
-                    responseFromServiseRegistration = registrationResponseFromServer.response;
-                    responseFromServiseRegistrationId = registrationResponseFromServer.user_id;
-                    responseFromServiseFullName = registrationResponseFromServer.full_name;
-                    responseFromServiseImage = registrationResponseFromServer.avatar;
-                    if (responseFromServiseRegistration == 3){
-                        Toast.makeText(Registration.this,"Логин занят",Toast.LENGTH_LONG).show();
-                    }else if (responseFromServiseRegistration ==1){
-                        Toast.makeText(Registration.this,"Email занят", Toast.LENGTH_LONG).show();
-                    }else if (responseFromServiseRegistration ==2){
-                        intent = new Intent(Registration.this, Agreement.class);
-                          startActivity(intent);
-                        //Toast.makeText(Registration.this,"ВСЕ ОК!!!!", Toast.LENGTH_LONG).show();
+                    if (registrationResponseFromServer == null) {
+                        Toast.makeText(Registration.this, R.string.error_data_from_server, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
+                        responseFromServiseRegistration = registrationResponseFromServer.response;
+                        responseFromServiseRegistrationId = registrationResponseFromServer.user_id;
+                        responseFromServiseFullName = registrationResponseFromServer.full_name;
+                        responseFromServiseImage = registrationResponseFromServer.avatar;
+                        if (responseFromServiseRegistration == 4) {
+                            Toast.makeText(Registration.this, R.string.image_is_not_sent_to_server, Toast.LENGTH_LONG).show();
+                        } else if (responseFromServiseRegistration == 3) {
+                            Toast.makeText(Registration.this, "Логин занят", Toast.LENGTH_LONG).show();
+                        } else if (responseFromServiseRegistration == 1) {
+                            Toast.makeText(Registration.this, "Email занят", Toast.LENGTH_LONG).show();
+                        } else if (responseFromServiseRegistration == 2) {
+                            intent = new Intent(Registration.this, Agreement.class);
+                            // intent.putExtra("id",responseFromServiseRegistrationId);
+                            startActivity(intent);
+                            //Toast.makeText(Registration.this,"ВСЕ ОК!!!!", Toast.LENGTH_LONG).show();
+                        }
                     }
 
                 }
 
                 @Override
                 public void failure(RetrofitError error) {
-                    System.out.println(error.toString());
                     Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_LONG).show();
                 }
             });
-
-//            Retrofit.sendRegistrationData(data, new Callback<RegistrationResponseFromServer>() {
-//                @Override
-//                public void success(RegistrationResponseFromServer responseRegistration, Response response)  {
-//                    Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
-//                    responseFromServiseRegistration = responseRegistration.response;
-//
-//                    if (responseFromServiseRegistration == 3){
-//                        Toast.makeText(Registration.this,"Логин занят",Toast.LENGTH_LONG).show();
-//                    }else if (responseFromServiseRegistration ==1){
-//                        Toast.makeText(Registration.this,"Email занят", Toast.LENGTH_LONG).show();
-//                    }else if (responseFromServiseRegistration ==2){
-//                        Toast.makeText(Registration.this,"ВСЕ ОК!!!!", Toast.LENGTH_LONG).show();
-//                    }
-//
-//                }
-//
-//                @Override
-//                public void failure(RetrofitError error) {
-//                    Toast.makeText(getApplication(), "Data don't sent. Check internet connection", Toast.LENGTH_LONG).show();
-//                }
-//            });
 
 
         }

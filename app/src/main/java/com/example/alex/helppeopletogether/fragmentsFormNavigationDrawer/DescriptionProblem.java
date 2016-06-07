@@ -64,16 +64,25 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     Integer userid;
     String[] nameCurrency = {"USD", "EUR", "UAH"};
     String currency;
-    private Toolbar toolbar;
-    private TextView day, nameToolbar;
-
-    private EditText theme, shortDescription, fullDescription, money, account;
-    private Button locate, down;
-    private LinkedHashMap<String, String> dataAdvertisement;
     android.support.v4.app.FragmentTransaction ft;
     android.support.v4.app.FragmentManager fragmentManager;
     Calendar dateAndTime = Calendar.getInstance();
+    private Toolbar toolbar;
+    private TextView day, nameToolbar;
+    DatePickerDialog.OnDateSetListener myCallBack = new DatePickerDialog.OnDateSetListener() {
 
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+            myYear = year;
+            myMonth = monthOfYear + 1;
+            myDay = dayOfMonth;
+            day.setText(myDay + "/" + myMonth + "/" + myYear);
+        }
+    };
+    private EditText theme, shortDescription, fullDescription, money, account;
+    private Button locate;
+    private ImageView down;
+    private LinkedHashMap<String, String> dataAdvertisement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +91,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         imageAdvertisement = (ImageView) findViewById(R.id.description_problem_image);
         nameToolbar = (TextView)findViewById(R.id.toolbar_description_tit);
         theme = (EditText) findViewById(R.id.description_problem_theme);
-        down = (Button)findViewById(R.id.toolbar_description_button_down);
+        down = (ImageView) findViewById(R.id.toolbar_description_button_down);
         shortDescription = (EditText) findViewById(R.id.description_problem_short_description);
         fullDescription = (EditText) findViewById(R.id.description_problem_full_description);
         money = (EditText) findViewById(R.id.description_problem_money);
@@ -169,7 +178,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         });
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -220,7 +228,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
                 onCaptureImageResult(data, imageAdvertisement);
         }
     }
-
 
     public void onCaptureImageResult(Intent data, ImageView image) {
         selectedImageUri = data.getData();
@@ -317,7 +324,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         showDialog(DIALOG_DATE);
     }
 
-
     protected Dialog onCreateDialog(int id) {
         if (id == DIALOG_DATE) {
             DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, myYear, myMonth, myDay);
@@ -328,15 +334,4 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         }
         return super.onCreateDialog(id);
     }
-
-    DatePickerDialog.OnDateSetListener myCallBack = new DatePickerDialog.OnDateSetListener() {
-
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            myYear = year;
-            myMonth = monthOfYear + 1;
-            myDay = dayOfMonth;
-            day.setText(myDay + "/" + myMonth + "/" + myYear);
-        }
-    };
 }

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#1976d2"
     android:orientation="vertical">
 
     <TextView
@@ -9,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
+        android:gravity="center"
         android:text="Пользовательское соглашене"
         android:textSize="20dp" />
 
@@ -42,6 +44,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
+                android:background="@drawable/button"
                 android:text="Зарегестрироваться" />
 
         </LinearLayout>

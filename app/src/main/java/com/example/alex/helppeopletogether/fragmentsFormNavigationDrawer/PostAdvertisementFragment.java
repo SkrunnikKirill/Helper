@@ -111,6 +111,15 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         return root;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        region.setText("");
+        city.setText("");
+        phoneNumber.setText("");
+        dayOfBirth.setText("");
+    }
+
     private void dataPicker() {
         dayOfBirth.setOnClickListener(new View.OnClickListener() {
 

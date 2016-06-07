@@ -57,7 +57,7 @@ public class AdvertisementAdapter  extends ArrayAdapter<String> {
         summa.setText(expected_amount.get(position));
         date.setText(finalDate.get(position));
         Dimensions dimensions = new Dimensions();
-        Glide.with(context).load(image.get(position)).override(dimensions.getWidth(getContext()),400).centerCrop().into(imageView);
+        Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 400).centerCrop().into(imageView);
         return rowView;
     }
 

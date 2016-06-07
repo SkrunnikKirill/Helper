@@ -14,5 +14,7 @@
     <integer name="com_vk_sdk_AppId">5425061</integer>
     <string name="facebook_app_id">553314641516849</string>
     <string name="server_client_id">536185004941-35tglcricshs507svvbtjimmg6fl90r4.apps.googleusercontent.com</string>
+    <string name="error_data_from_server">Ошибка, при получении данных с сервера</string>
+    <string name="image_is_not_sent_to_server">Изображение не удалось отправить</string>
 
 </resources>

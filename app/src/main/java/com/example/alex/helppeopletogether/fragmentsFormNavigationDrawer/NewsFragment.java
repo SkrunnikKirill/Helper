@@ -32,6 +32,7 @@ import retrofit.client.Response;
 
 public class NewsFragment extends Fragment {
     public ArrayList<Integer> idServerNews;
+    //public ArrayList<Integer> likeNews;
     public ArrayList<String> datePublication;
     public ArrayList<String> title;
     public ArrayList<String> shortDescription;
@@ -39,13 +40,11 @@ public class NewsFragment extends Fragment {
     public ArrayList<String> image;
     public ArrayList<String> expectedAmount;
     public ArrayList<String> finalDate;
-    ArrayList<Integer> likeNews;
+    public ArrayList<Integer> likeNews;
     public ArrayList<Integer> idNews;
     ListView list;
-    private String userId;
     CustomList adapter;
-
-
+    private String userId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,24 +62,26 @@ public class NewsFragment extends Fragment {
             userId = String.valueOf(registration.responseFromServiseRegistrationId);
         }
         idNews = new ArrayList<>();
-            Retrofit.getArrays(new Callback<RegistrationResponseFromServer>() {
-                @Override
-                public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-                    idServerNews = registrationResponseFromServer.id;
-                    shortDescription = registrationResponseFromServer.short_description;
-                    description = registrationResponseFromServer.description;
-                    datePublication = registrationResponseFromServer.created_at;
-                    image = registrationResponseFromServer.image;
-                    expectedAmount = registrationResponseFromServer.expected_amount;
-                    finalDate = registrationResponseFromServer.final_date;
-                    adapter();
-                }
+        Retrofit.getArrays(userId, new Callback<RegistrationResponseFromServer>() {
+            @Override
+            public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
+                likeNews = registrationResponseFromServer.liked_advers;
+                idServerNews = registrationResponseFromServer.id;
+                shortDescription = registrationResponseFromServer.short_description;
+                description = registrationResponseFromServer.description;
+                datePublication = registrationResponseFromServer.created_at;
+                image = registrationResponseFromServer.image;
+                expectedAmount = registrationResponseFromServer.expected_amount;
+                finalDate = registrationResponseFromServer.final_date;
+                adapter();
+            }
 
-                @Override
-                public void failure(RetrofitError error) {
+            @Override
+            public void failure(RetrofitError error) {
 
-                }
-            });
+            }
+        });
+
         return view;
     }
 

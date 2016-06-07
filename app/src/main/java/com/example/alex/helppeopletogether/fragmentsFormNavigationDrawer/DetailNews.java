@@ -48,7 +48,7 @@ public class DetailNews extends AppCompatActivity implements View.OnClickListene
         TextView finalDate = (TextView) findViewById(R.id.detail_news_days_left);
         TextView description = (TextView) findViewById(R.id.detail_news_full_description);
         Dimensions dimensions = new Dimensions();
-        Glide.with(getApplicationContext()).load(NImage).override(dimensions.getWidth(DetailNews.this), 500).centerCrop().into(image);
+        Glide.with(getApplicationContext()).load(NImage).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(DetailNews.this), 500).centerCrop().into(image);
         expectedAmount.setText(NexpectedAmount);
         description.setText(NDescription);
         finalDate.setText(NfinalDate);

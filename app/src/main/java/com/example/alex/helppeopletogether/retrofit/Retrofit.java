@@ -78,8 +78,8 @@ public class Retrofit {
         postInterfaceDescriptionProblem.sendAdvertisement(dataAdvertisement, file, callback);
     }
 
-    public static void getArrays(Callback<RegistrationResponseFromServer>callback) {
-        arrays.getArrays(callback);
+    public static void getArrays(String userId, Callback<RegistrationResponseFromServer> callback) {
+        arrays.getArrays(userId, callback);
     }
 
     public static void getMyAdvertisementArrays(String userId, Callback<RegistrationResponseFromServer> callback) {
@@ -113,8 +113,9 @@ public class Retrofit {
     }
 
     interface NewsJsonArray {
-        @GET("/create_json.php")
-        void getArrays( Callback<RegistrationResponseFromServer> callback);
+        @Multipart
+        @POST("/create_json.php")
+        void getArrays(@Part("user_id") String userId, Callback<RegistrationResponseFromServer> callback);
     }
 
     interface PostInterfaceNextPostAdvertisementFragment {
