@@ -42,6 +42,7 @@ public class NewsFragment extends Fragment {
     public ArrayList<String> finalDate;
     public ArrayList<Integer> likeNews;
     public ArrayList<Integer> idNews;
+    public ArrayList<Integer> fff;
     ListView list;
     CustomList adapter;
     private String userId;
@@ -53,6 +54,7 @@ public class NewsFragment extends Fragment {
         list = (ListView) view.findViewById(R.id.list);
         Login login = new Login();
         Registration registration = new Registration();
+        //likeNews = new ArrayList<Integer>();
 
 
 
