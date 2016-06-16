@@ -29,19 +29,13 @@
         android:gravity="center"
         android:text="Medium Text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-        <ProgressBar
-            android:id="@+id/detail_news_progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/detail_news_theme"
-            android:background="#4caf50" />
+
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/detail_news_progressBar"
+        android:layout_below="@+id/detail_news_theme"
         android:orientation="horizontal">
 
         <TextView
@@ -51,13 +45,6 @@
             android:text="7000$"
             android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/detail_news_persent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="60%"
-            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/detail_news_days_left"
@@ -80,11 +67,6 @@
             android:layout_height="wrap_content"
             android:text="необходимо" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="собрано" />
 
         <TextView
             android:layout_width="wrap_content"

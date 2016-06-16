@@ -1,11 +1,10 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,21 +12,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
 
 
-public class DetailNews extends AppCompatActivity implements View.OnClickListener {
+public class DetailNews extends Activity implements View.OnClickListener {
 
-    private Toolbar toolbar;
-    private ImageView backArrow;
-    private TextView title;
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        toolbar = null;
-        backArrow = null;
-        title = null;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +29,9 @@ public class DetailNews extends AppCompatActivity implements View.OnClickListene
         String NfinalDate = intent.getStringExtra("finalDate");
         String NDescription = intent.getStringExtra("description");
         ImageView image = (ImageView) findViewById(R.id.detail_news_image);
-        TextView shortDescription = (TextView) findViewById(R.id.description_problem_theme);
-        title = (TextView) findViewById(R.id.toolbar_description_tit);
-        backArrow = (ImageView) findViewById(R.id.toolbar_description_button_down);
+        TextView shortDescription = (TextView) findViewById(R.id.detail_news_theme);
+        TextView title = (TextView) findViewById(R.id.toolbar_description_tit);
+        ImageView backArrow = (ImageView) findViewById(R.id.toolbar_description_button_down);
         TextView theme = (TextView) findViewById(R.id.detail_news_theme);
         TextView expectedAmount = (TextView) findViewById(R.id.detail_news_summa);
         TextView finalDate = (TextView) findViewById(R.id.detail_news_days_left);
@@ -52,13 +41,9 @@ public class DetailNews extends AppCompatActivity implements View.OnClickListene
         expectedAmount.setText(NexpectedAmount);
         description.setText(NDescription);
         finalDate.setText(NfinalDate);
-        toolbar = (Toolbar) findViewById(R.id.toolbar_description);
         title.setText("Запись");
-        setSupportActionBar(toolbar);
         backArrow.setOnClickListener(this);
-
-
-//       shortDescription.setText(NshortDescription);
+        shortDescription.setText(NshortDescription);
 
     }
 

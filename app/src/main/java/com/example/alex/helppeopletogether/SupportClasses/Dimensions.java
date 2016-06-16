@@ -1,4 +1,4 @@
-package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
+package com.example.alex.helppeopletogether.SupportClasses;
 
 import android.app.Activity;
 import android.content.Context;

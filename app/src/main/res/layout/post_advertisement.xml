@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
@@ -16,7 +17,8 @@
     android:layout_height="wrap_content"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.wdullaer.materialdatetimepicker.PostAdvertisement">
 
             <TextView
                 android:id="@+id/post_advertisement_date_of_birth"
@@ -28,26 +30,7 @@
                 android:padding="7dp"
                 android:textSize="20dp" />
 
-            <LinearLayout
-                android:id="@+id/post_advertisement_linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
 
-                <DatePicker
-                    android:id="@+id/post_advertisement_date_picker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:calendarViewShown="false"
-                    android:spinnersShown="true"></DatePicker>
-
-                <Button
-                    android:id="@+id/post_advertisement_button_date_of_birthday"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:text="Установить Дату Рождения" />
-            </LinearLayout>
 
             <AutoCompleteTextView
                 android:id="@+id/post_advertisement_region"

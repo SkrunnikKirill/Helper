@@ -1,23 +1,19 @@
-package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter;
+package com.example.alex.helppeopletogether.Adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Dimensions;
-import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.SelectedNews;
+import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
+import com.example.alex.helppeopletogether.SupportClasses.SelectedNews;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by Alex on 02.06.2016.

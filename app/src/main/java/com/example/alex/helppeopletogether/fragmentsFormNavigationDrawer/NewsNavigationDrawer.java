@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,7 +20,7 @@ import com.example.alex.helppeopletogether.R;
 
 
 public class NewsNavigationDrawer extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
     Advertisement advertisement;
     MyAdvertisement message;
     NewsFragment news;
@@ -46,15 +47,10 @@ public class NewsNavigationDrawer extends AppCompatActivity
         Intent intentFullName = getIntent();
         name = intentFullName.getStringExtra("fullName");
         foto = intentFullName.getStringExtra("foto");
-//        if(intentFullName.getStringExtra("userId")==null){
-//           userId = intentFullName.getStringExtra("idUser");
-//        }else if (intentFullName.getStringExtra("idUser")==null){
-//            userId = intentFullName.getStringExtra("userId");
-//        }
+
 
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.container, news).commit();
-        //savedInstanceState= intent5.getStringExtra();
         setSupportActionBar(toolbar);
 
 
@@ -68,7 +64,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         fullName = (TextView) header.findViewById(R.id.navigation_drawer_full_name);
         userImage = (ImageView)header.findViewById(R.id.navigation_drawer_user_foto);
-        Glide.with(getApplicationContext()).load(foto).override(60, 60).into(userImage);
+        Glide.with(getApplicationContext()).load(foto).override(150, 150).into(userImage);
         fullName.setText(name);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -84,36 +80,11 @@ public class NewsNavigationDrawer extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
-        startActivity(intent);
-        finish();
-        System.exit(0);
+
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.news_navigation_drawer, menu);
-//        return true;
-//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -144,15 +115,5 @@ public class NewsNavigationDrawer extends AppCompatActivity
         return true;
     }
 
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.navigation_drawer_user_foto:
-                Intent intent = new Intent(NewsNavigationDrawer.this, DescriptionProblem.class);
-                startActivity(intent);
-                break;
-        }
-    }
 
 }

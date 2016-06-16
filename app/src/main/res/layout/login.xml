@@ -37,8 +37,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/ic_perm_identity_white_36dp" />
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/login_email"
                 android:layout_width="match_parent"
@@ -50,6 +54,7 @@
                 android:padding="9dp"
                 android:singleLine="true"
                 android:textColorHint="#F8F8FF" />
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 
@@ -71,7 +76,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
+                android:layout_marginTop="10dp"
                 android:src="@drawable/ic_lock_open_white_36dp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/login_password"
@@ -84,6 +94,7 @@
                 android:inputType="textPassword"
                 android:padding="9dp"
                 android:textColorHint="#F8F8FF" />
+            </android.support.design.widget.TextInputLayout>
 
 
         </LinearLayout>

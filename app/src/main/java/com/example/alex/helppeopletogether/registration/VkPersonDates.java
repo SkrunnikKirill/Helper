@@ -12,6 +12,12 @@ public class VkPersonDates {
     Integer id;
     @SerializedName("first_name")
     String first_name;
+    @SerializedName("photo")
+    String photo;
+
+    public String getPhoto() {
+        return photo;
+    }
 
     public String getLast_name() {
         return last_name;

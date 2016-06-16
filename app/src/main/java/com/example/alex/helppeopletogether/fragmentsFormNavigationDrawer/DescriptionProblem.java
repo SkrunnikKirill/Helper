@@ -1,14 +1,16 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
+
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -48,13 +50,10 @@ import retrofit.mime.TypedFile;
 /**
  * Created by Alex on 13.04.2016.
  */
-public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener {
+public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     static final int GALLERY_REQUEST_IMAGE = 1;
     int DIALOG_DATE = 1;
-    Calendar calendar = Calendar.getInstance();
-    int myYear = calendar.get(Calendar.YEAR);
-    int myMonth = Calendar.getInstance().get(Calendar.MONTH);
-    int myDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
     ImageView imageAdvertisement;
     int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     Uri selectedImageUri;
@@ -64,21 +63,11 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     Integer userid;
     String[] nameCurrency = {"USD", "EUR", "UAH"};
     String currency;
-    android.support.v4.app.FragmentTransaction ft;
-    android.support.v4.app.FragmentManager fragmentManager;
-    Calendar dateAndTime = Calendar.getInstance();
+
+
     private Toolbar toolbar;
     private TextView day, nameToolbar;
-    DatePickerDialog.OnDateSetListener myCallBack = new DatePickerDialog.OnDateSetListener() {
 
-        public void onDateSet(DatePicker view, int year, int monthOfYear,
-                              int dayOfMonth) {
-            myYear = year;
-            myMonth = monthOfYear + 1;
-            myDay = dayOfMonth;
-            day.setText(myDay + "/" + myMonth + "/" + myYear);
-        }
-    };
     private EditText theme, shortDescription, fullDescription, money, account;
     private Button locate;
     private ImageView down;
@@ -104,6 +93,13 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         login = new Login();
         userid = login.userId;
         initToolbar();
+        dataPicker();
+        spiner();
+
+
+    }
+
+    private void spiner() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nameCurrency);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner spinner = (Spinner) findViewById(R.id.spinnerstate);
@@ -125,15 +121,32 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
                     currency = "₴";
                 }
 
-                // Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
             }
         });
+    }
 
-
+    private void dataPicker() {
+        day.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                        DescriptionProblem.this,
+                        calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)
+                );
+                datePickerDialog.setAccentColor(Color.parseColor("#03a9f4"));
+                datePickerDialog.setThemeDark(true);
+                datePickerDialog.dismissOnPause(true);
+                datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
+            }
+        });
     }
 
     @Override
@@ -320,18 +333,26 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
 
     }
 
-    public void onclick(View view) {
-        showDialog(DIALOG_DATE);
-    }
+//    public void onclick(View view) {
+//        showDialog(DIALOG_DATE);
+//    }
+//
+//    protected Dialog onCreateDialog(int id) {
+//        if (id == DIALOG_DATE) {
+//            DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, myYear, myMonth, myDay);
+////            tpd.getDatePicker().setMaxDate(myYear);
+////            tpd.getDatePicker().setMaxDate(myMonth);
+////            tpd.getDatePicker().setMaxDate(myDay);
+//            return tpd;
+//        }
+//        return super.onCreateDialog(id);
+//    }
 
-    protected Dialog onCreateDialog(int id) {
-        if (id == DIALOG_DATE) {
-            DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, myYear, myMonth, myDay);
-//            tpd.getDatePicker().setMaxDate(myYear);
-//            tpd.getDatePicker().setMaxDate(myMonth);
-//            tpd.getDatePicker().setMaxDate(myDay);
-            return tpd;
-        }
-        return super.onCreateDialog(id);
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        String finalDay = dayOfMonth + "/" + (++monthOfYear) + "/" + year;
+
+        day.setText(finalDay);
     }
 }

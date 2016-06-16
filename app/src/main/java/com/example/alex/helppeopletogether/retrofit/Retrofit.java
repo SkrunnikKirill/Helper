@@ -1,9 +1,5 @@
 package com.example.alex.helppeopletogether.retrofit;
 
-import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.MyAdvertisement;
-import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.SelectedNews;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +7,6 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.http.Multipart;
 import retrofit.http.POST;
-import retrofit.http.GET;
 import retrofit.http.Part;
 import retrofit.http.PartMap;
 import retrofit.http.QueryMap;
@@ -90,7 +85,7 @@ public class Retrofit {
         likeNews.getLike(userId, like, callback);
     }
 
-    public static void getSelectedNews(String userId, Callback<List<com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.SelectedNews>> callback) {
+    public static void getSelectedNews(String userId, Callback<List<com.example.alex.helppeopletogether.SupportClasses.SelectedNews>> callback) {
         selectedNews.getSelectedNews(userId, callback);
     }
 
@@ -109,7 +104,7 @@ public class Retrofit {
     interface SelectedNews {
         @Multipart
         @POST("/user_liked_advers.php")
-        void getSelectedNews(@Part("user_id") String userId, Callback<List<com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.SelectedNews>> callback);
+        void getSelectedNews(@Part("user_id") String userId, Callback<List<com.example.alex.helppeopletogether.SupportClasses.SelectedNews>> callback);
     }
 
     interface NewsJsonArray {

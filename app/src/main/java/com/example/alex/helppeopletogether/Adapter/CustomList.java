@@ -1,12 +1,10 @@
-package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter;
+package com.example.alex.helppeopletogether.Adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,9 +13,7 @@ import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Dimensions;
-import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.SelectedNews;
-import com.example.alex.helppeopletogether.registration.Login;
+import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -64,7 +60,7 @@ public class CustomList extends ArrayAdapter<String> {
         View rowView = inflater.inflate(R.layout.datail_news_item, parent, false);
         // }
         if (idNews == null) {
-            likeNews = new ArrayList<Integer>();
+            // likeNews = new ArrayList<Integer>();
             idNews = new ArrayList<Integer>();
         }
         final ToggleButton like = (ToggleButton) rowView.findViewById(R.id.datail_news_like);
@@ -82,37 +78,31 @@ public class CustomList extends ArrayAdapter<String> {
         date.setText(finalDate.get(position));
         Dimensions dimensions = new Dimensions();
         Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 400).centerCrop().into(imageView);
-        for (int i = 0; i < likeNews.size(); i++) {
-            for (int j = 0; j < idServerNews.size(); j++) {
-                if ((likeNews.get(i)).equals(idServerNews.get(j))) {
-                    //like.setChecked(true);
-                    like.setBackgroundResource(position);
 
-                    break;
-                }
-            }
+        if (likeNews.indexOf(idServerNews.get(position)) >= 0) {
+            like.getText();
+            like.setBackgroundResource(R.drawable.like);
         }
 
 
         like.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    like.setBackgroundResource(R.drawable.like);
-                    likeNews.add(position);
-                    idNews.add(idServerNews.get(position));
+                if ((isChecked) || true) {
+                    if (likeNews.indexOf(idServerNews.get(position)) == -1) {
+                        like.setBackgroundResource(R.drawable.like);
+                        likeNews.add(idServerNews.get(position));
+                    } else {
+                        like.setBackgroundResource(R.drawable.nolike);
+                        likeNews.remove(likeNews.indexOf(idServerNews.get(position)));
 
-                } else {
-                    like.setBackgroundResource(R.drawable.nolike);
-                    likeNews.size();
-                    for (int i = 0; i < likeNews.size(); i++) {
-                        if (likeNews.get(i) == position) {
-                            likeNews.remove(i);
-                            idNews.remove(idServerNews.get(position));
-                        }
                     }
-
-
+//                    for (int i = 0; i < likeNews.size() ; i++) {
+//                        if (likeNews.get(i) == position) {
+//                            likeNews.remove(i);
+//                            idNews.remove(idServerNews.get(position));
+//                        }
+//                    }
                 }
             }
 
@@ -139,12 +129,19 @@ public class CustomList extends ArrayAdapter<String> {
     public String getIdNewsJson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         Gson gson = gsonBuilder.create();
-        String gsonIdNews = gson.toJson(idNews);
+        String gsonIdNews = gson.toJson(likeNews);
         return gsonIdNews;
 
     }
-    public ArrayList<Integer> getNews(){
-        return  idNews;
+
+    public Integer getLikeNewsItem(int i) {
+
+
+        return likeNews.get(i);
+    }
+
+    public ArrayList<Integer> getLikeNews() {
+        return likeNews;
     }
 
 

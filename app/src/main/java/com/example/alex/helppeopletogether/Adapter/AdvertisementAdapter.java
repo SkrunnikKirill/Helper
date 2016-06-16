@@ -1,4 +1,4 @@
-package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter;
+package com.example.alex.helppeopletogether.Adapter;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Dimensions;
+import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,7 @@ public class AdvertisementAdapter  extends ArrayAdapter<String> {
         View rowView= inflater.inflate(R.layout.advertisement_adapter, parent, false);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.advertisement_adapter_theme);
         TextView timeDate = (TextView)rowView.findViewById(R.id.advertisement_adapter_date_text);
-        TextView test = (TextView)rowView.findViewById(R.id.advertisement_adapter_persent);
+
         TextView date = (TextView)rowView.findViewById(R.id.advertisement_adapter_days_left);
         TextView summa = (TextView)rowView.findViewById(R.id.advertisement_adapter_summa);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.advertisement_adapter_image);

@@ -16,16 +16,16 @@
             android:text="Small Text" />
 
             <ToggleButton
+                android:id="@+id/datail_news_like"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:focusable="false"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="3dp"
                 android:layout_marginRight="10dp"
-                android:id="@+id/datail_news_like"
-                android:textOn=""
-                android:textOff=""
+                android:layout_marginTop="3dp"
                 android:background="@drawable/nolike"
+                android:focusable="false"
+                android:textOff=""
+                android:textOn=""
                 />
 
 
@@ -52,20 +52,13 @@
             android:text="Medium Text"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <ProgressBar
-            android:id="@+id/detail_news_progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/detail_news_theme"
-            android:background="#15ba1c" />
+
 
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/detail_news_progressBar"
+            android:layout_below="@+id/detail_news_theme"
             android:orientation="horizontal">
 
             <TextView
@@ -75,14 +68,7 @@
                 android:text="7000$"
                 android:textSize="20dp" />
 
-            <TextView
-                android:id="@+id/detail_news_persent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
 
-                android:text="60%"
-                android:textSize="20dp" />
 
             <TextView
                 android:id="@+id/detail_news_days_left"
@@ -105,11 +91,6 @@
                 android:layout_height="wrap_content"
                 android:text="необходимо" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="собрано" />
 
             <TextView
                 android:layout_width="wrap_content"

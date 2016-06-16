@@ -5,7 +5,10 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +20,8 @@ import android.widget.ListView;
 //import com.example.alex.helppeopletogether.navigationDrawer.NewsRecyclerViewAdapter;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.Adapter.CustomList;
+import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
+import com.example.alex.helppeopletogether.Adapter.CustomList;
 import com.example.alex.helppeopletogether.registration.Login;
 import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
@@ -30,9 +34,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class NewsFragment extends Fragment {
+public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     public ArrayList<Integer> idServerNews;
-    //public ArrayList<Integer> likeNews;
     public ArrayList<String> datePublication;
     public ArrayList<String> title;
     public ArrayList<String> shortDescription;
@@ -42,32 +45,54 @@ public class NewsFragment extends Fragment {
     public ArrayList<String> finalDate;
     public ArrayList<Integer> likeNews;
     public ArrayList<Integer> idNews;
-    public ArrayList<Integer> fff;
-    ListView list;
+    public ArrayList<Integer> likeNewsFromServer;
     CustomList adapter;
+    ProDialog proDialog;
+    NewsFragment newsFragment;
+    private ListView list;
     private String userId;
+    private Login login;
+    private Registration registration;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
         list = (ListView) view.findViewById(R.id.list);
-        Login login = new Login();
-        Registration registration = new Registration();
-        //likeNews = new ArrayList<Integer>();
+        login = new Login();
+        newsFragment = new NewsFragment();
+        registration = new Registration();
+        proDialog = new ProDialog();
+        likeNewsFromServer = new ArrayList<Integer>();
+        proDialog.defenitionProgressBar(getActivity());
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
 
 
+        swipeRefreshLayout.setColorSchemeResources(
+                android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
 
-        if (login.userId!=null) {
+        if (login.userId != null) {
             userId = String.valueOf(login.userId);
-        }else if (registration.responseFromServiseRegistrationId!=null){
+        } else if (registration.responseFromServiseRegistrationId != null) {
             userId = String.valueOf(registration.responseFromServiseRegistrationId);
         }
         idNews = new ArrayList<>();
+        newsInformationFromServer();
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        return view;
+    }
+
+    private void newsInformationFromServer() {
         Retrofit.getArrays(userId, new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                 likeNews = registrationResponseFromServer.liked_advers;
+                likeNewsFromServer.addAll(likeNews);
                 idServerNews = registrationResponseFromServer.id;
                 shortDescription = registrationResponseFromServer.short_description;
                 description = registrationResponseFromServer.description;
@@ -75,7 +100,15 @@ public class NewsFragment extends Fragment {
                 image = registrationResponseFromServer.image;
                 expectedAmount = registrationResponseFromServer.expected_amount;
                 finalDate = registrationResponseFromServer.final_date;
-                adapter();
+                if (likeNews.size() == 1 && likeNews.get(0) == 0) {
+                    likeNews = new ArrayList<Integer>();
+                    adapter();
+                    proDialog.connectionProgressBar();
+                } else {
+                    adapter();
+                    proDialog.connectionProgressBar();
+                }
+
             }
 
             @Override
@@ -83,14 +116,11 @@ public class NewsFragment extends Fragment {
 
             }
         });
-
-        return view;
     }
 
 
     public void adapter() {
-        adapter = new
-                CustomList(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate, likeNews,idServerNews, idNews);
+        adapter = new CustomList(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate, likeNews, idServerNews, idNews);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -131,14 +161,39 @@ public class NewsFragment extends Fragment {
     }
 
 
-
-
     @Override
     public void onPause() {
         super.onPause();
-        sendServer();
+        addLikeNewsToTheServer();
+
 
     }
 
+    private void addLikeNewsToTheServer() {
+        if (likeNewsFromServer.size() == adapter.getLikeNews().size()) {
+            for (int i = 0; i < likeNewsFromServer.size(); i++) {
+                if (adapter.getLikeNews().contains(likeNewsFromServer.get(i)) != true) {
+                    sendServer();
+                }
 
+
+            }
+        } else {
+            sendServer();
+        }
+    }
+
+
+    @Override
+    public void onRefresh() {
+        addLikeNewsToTheServer();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayout.setRefreshing(false);
+
+                newsInformationFromServer();
+            }
+        }, 4000);
+    }
 }

@@ -94,9 +94,10 @@ public class Registration extends Activity implements View.OnClickListener {
         password.setText(savedInstanceState.getString("password"));
     }
 
+
     @Override
-    protected void onRestart() {
-        super.onRestart();
+    protected void onStop() {
+        super.onStop();
         firstName.setText("");
         secondName.setText("");
         email.setText("");

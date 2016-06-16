@@ -1,4 +1,4 @@
-package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
+package com.example.alex.helppeopletogether.SupportClasses;
 
 /**
  * Created by Alex on 02.06.2016.
