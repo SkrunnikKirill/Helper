@@ -11,19 +11,28 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.PrefManager;
+import com.example.alex.helppeopletogether.registration.Login;
 
 
 public class ExitFragment extends Fragment {
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.exit_fragment,container,false);
-        getActivity().finish();
-        android.os.Process.killProcess(android.os.Process.myPid());
-        return root;
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Intent intent = new Intent(getActivity(), Login.class);
+        getActivity().startActivity(intent);
+
     }
 
+
+    //    @Nullable
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        View root = inflater.inflate(R.layout.exit_fragment,container,false);
+//
+//        return root;
+//    }
 
 
 }

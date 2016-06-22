@@ -22,6 +22,7 @@ import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
 import com.example.alex.helppeopletogether.SupportClasses.SelectedNews;
 import com.example.alex.helppeopletogether.Adapter.SelectedAdapter;
 import com.example.alex.helppeopletogether.registration.Login;
+import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import retrofit.client.Response;
 /**
  * Created by Alex on 04.04.2016.
  */
-public class MyAdvertisement extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     String userId;
     ArrayList<SelectedNews> likeNews;
     ListView list;
@@ -46,6 +47,8 @@ public class MyAdvertisement extends Fragment implements SwipeRefreshLayout.OnRe
     Login login;
     ProDialog prodialog;
     SwipeRefreshLayout swipeRefreshLayout;
+    Registration registration;
+    String idUser;
 
 
     @Nullable
@@ -54,6 +57,12 @@ public class MyAdvertisement extends Fragment implements SwipeRefreshLayout.OnRe
         View root = inflater.inflate(R.layout.my_advertisement, container, false);
         list = (ListView) root.findViewById(R.id.like_list);
         login = new Login();
+        registration = new Registration();
+        if (login.userId != null) {
+            userId = String.valueOf(login.userId);
+        } else if (registration.responseFromServiseRegistrationId != null) {
+            userId = String.valueOf(registration.responseFromServiseRegistrationId);
+        }
         prodialog = new ProDialog();
         swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.my_advertisement_swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(
@@ -147,7 +156,6 @@ public class MyAdvertisement extends Fragment implements SwipeRefreshLayout.OnRe
 
             likeNews = new ArrayList<SelectedNews>();
             selectedAdapter = new SelectedAdapter(getActivity(), likeNews);
-            userId = String.valueOf(login.userId);
 
             noLikeData = new NoLikeData();
             getLikeNewsFromServer();

@@ -165,4 +165,5 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
             }
         }, 4000);
     }
+
 }

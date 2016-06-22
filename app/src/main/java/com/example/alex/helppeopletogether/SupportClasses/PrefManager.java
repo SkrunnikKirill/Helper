@@ -80,7 +80,7 @@ public class PrefManager {
     };
     Context context;
 
-    PrefManager(Context context) {
+    public PrefManager(Context context) {
         this.context = context;
 
 

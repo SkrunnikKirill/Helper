@@ -36,7 +36,12 @@
                 android:id="@+id/thumb_img2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_name" />
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_perm_identity_white_36dp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/registration_first_name"
@@ -46,6 +51,7 @@
                 android:hint="Имя"
                 android:padding="10dp"
                 android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
 
         </LinearLayout>
@@ -65,8 +71,12 @@
                 android:id="@+id/thumb_img3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_name" />
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_perm_identity_white_36dp" />
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/registration_second_name"
                 android:layout_width="match_parent"
@@ -75,6 +85,7 @@
                 android:hint="Фамилия"
                 android:padding="10dp"
                 android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
 
 
@@ -96,8 +107,12 @@
                 android:id="@+id/thumb_img4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_name" />
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_email_white_36dp" />
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/registration_email"
                 android:layout_width="match_parent"
@@ -108,6 +123,7 @@
                 android:inputType="textEmailAddress"
                 android:padding="10dp"
                 android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <ImageView
@@ -125,8 +141,12 @@
                 android:id="@+id/thumb_img5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_action_name" />
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_lock_open_white_36dp" />
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/registration_password"
                 android:layout_width="match_parent"
@@ -137,6 +157,7 @@
                 android:inputType="textPassword"
                 android:padding="10dp"
                 android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 
@@ -152,7 +173,8 @@
             android:layout_below="@+id/registration_password"
             android:layout_marginTop="15dp"
             android:background="@drawable/button"
-            android:text="Далее" />
+            android:text="Далее"
+            android:textColor="@color/white" />
 
 
     </LinearLayout>

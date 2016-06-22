@@ -51,7 +51,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     private Calendar calendar;
     private LinkedHashMap<String, String> advertisementData;
     private int installedYear, installedMonth, installedDay;
-    private Integer id;
+    private String id;
 
 
     private String[] arrayRegion =
@@ -69,18 +69,16 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         View root = inflater.inflate(R.layout.post_advertisement, container, false);
         Login login = new Login();
         Registration registration = new Registration();
-        if (login.userId != 0){
-            id = login.userId;
-
-        }else{
-            id =  registration.responseFromServiseRegistrationId;
+        if (login.userId != null) {
+            id = String.valueOf(login.userId);
+        } else if (registration.responseFromServiseRegistrationId != null) {
+            id = String.valueOf(registration.responseFromServiseRegistrationId);
         }
 
         region = (AutoCompleteTextView) root.findViewById(R.id.post_advertisement_region);
         city = (AutoCompleteTextView) root.findViewById(R.id.post_advertisement_city);
         dayOfBirth = (TextView) root.findViewById(R.id.post_advertisement_date_of_birth);
         next = (Button) root.findViewById(R.id.post_advertisement_next);
-
         phoneNumber = (EditText) root.findViewById(R.id.post_advertisement_phone_number);
         region.addTextChangedListener(this);
         city.addTextChangedListener(this);
@@ -160,8 +158,9 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
 
     private void dateRetrofit() {
         advertisementData = new LinkedHashMap<>();
-
-        if (region.getText().length() > 0 && city.getText().length() > 0 && phoneNumber.getText().length() > 0 &&
+        if (phoneNumber.getText().toString().length() < 13) {
+            Toast.makeText(getActivity(), "Введите свой номер", Toast.LENGTH_LONG).show();
+        } else if (region.getText().length() > 0 && city.getText().length() > 0 && phoneNumber.getText().length() > 0 &&
                 dayOfBirth.getText().length() > 0) {
             advertisementData.put("region", String.valueOf(region.getText()));
             advertisementData.put("city", String.valueOf(city.getText()));
@@ -169,7 +168,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
             advertisementData.put("month", String.valueOf(installedMonth));
             advertisementData.put("year", String.valueOf(installedYear));
             advertisementData.put("phoneNumber", String.valueOf(phoneNumber.getText()));
-            advertisementData.put("user_id", String.valueOf(id));
+            advertisementData.put("user_id", id);
 
             Retrofit.sendAdvertisementData(advertisementData, new Callback<RegistrationResponseFromServer>() {
                 @Override
@@ -197,6 +196,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     private void nextActivity() {
         Intent intent = new Intent(getActivity(), DescriptionProblem.class);
         startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
 
@@ -208,5 +208,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         installedMonth = monthOfYear;
         dayOfBirth.setText(birthDay);
     }
+
+
 }
 

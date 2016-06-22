@@ -9,7 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,18 +17,18 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.registration.Login;
 
 
 public class NewsNavigationDrawer extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Advertisement advertisement;
-    MyAdvertisement message;
+    Favorite favorite;
     NewsFragment news;
     PostAdvertisementFragment postAdvertisement;
     ExitFragment exit;
     TextView fullName;
     ImageView userImage;
-    android.support.v4.app.FragmentTransaction ft;
     android.support.v4.app.FragmentManager fragmentManager;
     String name, foto, userId;
     Toolbar toolbar;
@@ -38,19 +38,22 @@ public class NewsNavigationDrawer extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_navigation_drawer);
+        name = "";
+        foto = "";
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         advertisement = new Advertisement();
-        message = new MyAdvertisement();
+        favorite = new Favorite();
         news = new NewsFragment();
         postAdvertisement = new PostAdvertisementFragment();
         exit = new ExitFragment();
-        Intent intentFullName = getIntent();
-        name = intentFullName.getStringExtra("fullName");
-        foto = intentFullName.getStringExtra("foto");
+        Login login = new Login();
+        name = login.fullName;
+        foto = login.UserPhoto;
+
 
 
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().add(R.id.container, news).commit();
+        fragmentManager.beginTransaction().replace(R.id.container, news).commit();
         setSupportActionBar(toolbar);
 
 
@@ -64,13 +67,26 @@ public class NewsNavigationDrawer extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         fullName = (TextView) header.findViewById(R.id.navigation_drawer_full_name);
         userImage = (ImageView)header.findViewById(R.id.navigation_drawer_user_foto);
-        Glide.with(getApplicationContext()).load(foto).override(150, 150).into(userImage);
+        Glide.with(NewsNavigationDrawer.this).load(foto).override(150, 150).into(userImage);
         fullName.setText(name);
         navigationView.setNavigationItemSelectedListener(this);
 
 
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("fullName", name);
+        outState.putString("foto", foto);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        fullName.setText(savedInstanceState.getString("fullName"));
+        Glide.with(NewsNavigationDrawer.this).load(savedInstanceState.getString("foto")).override(150, 150).into(userImage);
+    }
 
     @Override
     public void onBackPressed() {
@@ -83,7 +99,17 @@ public class NewsNavigationDrawer extends AppCompatActivity
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            return true;
 
+        }
+        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+        return false;
+    }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -98,7 +124,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
             ftrans.replace(R.id.container, advertisement);
         } else if (id == R.id.nav_my_message) {
             toolbar.setTitle("Избранные");
-            ftrans.replace(R.id.container, message);
+            ftrans.replace(R.id.container, favorite);
         } else if (id == R.id.nav_news) {
             toolbar.setTitle("Новости");
             ftrans.replace(R.id.container, news);

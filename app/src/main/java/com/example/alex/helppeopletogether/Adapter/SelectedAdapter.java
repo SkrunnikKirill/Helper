@@ -63,6 +63,8 @@ public class SelectedAdapter extends BaseAdapter {
         date.setText(selectedNews.final_date);
         Dimensions dimensions = new Dimensions();
         Glide.with(context).load(selectedNews.image).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(context), 400).centerCrop().into(imageView);
+
+
         return view;
     }
 

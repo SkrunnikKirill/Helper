@@ -170,13 +170,11 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void addLikeNewsToTheServer() {
-        if (likeNewsFromServer.size() == adapter.getLikeNews().size()) {
+        if (likeNewsFromServer.size() != 0 && adapter.getLikeNews().size() != 0 && likeNewsFromServer.size() == adapter.getLikeNews().size()) {
             for (int i = 0; i < likeNewsFromServer.size(); i++) {
                 if (adapter.getLikeNews().contains(likeNewsFromServer.get(i)) != true) {
                     sendServer();
                 }
-
-
             }
         } else {
             sendServer();

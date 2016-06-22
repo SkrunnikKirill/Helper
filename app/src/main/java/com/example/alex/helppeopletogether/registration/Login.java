@@ -4,9 +4,13 @@ package com.example.alex.helppeopletogether.registration;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,6 +39,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.plus.Plus;
+import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.Gson;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
@@ -50,6 +56,9 @@ import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKList;
 import com.vk.sdk.util.VKUtil;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -64,9 +73,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private static final String TAG = "Login";
     private static final int PROFILE_PIC_SIZE = 400;
     public static Integer userId;
+    public static String UserPhoto;
+    public static String fullName;
     LoginManager loginManager;
     Context context;
-    String UserPhoto;
     Profile profile;
     private EditText email;
     private EditText password;
@@ -78,7 +88,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private CallbackManager callbackManager;
     private FacebookCallback<LoginResult> mCallback;
     private String[] scope = new String[]{VKScope.EMAIL, VKScope.PHOTOS, VKScope.MESSAGES, VKScope.FRIENDS};
-    private String vkPhoto, vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId, token, fullName;
+    private String vkPhoto, vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId, token;
     private GoogleApiClient mGoogleApiClient;
     private boolean mIntentInProgress;
     private boolean mSignInClicked;
@@ -111,6 +121,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         loginManager = LoginManager.getInstance();
         context = getApplicationContext();
 
+    }
+
+    public void checkInternet() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (isOnline() == true) {
+                    Toast.makeText(Login.this, "Проверте интернет соединения", Toast.LENGTH_LONG).show();
+                }
+            }
+        }).run();
     }
 
 
@@ -155,17 +176,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_button_login:
+                checkInternet();
                 checkData();
                 break;
             case R.id.login_view_registration:
                 intentNextStep = new Intent(Login.this, Registration.class);
                 startActivity(intentNextStep);
+                overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 break;
             case R.id.login_button_facebook:
+                checkInternet();
                 loginFacebook();
                 break;
 
             case R.id.login_button_vk:
+                checkInternet();
                 VKSdk.login(this, scope);
                 break;
 
@@ -192,18 +217,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                                     facebookFirstName = currentProfile.getFirstName();
                                     facebookSecondName = currentProfile.getLastName();
                                     facebookId = currentProfile.getId();
+                                    UserPhoto = String.valueOf(currentProfile.getProfilePictureUri(150, 150));
                                     profileTracker.stopTracking();
                                     facebookSocialName = "Facebook";
-                                    socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId);
+                                    socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId, UserPhoto);
                                 }
                             };
                         } else {
                             profile = Profile.getCurrentProfile();
                             facebookFirstName = profile.getFirstName();
+                            UserPhoto = String.valueOf(profile.getProfilePictureUri(150, 150));
                             facebookSecondName = profile.getLastName();
                             facebookId = profile.getId();
                             facebookSocialName = "Facebook";
-                            socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId);
+                            socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId, UserPhoto);
                         }
 
 
@@ -227,12 +254,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                 });
     }
 
-    public void socialNetworksRegistration(String firstName, String secondName, String nameSocial, String idSocial) {
+    public void socialNetworksRegistration(String firstName, String secondName, String nameSocial, String idSocial, String userFoto) {
         socialUserData = new LinkedHashMap<>();
         socialUserData.put("first_name", firstName);
         socialUserData.put("second_name", secondName);
         socialUserData.put("social_network", nameSocial);
         socialUserData.put("social_id", String.valueOf(idSocial));
+        socialUserData.put("avatar", userFoto);
         Retrofit.sendSocialNetworks(socialUserData, new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
@@ -249,6 +277,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     } else if (responseFromServiseSocialNetwork == 2) {
                         intentNextStep = new Intent(Login.this, Agreement.class);
                         startActivity(intentNextStep);
+                        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                     }
                 }
             }
@@ -263,9 +292,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private void newsFragment() {
         Intent intent = new Intent(Login.this, NewsNavigationDrawer.class);
         intent.putExtra("fullName", fullName);
-        intent.putExtra("foto", vkPhoto);
+        intent.putExtra("foto", UserPhoto);
         //intent.putExtra("userId",userId);
         startActivity(intent);
+        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
 
 
@@ -274,6 +304,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
             handleSignInResult(result);
         }
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
@@ -295,12 +326,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     public void onComplete(VKResponse response) {
                         super.onComplete(response);
                         VKList<VKApiUserFull> list = (VKList<VKApiUserFull>) response.parsedModel;
-                        // VKApiUserFull user = list.get(0);
                         String json = response.responseString;
                         vkjson(json);
-                        //UserPhoto =user.photo_200;
                         vkSocialName = "Vk";
-                        socialNetworksRegistration(vkFirstName, vkSecondName, vkSocialName, vkId);
+                        socialNetworksRegistration(vkFirstName, vkSecondName, vkSocialName, vkId, UserPhoto);
                     }
 
                 });
@@ -329,7 +358,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         VkPersonDates name = data.get(0);
         vkFirstName = name.getFirst_name();
         vkSecondName = name.getLast_name();
-        vkPhoto = name.getPhoto();
+        UserPhoto = name.getPhoto();
 
 
     }
@@ -340,45 +369,43 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         if (loginEmail.resultRegularExprensionsEmail(email) == false || password.getText().length() < 6) {
             Toast.makeText(Login.this, "Не правильно введен логин или пароль", Toast.LENGTH_LONG).show();
         } else if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
-            Toast.makeText(Login.this, "Enter value in all field", Toast.LENGTH_SHORT).show();
-        } else
+            Toast.makeText(Login.this, "Не правильно введен логин или пароль", Toast.LENGTH_SHORT).show();
+        } else {
 
             loginData = new LinkedHashMap<>();
-        loginData.put("email", String.valueOf(email.getText()));
-        loginData.put("password", String.valueOf(password.getText()));
-        Retrofit.sendLoginData(loginData, new Callback<RegistrationResponseFromServer>() {
-            @Override
-            public void success(RegistrationResponseFromServer responseLogin, Response response) {
-                if (responseLogin == null) {
-                    Toast.makeText(Login.this, R.string.error_data_from_server, Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
-                    responseFromServiseLogin = responseLogin.response_login;
-                    userId = responseLogin.user_id;
-                    fullName = responseLogin.full_name;
-                    if (responseFromServiseLogin == 1) {
-                        Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
-                    } else if (responseFromServiseLogin == 2) {
-
-                        newsFragment();
-                        //Toast.makeText(Login.this,"Это успех!!!",Toast.LENGTH_LONG).show();
+            loginData.put("email", email.getText().toString());
+            loginData.put("password", password.getText().toString());
+            Retrofit.sendLoginData(loginData, new Callback<RegistrationResponseFromServer>() {
+                @Override
+                public void success(RegistrationResponseFromServer responseLogin, Response response) {
+                    if (responseLogin == null) {
+                        Toast.makeText(Login.this, R.string.error_data_from_server, Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
+                        responseFromServiseLogin = responseLogin.response_login;
+                        userId = responseLogin.user_id;
+                        fullName = responseLogin.full_name;
+                        if (responseFromServiseLogin == 1) {
+                            Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
+                        } else if (responseFromServiseLogin == 2) {
+                            newsFragment();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                System.out.println(error.getMessage());
-                Toast.makeText(getApplication(), "Data don't sent. Check internet connection", Toast.LENGTH_LONG).show();
-            }
-        });
+                @Override
+                public void failure(RetrofitError error) {
+                    System.out.println(error.getMessage());
+                    Toast.makeText(getApplication(), "Data don't sent. Check internet connection", Toast.LENGTH_LONG).show();
+                }
+            });
 
+        }
     }
 
 
     private void handleSignInResult(GoogleSignInResult result) {
-//        result.getSignInAccount().getEmail();
-        //      result.getSignInAccount().getId();
+
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
@@ -390,8 +417,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                 googleFirstName = arrayName[0];
                 googleSecondName = arrayName[1];
             }
+            UserPhoto = "foto";
             googleSocialName = "Google";
-            socialNetworksRegistration(googleFirstName, googleSecondName, googleSocialName, googleId);
+            socialNetworksRegistration(googleFirstName, googleSecondName, googleSocialName, googleId, UserPhoto);
         } else {
             Toast.makeText(Login.this, "Интернет соеденение отсутствует", Toast.LENGTH_SHORT).show();
         }
@@ -415,13 +443,50 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
-        startActivity(intent);
-        finish();
-        System.exit(0);
+        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            moveTaskToBack(true);
+            overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+            return true;
+
+        }
+        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+        return false;
+    }
+
+    public boolean isOnline() {
+
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        // проверка подключения
+        if (activeNetwork != null && activeNetwork.isConnected()) {
+            try {
+                // тест доступности внешнего ресурса
+                URL url = new URL("http://www.google.com/");
+                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
+                urlc.setRequestProperty("User-Agent", "test");
+                urlc.setRequestProperty("Connection", "close");
+                urlc.setConnectTimeout(1000); // Timeout в секундах
+                urlc.connect();
+                // статус ресурса OK
+                if (urlc.getResponseCode() == 200) {
+                    return true;
+                }
+                // иначе проверка провалилась
+                return false;
+
+            } catch (IOException e) {
+                Log.d("my_tag", "Ошибка проверки подключения к интернету", e);
+                return false;
+            }
+        }
+
+        return false;
+    }
 }
 

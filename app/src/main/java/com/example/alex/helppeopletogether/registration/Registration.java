@@ -98,11 +98,11 @@ public class Registration extends Activity implements View.OnClickListener {
     @Override
     protected void onStop() {
         super.onStop();
-        firstName.setText("");
-        secondName.setText("");
-        email.setText("");
-        password.setText("");
-        face.setImageResource(R.drawable.photoicon);
+//        firstName.setText("");
+//        secondName.setText("");
+//        email.setText("");
+//        password.setText("");
+//        face.setImageResource(R.drawable.photoicon);
     }
 
     @Override
@@ -303,5 +303,10 @@ public class Registration extends Activity implements View.OnClickListener {
 //    }
 
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
+    }
 }
 

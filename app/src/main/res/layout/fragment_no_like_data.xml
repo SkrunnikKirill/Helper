@@ -2,16 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#c8dbe8"
     tools:context="com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NoLikeData">
 
 
     <ImageView
         android:id="@+id/fragment_no_like_data_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/com_facebook_profile_picture_blank_square" />
+        android:layout_centerVertical="true" />
 
 
 </RelativeLayout>

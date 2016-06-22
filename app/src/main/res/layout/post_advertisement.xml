@@ -12,13 +12,13 @@
         android:layout_height="wrap_content">
 
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="20dp"
-    android:layout_marginRight="20dp"
-    android:orientation="vertical"
-    tools:context="com.wdullaer.materialdatetimepicker.PostAdvertisement">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical"
+            tools:context="com.wdullaer.materialdatetimepicker.PostAdvertisement">
 
             <TextView
                 android:id="@+id/post_advertisement_date_of_birth"
@@ -31,34 +31,53 @@
                 android:textSize="20dp" />
 
 
-
-            <AutoCompleteTextView
-                android:id="@+id/post_advertisement_region"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/post_advertisement_date_of_birth"
-                android:completionThreshold="2"
-                android:hint="Область"
-                android:imeOptions="actionGo"
-                android:singleLine="true" />
+                android:layout_height="wrap_content">
 
-            <AutoCompleteTextView
-                android:id="@+id/post_advertisement_city"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/post_advertisement_region"
-                android:completionThreshold="2"
-                android:hint="Город"
-                android:singleLine="true" />
+                <AutoCompleteTextView
+                    android:id="@+id/post_advertisement_region"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/post_advertisement_date_of_birth"
+                    android:completionThreshold="2"
+                    android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
+                ЯЧСМИТЬБЮ"
+                    android:hint="Область"
+                    android:imeOptions="actionGo"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
 
-            <EditText
-                android:id="@+id/post_advertisement_phone_number"
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/post_advertisement_city"
-                android:hint="Телефон"
-                android:inputType="phone"
-                android:singleLine="true" />
+                android:layout_height="wrap_content">
+
+                <AutoCompleteTextView
+                    android:id="@+id/post_advertisement_city"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/post_advertisement_region"
+                    android:completionThreshold="2"
+                    android:hint="Город"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/post_advertisement_phone_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/post_advertisement_city"
+                    android:digits="0123456789+"
+                    android:hint="Телефон"
+                    android:inputType="phone"
+                    android:maxLength="13"
+                    android:singleLine="true"
+                    android:text="+380" />
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:id="@+id/post_advertisement_next"

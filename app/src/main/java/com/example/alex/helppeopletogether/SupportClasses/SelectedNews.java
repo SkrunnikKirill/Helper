@@ -13,6 +13,7 @@ public class SelectedNews {
     public String expected_amount;
     public String final_date;
 
+
     public SelectedNews(String created_at, String title, String short_description, String description, String image, String expected_amount, String final_date, String id) {
         this.created_at = created_at;
         this.title = title;

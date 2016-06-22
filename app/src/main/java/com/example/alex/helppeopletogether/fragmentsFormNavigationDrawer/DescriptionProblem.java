@@ -60,13 +60,13 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     String selectedImagePath;
     Registration registration;
     Login login;
-    Integer userid;
+    String userid;
     String[] nameCurrency = {"USD", "EUR", "UAH"};
     String currency;
+    NewsFragment news;
 
 
-    private Toolbar toolbar;
-    private TextView day, nameToolbar;
+    private TextView day;
 
     private EditText theme, shortDescription, fullDescription, money, account;
     private Button locate;
@@ -77,10 +77,9 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.description_problem);
+        news = new NewsFragment();
         imageAdvertisement = (ImageView) findViewById(R.id.description_problem_image);
-        nameToolbar = (TextView)findViewById(R.id.toolbar_description_tit);
         theme = (EditText) findViewById(R.id.description_problem_theme);
-        down = (ImageView) findViewById(R.id.toolbar_description_button_down);
         shortDescription = (EditText) findViewById(R.id.description_problem_short_description);
         fullDescription = (EditText) findViewById(R.id.description_problem_full_description);
         money = (EditText) findViewById(R.id.description_problem_money);
@@ -91,12 +90,30 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         imageAdvertisement.setOnClickListener(this);
         locate.setOnClickListener(this);
         login = new Login();
-        userid = login.userId;
-        initToolbar();
+        if (login.userId != null) {
+            userid = String.valueOf(login.userId);
+        } else if (registration.responseFromServiseRegistrationId != null) {
+            userid = String.valueOf(registration.responseFromServiseRegistrationId);
+        }
         dataPicker();
         spiner();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.description_problem_toolbar);
+        toolbar.setTitle("Информация Обьявления");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_36dp));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 
     private void spiner() {
@@ -177,19 +194,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
 
     }
 
-    private void initToolbar() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar_description);
-        nameToolbar.setText(R.string.description);
-        setSupportActionBar(toolbar);
-        down.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                onBackPressed();
-
-            }
-        });
-    }
 
     @Override
     public void onClick(View v) {
@@ -312,14 +317,17 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             dataAdvertisement.put("expected_amount", String.valueOf(money.getText() + currency));
             dataAdvertisement.put("final_date", String.valueOf(day.getText()));
             dataAdvertisement.put("payment_account", String.valueOf(account.getText()));
-            dataAdvertisement.put("user_id", String.valueOf(userid));
+            dataAdvertisement.put("user_id", userid);
             File file = new File(getPath(selectedImageUri));
             TypedFile image = new TypedFile("image/*", file);
 
             Retrofit.sendAdvertisement(dataAdvertisement, image, new Callback<RegistrationResponseFromServer>() {
                 @Override
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-                    Toast.makeText(DescriptionProblem.this, "Все ok", Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(DescriptionProblem.this, NewsNavigationDrawer.class);
+                    startActivityForResult(intent, 1);
+                    overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 }
 
                 @Override
@@ -332,21 +340,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         }
 
     }
-
-//    public void onclick(View view) {
-//        showDialog(DIALOG_DATE);
-//    }
-//
-//    protected Dialog onCreateDialog(int id) {
-//        if (id == DIALOG_DATE) {
-//            DatePickerDialog tpd = new DatePickerDialog(this, myCallBack, myYear, myMonth, myDay);
-////            tpd.getDatePicker().setMaxDate(myYear);
-////            tpd.getDatePicker().setMaxDate(myMonth);
-////            tpd.getDatePicker().setMaxDate(myDay);
-//            return tpd;
-//        }
-//        return super.onCreateDialog(id);
-//    }
 
 
     @Override
