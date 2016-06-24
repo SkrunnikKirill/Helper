@@ -71,9 +71,19 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
         swipeRefreshLayout.setOnRefreshListener(this);
+
+        return root;
+    }
+
+    public void getLikeInformations() {
         donloadInformationFromServer = new DonloadInformationFromServer();
         donloadInformationFromServer.execute();
-        return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getLikeInformations();
     }
 
     @Override
@@ -103,7 +113,7 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
                         likeNews.add(new SelectedNews(selectedNews.get(i).created_at, selectedNews.get(i).title,
                                 selectedNews.get(i).short_description, selectedNews.get(i).description,
                                 selectedNews.get(i).image, selectedNews.get(i).expected_amount, selectedNews.get(i).final_date,
-                                selectedNews.get(i).id));
+                                selectedNews.get(i).id, selectedNews.get(i).payment_account));
                         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -112,12 +122,14 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
                                 String detailNewsExpectedAmount = selectedNews.get(position).expected_amount;
                                 String detailNewsFinalDate = selectedNews.get(position).final_date;
                                 String detailNewsDescription = selectedNews.get(position).description;
+                                String detailNewsPaymentAccount = selectedNews.get(position).payment_account;
                                 Intent news = new Intent(getActivity(), DetailNews.class);
                                 news.putExtra("image", detailNewsImage);
                                 news.putExtra("shortDescription", detailNewsShortDescription);
                                 news.putExtra("expectedAmount", detailNewsExpectedAmount);
                                 news.putExtra("finalDate", detailNewsFinalDate);
                                 news.putExtra("description", detailNewsDescription);
+                                news.putExtra("paymentAccount", detailNewsPaymentAccount);
                                 startActivity(news);
                             }
                         });
@@ -156,7 +168,6 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
 
             likeNews = new ArrayList<SelectedNews>();
             selectedAdapter = new SelectedAdapter(getActivity(), likeNews);
-
             noLikeData = new NoLikeData();
             getLikeNewsFromServer();
             return null;

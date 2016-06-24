@@ -1,10 +1,7 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import android.app.Activity;
 import android.app.AlertDialog;
-
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -21,7 +18,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -33,6 +29,7 @@ import com.example.alex.helppeopletogether.registration.Login;
 import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -308,8 +305,12 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     }
 
     private void sendDescriptionInformationFromServise() {
-        if (theme.getText().length() > 0 && shortDescription.getText().length() > 0 && fullDescription.getText().length() > 0 &&
-                money.getText().length() > 0 && day.getText().length() > 0 && account.getText().length() > 0 && selectedImageUri != null) {
+        if (account.getText().toString().length() < 20 || account.getText().toString().length() > 20) {
+            Toast.makeText(DescriptionProblem.this, "Расчетный счет должен состоять из 20 символов", Toast.LENGTH_SHORT).show();
+        } else if (theme.getText().toString().length() > 50 || shortDescription.getText().toString().length() > 100 || fullDescription.getText().toString().length() > 1000) {
+            Toast.makeText(DescriptionProblem.this, "Превышено максимальное количество символов", Toast.LENGTH_SHORT).show();
+        } else if (theme.getText().toString().length() > 0 && shortDescription.getText().toString().length() > 0 && fullDescription.getText().toString().length() > 0 &&
+                money.getText().toString().length() > 0 && day.getText().toString().length() > 0 && account.getText().toString().length() > 0 && selectedImageUri != null) {
             dataAdvertisement = new LinkedHashMap<>();
             dataAdvertisement.put("title", String.valueOf(theme.getText()));
             dataAdvertisement.put("short_description", String.valueOf(shortDescription.getText()));

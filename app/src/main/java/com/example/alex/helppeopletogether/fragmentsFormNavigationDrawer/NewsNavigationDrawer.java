@@ -1,9 +1,7 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,12 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.registration.Login;
+import com.example.alex.helppeopletogether.registration.Registration;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class NewsNavigationDrawer extends AppCompatActivity
@@ -28,28 +28,38 @@ public class NewsNavigationDrawer extends AppCompatActivity
     PostAdvertisementFragment postAdvertisement;
     ExitFragment exit;
     TextView fullName;
-    ImageView userImage;
+    CircleImageView userImage;
     android.support.v4.app.FragmentManager fragmentManager;
     String name, foto, userId;
     Toolbar toolbar;
+    Login login;
+    Registration registration;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_navigation_drawer);
-        name = "";
-        foto = "";
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         advertisement = new Advertisement();
         favorite = new Favorite();
         news = new NewsFragment();
         postAdvertisement = new PostAdvertisementFragment();
         exit = new ExitFragment();
-        Login login = new Login();
-        name = login.fullName;
-        foto = login.UserPhoto;
-
+        login = new Login();
+        registration = new Registration();
+        if (registration.responseFromServiseFullName != null && registration.responseFromServiseImage != null) {
+            name = "";
+            foto = "";
+            name = registration.responseFromServiseFullName;
+            foto = registration.responseFromServiseImage;
+        } else {
+            name = "";
+            foto = "";
+            name = login.fullName;
+            foto = login.UserPhoto;
+        }
 
 
         fragmentManager = getSupportFragmentManager();
@@ -66,7 +76,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View header = navigationView.getHeaderView(0);
         fullName = (TextView) header.findViewById(R.id.navigation_drawer_full_name);
-        userImage = (ImageView)header.findViewById(R.id.navigation_drawer_user_foto);
+        userImage = (CircleImageView) header.findViewById(R.id.navigation_drawer_user_foto);
         Glide.with(NewsNavigationDrawer.this).load(foto).override(150, 150).into(userImage);
         fullName.setText(name);
         navigationView.setNavigationItemSelectedListener(this);

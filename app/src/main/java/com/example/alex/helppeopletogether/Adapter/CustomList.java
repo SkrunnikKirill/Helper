@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
@@ -28,8 +27,7 @@ public class CustomList extends ArrayAdapter<String> {
     private final ArrayList<String> finalDate;
     private ArrayList<Integer> likeNews;
     private ArrayList<Integer> idServerNews;
-    private  ArrayList<Integer> idNews;
-
+    private ArrayList<Integer> idNews;
 
 
 
@@ -122,7 +120,6 @@ public class CustomList extends ArrayAdapter<String> {
 //        }
 
 
-
         return rowView;
     }
 
@@ -143,7 +140,6 @@ public class CustomList extends ArrayAdapter<String> {
     public ArrayList<Integer> getLikeNews() {
         return likeNews;
     }
-
 
 
 }

@@ -16,6 +16,7 @@ public class RegistrationResponseFromServer {
     public Integer response_add_user_information;
     public ArrayList<Integer> id;
     public ArrayList<Integer> liked_advers;
+    public ArrayList<String> payment_account;
     public ArrayList<String> created_at;
     public ArrayList<String> title;
     public ArrayList<String> short_description;

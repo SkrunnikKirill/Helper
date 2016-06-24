@@ -4,9 +4,6 @@ package com.example.alex.helppeopletogether.registration;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,10 +11,12 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsNavigationDrawer;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
@@ -31,7 +30,6 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -39,8 +37,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.plus.Plus;
-import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.Gson;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKCallback;
@@ -56,9 +52,6 @@ import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKList;
 import com.vk.sdk.util.VKUtil;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -78,6 +71,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     LoginManager loginManager;
     Context context;
     Profile profile;
+    InternetCheck internetCheck;
     private EditText email;
     private EditText password;
     private Button buttonNext, facebook, vk, googlePlus;
@@ -96,11 +90,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private SignInButton btnSignIn;
     private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId;
     private ProfileTracker profileTracker;
+    private RelativeLayout relativeLayoutSnackBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+        relativeLayoutSnackBar = (RelativeLayout) findViewById(R.id.relativeLayoutLogin);
+        checkInternet();
         email = (EditText) findViewById(R.id.login_email);
         facebook = (Button) findViewById(R.id.login_button_facebook);
         vk = (Button) findViewById(R.id.login_button_vk);
@@ -121,17 +118,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         loginManager = LoginManager.getInstance();
         context = getApplicationContext();
 
+
     }
 
     public void checkInternet() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (isOnline() == true) {
-                    Toast.makeText(Login.this, "Проверте интернет соединения", Toast.LENGTH_LONG).show();
-                }
-            }
-        }).run();
+        internetCheck = new InternetCheck(Login.this, relativeLayoutSnackBar);
+        internetCheck.execute();
     }
 
 
@@ -162,6 +154,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        checkInternet();
+
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
@@ -176,7 +175,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_button_login:
-                checkInternet();
                 checkData();
                 break;
             case R.id.login_view_registration:
@@ -185,12 +183,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                 overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 break;
             case R.id.login_button_facebook:
-                checkInternet();
                 loginFacebook();
                 break;
 
             case R.id.login_button_vk:
-                checkInternet();
                 VKSdk.login(this, scope);
                 break;
 
@@ -270,6 +266,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     responseFromServiseSocialNetwork = registrationResponseFromServer.response;
                     userId = registrationResponseFromServer.user_id;
                     fullName = registrationResponseFromServer.full_name;
+                    UserPhoto = registrationResponseFromServer.avatar;
+
 
                     if (responseFromServiseSocialNetwork == 1) {
                         newsFragment();
@@ -367,8 +365,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     public void checkData() {
         Registration loginEmail = new Registration();
         if (loginEmail.resultRegularExprensionsEmail(email) == false || password.getText().length() < 6) {
+
             Toast.makeText(Login.this, "Не правильно введен логин или пароль", Toast.LENGTH_LONG).show();
         } else if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
+
             Toast.makeText(Login.this, "Не правильно введен логин или пароль", Toast.LENGTH_SHORT).show();
         } else {
 
@@ -385,6 +385,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                         responseFromServiseLogin = responseLogin.response_login;
                         userId = responseLogin.user_id;
                         fullName = responseLogin.full_name;
+                        UserPhoto = responseLogin.avatar;
                         if (responseFromServiseLogin == 1) {
                             Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
                         } else if (responseFromServiseLogin == 2) {
@@ -458,35 +459,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         return false;
     }
 
-    public boolean isOnline() {
 
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        // проверка подключения
-        if (activeNetwork != null && activeNetwork.isConnected()) {
-            try {
-                // тест доступности внешнего ресурса
-                URL url = new URL("http://www.google.com/");
-                HttpURLConnection urlc = (HttpURLConnection) url.openConnection();
-                urlc.setRequestProperty("User-Agent", "test");
-                urlc.setRequestProperty("Connection", "close");
-                urlc.setConnectTimeout(1000); // Timeout в секундах
-                urlc.connect();
-                // статус ресурса OK
-                if (urlc.getResponseCode() == 200) {
-                    return true;
-                }
-                // иначе проверка провалилась
-                return false;
-
-            } catch (IOException e) {
-                Log.d("my_tag", "Ошибка проверки подключения к интернету", e);
-                return false;
-            }
-        }
-
-        return false;
-    }
 }
+
 

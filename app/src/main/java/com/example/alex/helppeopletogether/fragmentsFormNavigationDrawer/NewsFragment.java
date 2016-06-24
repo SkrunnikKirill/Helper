@@ -1,13 +1,10 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +12,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-//import com.example.alex.helppeopletogether.R;
-//import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsItem.DummyItem;
-//import com.example.alex.helppeopletogether.navigationDrawer.NewsRecyclerViewAdapter;
-
+import com.example.alex.helppeopletogether.Adapter.CustomList;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
-import com.example.alex.helppeopletogether.Adapter.CustomList;
 import com.example.alex.helppeopletogether.registration.Login;
 import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
@@ -32,6 +25,10 @@ import java.util.ArrayList;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
+//import com.example.alex.helppeopletogether.R;
+//import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsItem.DummyItem;
+//import com.example.alex.helppeopletogether.navigationDrawer.NewsRecyclerViewAdapter;
 
 
 public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -44,6 +41,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public ArrayList<String> expectedAmount;
     public ArrayList<String> finalDate;
     public ArrayList<Integer> likeNews;
+    public ArrayList<String> paymentAccount;
     public ArrayList<Integer> idNews;
     public ArrayList<Integer> likeNewsFromServer;
     CustomList adapter;
@@ -74,17 +72,22 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
         if (login.userId != null) {
             userId = String.valueOf(login.userId);
         } else if (registration.responseFromServiseRegistrationId != null) {
             userId = String.valueOf(registration.responseFromServiseRegistrationId);
         }
         idNews = new ArrayList<>();
-        newsInformationFromServer();
+
 
         swipeRefreshLayout.setOnRefreshListener(this);
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        newsInformationFromServer();
     }
 
     private void newsInformationFromServer() {
@@ -93,6 +96,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                 likeNews = registrationResponseFromServer.liked_advers;
                 likeNewsFromServer.addAll(likeNews);
+                paymentAccount = registrationResponseFromServer.payment_account;
                 idServerNews = registrationResponseFromServer.id;
                 shortDescription = registrationResponseFromServer.short_description;
                 description = registrationResponseFromServer.description;
@@ -100,6 +104,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 image = registrationResponseFromServer.image;
                 expectedAmount = registrationResponseFromServer.expected_amount;
                 finalDate = registrationResponseFromServer.final_date;
+
                 if (likeNews.size() == 1 && likeNews.get(0) == 0) {
                     likeNews = new ArrayList<Integer>();
                     adapter();
@@ -131,12 +136,15 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 String detailNewsExpectedAmount = expectedAmount.get(position);
                 String detailNewsFinalDate = finalDate.get(position);
                 String detailNewsDescription = description.get(position);
+                String detailPaymentAccount = paymentAccount.get(position).toString();
                 Intent news = new Intent(getActivity(), DetailNews.class);
                 news.putExtra("image", detailNewsImage);
                 news.putExtra("shortDescription", detailNewsShortDescription);
                 news.putExtra("expectedAmount", detailNewsExpectedAmount);
                 news.putExtra("finalDate", detailNewsFinalDate);
                 news.putExtra("description", detailNewsDescription);
+                news.putExtra("paymentAccount", detailPaymentAccount);
+
                 startActivity(news);
 
             }
@@ -160,6 +168,12 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        newsInformationFromServer();
+
+    }
 
     @Override
     public void onPause() {

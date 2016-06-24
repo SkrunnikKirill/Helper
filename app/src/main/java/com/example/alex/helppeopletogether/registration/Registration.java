@@ -11,16 +11,19 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.PersistableBundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NextPostAdvertisementFragment;
+import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
+import com.example.alex.helppeopletogether.SupportClasses.Validation;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
@@ -41,12 +44,13 @@ import retrofit.mime.TypedFile;
 
 public class Registration extends Activity implements View.OnClickListener {
     public static Integer responseFromServiseRegistrationId;
+    public static String responseFromServiseFullName, responseFromServiseImage;
     Intent intent;
     Integer responseFromServiseRegistration;
-    String responseFromServiseFullName, responseFromServiseImage;
     Uri selectedImageUri;
     String selectedImagePath;
     int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    RelativeLayout relativeLayoutRegistrationSnackBar;
     private EditText firstName, secondName, email, password;
     private ImageView face;
     private Button buttonRegistration;
@@ -58,11 +62,12 @@ public class Registration extends Activity implements View.OnClickListener {
     private File file;
     private TypedFile imageFace;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
+        relativeLayoutRegistrationSnackBar = (RelativeLayout) findViewById(R.id.relativeLayoutRegistration);
+        checkInternet();
         face = (ImageView) findViewById(R.id.registration_face_image);
         firstName = (EditText) findViewById(R.id.registration_first_name);
         secondName = (EditText) findViewById(R.id.registration_second_name);
@@ -71,8 +76,13 @@ public class Registration extends Activity implements View.OnClickListener {
         buttonRegistration = (Button) findViewById(R.id.registration_button_registration);
         buttonRegistration.setOnClickListener(this);
         face.setOnClickListener(this);
-
     }
+
+    public void checkInternet() {
+        InternetCheck internetCheck = new InternetCheck(Registration.this, relativeLayoutRegistrationSnackBar);
+        internetCheck.execute();
+    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -143,6 +153,12 @@ public class Registration extends Activity implements View.OnClickListener {
             }
         });
         builder.show();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        checkInternet();
     }
 
     @Override
@@ -217,22 +233,102 @@ public class Registration extends Activity implements View.OnClickListener {
         return s;
     }
 
+    private void registerViewsEmail(final EditText text) {
+        text.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Validation.isEmailAddress(text, true);
+
+            }
+
+        });
+    }
+
+    private void registerViewsPassword(final EditText text) {
+        text.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Validation.isPassword(text, true);
+
+            }
+
+        });
+    }
+
+    private void registerViewsFullName(final EditText text) {
+        text.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Validation.isName(text, true);
+            }
+
+        });
+    }
+
+
+    private boolean checkValidationEmail(EditText text) {
+        boolean ret = true;
+        if (!Validation.isEmailAddress(text, true)) {
+            ret = false;
+        }
+        return ret;
+    }
+
+    private boolean checkValidationPassword(EditText text) {
+        boolean ret = true;
+        if (!Validation.isPassword(text, true)) {
+            ret = false;
+        }
+        return ret;
+    }
+
+    private boolean checkValidationFullName(EditText text) {
+        boolean ret = true;
+        if (!Validation.isName(text, true)) {
+            ret = false;
+        }
+        return ret;
+    }
+
 
     public void sendRegistrationInformationToServer() {
         data = new HashMap<>();
-        if (firstName.getText().length() < 0 || secondName.getText().length() < 0) {
-            Toast.makeText(getApplication(), "Все поля должны быть заполнены", Toast.LENGTH_LONG).show();
+        if (firstName.getText().toString().length() <= 2 || secondName.getText().toString().length() <= 2) {
+            registerViewsFullName(firstName);
+            registerViewsFullName(secondName);
+            checkValidationFullName(secondName);
+            checkValidationFullName(firstName);
         } else if (resultRegularExprensionsEmail(email) == false) {
-            Toast.makeText(getApplication(), "Email, некоректный", Toast.LENGTH_LONG).show();
-        } else if (password.getText().length() < 6) {
-            Toast.makeText(getApplication(), "Пароль, должен быть больше 6 символов", Toast.LENGTH_LONG).show();
+            registerViewsEmail(email);
+            checkValidationEmail(email);
+        } else if (password.getText().toString().length() < 6) {
+            registerViewsPassword(password);
+            checkValidationPassword(password);
+        } else if (selectedImageUri == null) {
+            Toast.makeText(Registration.this, "Установите фотографию", Toast.LENGTH_LONG).show();
         } else {
-            if (selectedImageUri == null){
-                Toast.makeText(Registration.this,"Установите фотографию",Toast.LENGTH_LONG).show();
-            }else {
-                 file = new File(getPath(selectedImageUri));
-                 imageFace = new TypedFile("image/*", file);
-            }
+            file = new File(getPath(selectedImageUri));
+            imageFace = new TypedFile("image/*", file);
+
             data.put("first_name", String.valueOf(firstName.getText()));
             data.put("second_name", String.valueOf(secondName.getText()));
             data.put("email", String.valueOf(email.getText()));
@@ -266,19 +362,20 @@ public class Registration extends Activity implements View.OnClickListener {
 
                 }
 
+
                 @Override
                 public void failure(RetrofitError error) {
                     Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_LONG).show();
                 }
             });
-
-
         }
 
 
-
-
     }
+
+
+
+
 
     public boolean resultRegularExprensionsEmail(EditText regularEmail) {
         regularExprensionsEmail = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"" +

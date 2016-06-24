@@ -15,11 +15,10 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.alex.helppeopletogether.Adapter.AdvertisementAdapter;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
-import com.example.alex.helppeopletogether.Adapter.AdvertisementAdapter;
 import com.example.alex.helppeopletogether.registration.Login;
 import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
@@ -43,6 +42,7 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
     public ArrayList<String> expectedAmount;
     public ArrayList<String> finalDate;
     public ArrayList<Integer> idNews;
+    public ArrayList<String> paymentAccount;
     ListView list;
     String idUser;
     FragmentManager fm;
@@ -97,6 +97,7 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
                     image = registrationResponseFromServer.image;
                     expectedAmount = registrationResponseFromServer.expected_amount;
                     finalDate = registrationResponseFromServer.final_date;
+                    paymentAccount = registrationResponseFromServer.payment_account;
                     adapter();
                     proDialog.connectionProgressBar();
                 }
@@ -105,7 +106,7 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
             @Override
             public void failure(RetrofitError error) {
                 System.out.println(error.getMessage());
-                Toast.makeText(getActivity(), "Сервер не доступен", Toast.LENGTH_LONG).show();
+                //   Toast.makeText(getActivity(), "Сервер не доступен", Toast.LENGTH_LONG).show();
                 proDialog.connectionProgressBar();
             }
         });
@@ -116,7 +117,6 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.advertisement, container, false);
         list = (ListView) root.findViewById(R.id.my_advertisement_list);
-        getAdvertisementFromTheServer();
         swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.advertisement_swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_blue_bright,
@@ -125,6 +125,12 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
                 android.R.color.holo_red_light);
         swipeRefreshLayout.setOnRefreshListener(this);
         return root;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getAdvertisementFromTheServer();
     }
 
     private void adapter() {
@@ -141,12 +147,14 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
                 String detailNewsExpectedAmount = expectedAmount.get(position);
                 String detailNewsFinalDate = finalDate.get(position);
                 String detailNewsDescription = description.get(position);
+                String detailNewsPaymentAccount = paymentAccount.get(position).toString();
                 Intent news = new Intent(getActivity(), DetailNews.class);
                 news.putExtra("image", detailNewsImage);
                 news.putExtra("shortDescription", detailNewsShortDescription);
                 news.putExtra("expectedAmount", detailNewsExpectedAmount);
                 news.putExtra("finalDate", detailNewsFinalDate);
                 news.putExtra("description", detailNewsDescription);
+                news.putExtra("paymentAccount", detailNewsPaymentAccount);
                 startActivity(news);
 
             }
@@ -166,4 +174,9 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
         }, 4000);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getAdvertisementFromTheServer();
+    }
 }
