@@ -29,7 +29,6 @@ public class FiledTest {
                     theme.setError("обязательные");
                 } else if (theme.getText().toString().length() > 50) {
                     theme.setError("количество символов");
-                    int p;
                 }
             }
         });
