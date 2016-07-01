@@ -1,6 +1,6 @@
 package com.example.alex.helppeopletogether.Adapter;
 
-import android.app.Activity;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +23,8 @@ public class CustomList extends ArrayAdapter<String> {
     Dimensions dimensions;
     GetUserId getUserId;
     String idUser;
-    private Activity context;
+    LayoutInflater layoutInflater;
+    private Context context;
     private ArrayList<String> shortDescription;
     private ArrayList<String> image;
     private ArrayList<String> datePublication;
@@ -33,7 +34,7 @@ public class CustomList extends ArrayAdapter<String> {
     private ArrayList<Integer> idServerNews;
     private ArrayList<Integer> idNews;
 
-    public CustomList(Activity context,
+    public CustomList(Context context,
                       ArrayList<String> shortDescription, ArrayList<String> image, ArrayList<String> datePublication,
                       ArrayList<String> expected_amount, ArrayList<String> finalDate, ArrayList<Integer> likeNews, ArrayList<Integer> idServerNews, ArrayList<Integer> idNews) {
         super(context, R.layout.datail_news_item, shortDescription);
@@ -46,7 +47,7 @@ public class CustomList extends ArrayAdapter<String> {
         this.likeNews = likeNews;
         this.idServerNews = idServerNews;
         this.idNews = idNews;
-
+        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
 
@@ -55,8 +56,7 @@ public class CustomList extends ArrayAdapter<String> {
         final ViewHolder viewHolder;
         dimensions = new Dimensions();
         getUserId = new GetUserId();
-        LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.datail_news_item, parent, false);
+        View rowView = layoutInflater.inflate(R.layout.datail_news_item, parent, false);
         viewHolder = new ViewHolder();
         viewHolder.like = (ToggleButton) rowView.findViewById(R.id.datail_news_like);
         viewHolder.txtTitle = (TextView) rowView.findViewById(R.id.detail_news_theme);

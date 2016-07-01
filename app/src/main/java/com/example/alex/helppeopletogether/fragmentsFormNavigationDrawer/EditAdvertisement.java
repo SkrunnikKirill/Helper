@@ -120,7 +120,8 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
 
             }
         });
-
+        filedTest = new FiledTest(theme, shortDescription, fullDescription, money, account, day);
+        filedTest.inspection1();
         editButton.setOnClickListener(this);
     }
 
@@ -132,8 +133,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
         account.setText(eAPaymentAccount);
         money.setText(eAExpectedAmount);
         Glide.with(EditAdvertisement.this).load(eAImage).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).into(pictureAdvertisement);
-        filedTest = new FiledTest(theme, shortDescription, fullDescription, money, account, day);
-//        filedTest.inspection();
+
 
     }
 

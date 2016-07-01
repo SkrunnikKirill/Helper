@@ -1,6 +1,7 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +47,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     CustomList adapter;
     ProDialog proDialog;
     NewsFragment newsFragment;
+    Context context;
     private ListView list;
     private String userId;
     private Login login;
@@ -82,27 +84,17 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (login.userId != null) {
-            userId = String.valueOf(login.userId);
-        } else if (registration.responseFromServiseRegistrationId != null) {
-            userId = String.valueOf(registration.responseFromServiseRegistrationId);
-        }
-//        } if (savedInstanceState!=null){
-//            userId = savedInstanceState.getString("userId");
-//            idServerNews.clear();
-//            datePublication.clear();
-//            title.clear();
-//            shortDescription.clear();
-//            description.clear();
-//            image.clear();
-//            expectedAmount.clear();
-//            finalDate.clear();
-//            paymentAccount.clear();
-//            likeNews.clear();
-//            idServerNews.clear();
-//            idNews.clear();
-//        }
+        if (savedInstanceState == null) {
+            if (login.userId != null) {
+                userId = String.valueOf(login.userId);
+            } else if (registration.responseFromServiseRegistrationId != null) {
+                userId = String.valueOf(registration.responseFromServiseRegistrationId);
+            }
 
+        } else {
+            userId = savedInstanceState.getString("userId");
+        }
+        context = getActivity();
         idServerNews = new ArrayList<>();
         datePublication = new ArrayList<>();
         title = new ArrayList<>();
@@ -175,7 +167,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
     public void adapter() {
-        adapter = new CustomList(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate, likeNews, idServerNews, idNews);
+        adapter = new CustomList(context, shortDescription, image, datePublication, expectedAmount, finalDate, likeNews, idServerNews, idNews);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

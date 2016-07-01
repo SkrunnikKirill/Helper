@@ -456,15 +456,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                 googleFirstName = arrayName[0];
                 googleSecondName = arrayName[1];
             }
-            userProfilePhoto = acct.getPhotoUrl().toString();
 
-//             String userProfilePhoto = acct.getPhotoUrl().toString();
-//            Intent googleSignInIntent = new Intent(Login.this, NewsNavigationDrawer.class);
-//            googleSignInIntent.putExtra(PROFILE_IMAGE_URL, userProfilePhoto);
-//            startActivity(googleSignInIntent);
             UserPhoto = "foto";
             googleSocialName = "Google";
-            socialNetworksRegistration(googleFirstName, googleSecondName, googleSocialName, googleId, userProfilePhoto);
+            socialNetworksRegistration(googleFirstName, googleSecondName, googleSocialName, googleId, UserPhoto);
         } else {
             Toast.makeText(Login.this, "Интернет соеденение отсутствует", Toast.LENGTH_SHORT).show();
         }
