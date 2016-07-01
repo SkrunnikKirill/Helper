@@ -4,16 +4,20 @@ package com.example.alex.helppeopletogether.registration;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
@@ -62,12 +66,18 @@ import retrofit.client.Response;
 
 
 public class Login extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+    public static final String PROFILE_IMAGE_URL = "PROFILE_IMAGE_URL";
     private static final int RC_SIGN_IN = 0;
     private static final String TAG = "Login";
     private static final int PROFILE_PIC_SIZE = 400;
+    private static final String MyPREF = "MyPrefs";
+    private static final String emaill = "emailKey";
+    private static final String pass = "passKey";
     public static Integer userId;
     public static String UserPhoto;
     public static String fullName;
+    public static String userProfilePhoto;
+    SharedPreferences sharedpreferences;
     LoginManager loginManager;
     Context context;
     Profile profile;
@@ -91,6 +101,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId;
     private ProfileTracker profileTracker;
     private RelativeLayout relativeLayoutSnackBar;
+    private ToggleButton showPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,8 +129,34 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         loginManager = LoginManager.getInstance();
         context = getApplicationContext();
 
+        showPassword = (ToggleButton) findViewById(R.id.togglePassword);
+        showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    showPassword.setBackgroundResource(R.drawable.onn);
+                    password.setTransformationMethod(null);
+                } else {
+                    showPassword.setBackgroundResource(R.drawable.offff);
+                    password.setTransformationMethod(new PasswordTransformationMethod());
+                }
+            }
+        });
 
     }
+
+    @Override
+    protected void onResume() {
+        sharedpreferences = getSharedPreferences(MyPREF, context.MODE_PRIVATE);
+        if (sharedpreferences.contains(emaill)) {
+        }
+        if (sharedpreferences.contains(pass)) {
+            intentNextStep = new Intent(Login.this, NewsNavigationDrawer.class);
+            startActivity(intentNextStep);
+        }
+        super.onResume();
+    }
+
 
     public void checkInternet() {
         internetCheck = new InternetCheck(Login.this, relativeLayoutSnackBar);
@@ -204,7 +241,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         loginManager.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
-
                     public void onSuccess(LoginResult loginResult) {
                         if (Profile.getCurrentProfile() == null) {
                             profileTracker = new ProfileTracker() {
@@ -371,13 +407,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
             Toast.makeText(Login.this, "Не правильно введен логин или пароль", Toast.LENGTH_SHORT).show();
         } else {
-
             loginData = new LinkedHashMap<>();
             loginData.put("email", email.getText().toString());
             loginData.put("password", password.getText().toString());
             Retrofit.sendLoginData(loginData, new Callback<RegistrationResponseFromServer>() {
                 @Override
                 public void success(RegistrationResponseFromServer responseLogin, Response response) {
+
                     if (responseLogin == null) {
                         Toast.makeText(Login.this, R.string.error_data_from_server, Toast.LENGTH_LONG).show();
                     } else {
@@ -408,19 +444,27 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private void handleSignInResult(GoogleSignInResult result) {
 
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();
             String email = acct.getEmail();
             googleId = acct.getId();
+
             String name = acct.getDisplayName();
             if (name != null) {
                 String[] arrayName = name.split(" ");
                 googleFirstName = arrayName[0];
                 googleSecondName = arrayName[1];
             }
+            userProfilePhoto = acct.getPhotoUrl().toString();
+
+//             String userProfilePhoto = acct.getPhotoUrl().toString();
+//            Intent googleSignInIntent = new Intent(Login.this, NewsNavigationDrawer.class);
+//            googleSignInIntent.putExtra(PROFILE_IMAGE_URL, userProfilePhoto);
+//            startActivity(googleSignInIntent);
             UserPhoto = "foto";
             googleSocialName = "Google";
-            socialNetworksRegistration(googleFirstName, googleSecondName, googleSocialName, googleId, UserPhoto);
+            socialNetworksRegistration(googleFirstName, googleSecondName, googleSocialName, googleId, userProfilePhoto);
         } else {
             Toast.makeText(Login.this, "Интернет соеденение отсутствует", Toast.LENGTH_SHORT).show();
         }
@@ -458,7 +502,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
         return false;
     }
-
 
 
 }

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background">
 
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -42,19 +43,21 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            <EditText
-                android:id="@+id/login_email"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="9dp"
-                android:background="@null"
-                android:hint="email"
-                android:inputType="textEmailAddress"
-                android:padding="9dp"
-                android:singleLine="true"
+                android:textColorHint="#F8F8FF">
 
-                />
+                <EditText
+                    android:id="@+id/login_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:background="@null"
+                    android:hint="email"
+                    android:inputType="textEmailAddress"
+                    android:padding="9dp"
+                    android:singleLine="true"
+                    android:textColorHint="#F8F8FF" />
+
             </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
@@ -82,19 +85,32 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/login_password"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="9dp"
-                android:layout_marginTop="5dp"
-                android:background="@null"
-                android:hint="password"
-                android:inputType="textPassword"
-                android:padding="9dp" />
+                android:layout_weight="1"
+                android:textColorHint="#F8F8FF">
+
+                <EditText
+                    android:id="@+id/login_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:hint="password"
+                    android:inputType="textPassword"
+                    android:padding="9dp"
+                    android:textColorHint="#F8F8FF" />
+
             </android.support.design.widget.TextInputLayout>
+
+            <ToggleButton
+                android:id="@+id/togglePassword"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/offff"
+                android:textOff=""
+                android:textOn="" />
 
 
         </LinearLayout>
@@ -108,7 +124,6 @@
 
 
 
-
     </RelativeLayout>
 
 
@@ -116,7 +131,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/relativeLayout"
-        android:layout_marginTop="37dp"
         android:orientation="vertical">
 
         <Button
@@ -125,6 +139,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="37dp"
             android:background="@drawable/button"
             android:gravity="center"
             android:text="Войти"

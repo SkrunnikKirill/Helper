@@ -2,6 +2,7 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,7 +15,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -50,7 +53,6 @@ import retrofit.mime.TypedFile;
 public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     static final int GALLERY_REQUEST_IMAGE = 1;
     int DIALOG_DATE = 1;
-
     ImageView imageAdvertisement;
     int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     Uri selectedImageUri;
@@ -58,16 +60,14 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     Registration registration;
     Login login;
     String userid;
-    String[] nameCurrency = {"USD", "EUR", "UAH"};
-    String currency;
     NewsFragment news;
-
-
+    Spinner mySpinner;
+    String[] spinnerValues = {"UAH", "EUR", "USD"};
+    int total_images[] = {R.drawable.google, R.drawable.facebook, R.drawable.google, R.drawable.facebook, R.drawable.google};
+    String spin;
     private TextView day;
-
     private EditText theme, shortDescription, fullDescription, money, account;
     private Button locate;
-    private ImageView down;
     private LinkedHashMap<String, String> dataAdvertisement;
 
     @Override
@@ -86,6 +86,26 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         registration = new Registration();
         imageAdvertisement.setOnClickListener(this);
         locate.setOnClickListener(this);
+        mySpinner = (Spinner) findViewById(R.id.spinnerstate);
+        mySpinner.setAdapter(new MyAdapter(this, R.layout.custom_spinner, spinnerValues));
+        mySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                spin = spinnerValues[position];
+                if (spin == "USD") {
+                    spin = "$";
+                } else if (spin == "EUR") {
+                    spin = "€";
+                } else if (spin == "UAH") {
+                    spin = "₴";
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         login = new Login();
         if (login.userId != null) {
             userid = String.valueOf(login.userId);
@@ -93,7 +113,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             userid = String.valueOf(registration.responseFromServiseRegistrationId);
         }
         dataPicker();
-        spiner();
         Toolbar toolbar = (Toolbar) findViewById(R.id.description_problem_toolbar);
         toolbar.setTitle("Информация Обьявления");
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_36dp));
@@ -104,7 +123,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             }
         });
 
-
     }
 
     @Override
@@ -113,42 +131,12 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
 
-    private void spiner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nameCurrency);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Spinner spinner = (Spinner) findViewById(R.id.spinnerstate);
-        spinner.setAdapter(adapter);
-        spinner.setPrompt("Title");
-        // выделяем элемент
-        spinner.setSelection(2);
-        // устанавливаем обработчик нажатия
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // показываем позиция нажатого элемента
-                currency = nameCurrency[position];
-                if (currency == "USD") {
-                    currency = "$";
-                } else if (currency == "EUR") {
-                    currency = "€";
-                } else if (currency == "UAH") {
-                    currency = "₴";
-                }
-
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
-    }
-
     private void dataPicker() {
         day.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
+                calendar.setMinimalDaysInFirstWeek(2016);
                 DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
                         DescriptionProblem.this,
                         calendar.get(Calendar.YEAR),
@@ -191,8 +179,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
 
     }
 
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -208,7 +194,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     public void selectImage() {
         final CharSequence[] items = {"Сделать фотографию", "Выбрать фотографию",
                 "Отмена"};
-
         AlertDialog.Builder builder = new AlertDialog.Builder(DescriptionProblem.this);
         builder.setTitle("Добавить фотографию");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -315,7 +300,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             dataAdvertisement.put("title", String.valueOf(theme.getText()));
             dataAdvertisement.put("short_description", String.valueOf(shortDescription.getText()));
             dataAdvertisement.put("description", String.valueOf(fullDescription.getText()));
-            dataAdvertisement.put("expected_amount", String.valueOf(money.getText() + currency));
+            dataAdvertisement.put("expected_amount", String.valueOf(money.getText() + spin));
             dataAdvertisement.put("final_date", String.valueOf(day.getText()));
             dataAdvertisement.put("payment_account", String.valueOf(account.getText()));
             dataAdvertisement.put("user_id", userid);
@@ -339,14 +324,38 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         } else {
             Toast.makeText(DescriptionProblem.this, "Заполните все поля и установите изображение", Toast.LENGTH_LONG).show();
         }
-
     }
-
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         String finalDay = dayOfMonth + "/" + (++monthOfYear) + "/" + year;
 
         day.setText(finalDay);
+    }
+
+    public class MyAdapter extends ArrayAdapter<String> {
+        public MyAdapter(Context ctx, int txtViewResourceId, String[] objects) {
+            super(ctx, txtViewResourceId, objects);
+        }
+
+        @Override
+        public View getDropDownView(int position, View cnvtView, ViewGroup prnt) {
+            return getCustomView(position, cnvtView, prnt);
+        }
+
+        @Override
+        public View getView(int pos, View cnvtView, ViewGroup prnt) {
+            return getCustomView(pos, cnvtView, prnt);
+        }
+
+        public View getCustomView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            View mySpinner = inflater.inflate(R.layout.custom_spinner, parent, false);
+            TextView main_text = (TextView) mySpinner.findViewById(R.id.text_main_seen);
+            main_text.setText(spinnerValues[position]);
+            ImageView left_icon = (ImageView) mySpinner.findViewById(R.id.left_pic);
+            left_icon.setImageResource(total_images[position]);
+            return mySpinner;
+        }
     }
 }
