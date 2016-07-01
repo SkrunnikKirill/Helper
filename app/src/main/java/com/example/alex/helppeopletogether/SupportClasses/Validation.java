@@ -15,7 +15,7 @@ public class Validation {
             "|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\" +
             "x09\\x0b\\x0c\\x0e-\\x7f])+)\\])";
     private static final String PASSWORD_REGAX = "(?=^.{6,}$)((?=.*\\d)|(?=.*\\W+))(?![.\\n])(?=.*[A-Z])(?=.*[a-z]).*$";
-    private static final String FULLNAME_REGAX = "^[а-яА-ЯёЁ][а-яА-ЯёЁ0-9-_\\.]{1,20}$";
+    private static final String FULLNAME_REGAX = "^[а-яА-ЯёЁa-zA-Z0-9]+$";
 
     // Error Messages
     private static final String REQUIRED_MSG = "обязательные";
@@ -37,6 +37,10 @@ public class Validation {
         return isValid(editText, FULLNAME_REGAX, FULLNAME_MSG, required);
     }
 
+    public static boolean isAll(EditText editText, boolean required) {
+        return isValid(editText, REQUIRED_MSG, required);
+    }
+
     // return true if the input field is valid, based on the parameter passed
     public static boolean isValid(EditText editText, String regex, String errMsg, boolean required) {
 
@@ -52,10 +56,25 @@ public class Validation {
             editText.setError(errMsg);
             return false;
         }
-        ;
+
 
         return true;
     }
+
+    public static boolean isValid(EditText editText, String errMsg, boolean required) {
+
+        String text = editText.getText().toString().trim();
+        // clearing the error, if it was previously set by some other values
+        editText.setError(null);
+
+        // text required and editText is blank, so return false
+        if (required && !hasText(editText)) return false;
+
+
+        return true;
+    }
+
+
 
     public static boolean hasText(EditText editText) {
 

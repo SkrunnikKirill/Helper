@@ -9,6 +9,7 @@ import retrofit.http.Multipart;
 import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.http.PartMap;
+import retrofit.http.Query;
 import retrofit.http.QueryMap;
 import retrofit.mime.TypedFile;
 
@@ -27,6 +28,9 @@ public class Retrofit {
     private static MyAdvertisementJsonArray myAdvertisementArrays;
     private static LikeNews likeNews;
     private static SelectedNews selectedNews;
+    private static AdvertisementEdit advertisementEdit;
+    private static AdvertisementEditFromServer advertisementEditFromServer;
+
 
     static {
         init();
@@ -45,12 +49,22 @@ public class Retrofit {
         postInterfaceDescriptionProblem = postAdapter.create(PostInterfaceDescriptionProblem.class);
         arrays = postAdapter.create(NewsJsonArray.class);
         myAdvertisementArrays = postAdapter.create(MyAdvertisementJsonArray.class);
+        advertisementEdit = postAdapter.create(AdvertisementEdit.class);
+        advertisementEditFromServer = postAdapter.create(AdvertisementEditFromServer.class);
         likeNews = postAdapter.create(LikeNews.class);
         selectedNews = postAdapter.create(SelectedNews.class);
     }
 
     public static void sendSocialNetworks(Map<String, String> social, Callback<RegistrationResponseFromServer> callback) {
         postInterfaceSocialNetworks.sendSocialNetworks(social, callback);
+    }
+
+    public static void sendEditInformationFromServer(Map<String, String> edit, TypedFile file, Callback<RegistrationResponseFromServer> callback) {
+        advertisementEditFromServer.setEditData(edit, file, callback);
+    }
+
+    public static void sendAdvertisementEdit(String userId, String newsId, Callback<ResponseFromServerEditAdvertisement> callback) {
+        advertisementEdit.setData(userId, newsId, callback);
     }
 
     public static void sendRegistrationData(Map<String, String> datas, TypedFile file, Callback<RegistrationResponseFromServer> callback) {
@@ -95,6 +109,17 @@ public class Retrofit {
         void getMyAdvertisementArrays(@Part("user_id") String userId, Callback<RegistrationResponseFromServer> callback);
     }
 
+    interface AdvertisementEdit {
+        @POST("/user_adver.php")
+        void setData(@Query("user_id") String userId, @Query("adver_id") String newsId, Callback<ResponseFromServerEditAdvertisement> callback);
+    }
+
+    interface AdvertisementEditFromServer {
+        @Multipart
+        @POST("/update_adver.php")
+        void setEditData(@PartMap Map<String, String> edit, @Part("imageAdvertisement") TypedFile file, Callback<RegistrationResponseFromServer> callback);
+    }
+
     interface LikeNews {
         @Multipart
         @POST("/liked_advers.php")
@@ -108,9 +133,9 @@ public class Retrofit {
     }
 
     interface NewsJsonArray {
-        @Multipart
+        //@Multipart
         @POST("/create_json.php")
-        void getArrays(@Part("user_id") String userId, Callback<RegistrationResponseFromServer> callback);
+        void getArrays(@Query("user_id") String userId, Callback<RegistrationResponseFromServer> callback);
     }
 
     interface PostInterfaceNextPostAdvertisementFragment {

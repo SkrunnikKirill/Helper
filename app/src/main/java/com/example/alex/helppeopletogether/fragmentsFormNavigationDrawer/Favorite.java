@@ -64,6 +64,7 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
             userId = String.valueOf(registration.responseFromServiseRegistrationId);
         }
         prodialog = new ProDialog();
+        getLikeInformations();
         swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.my_advertisement_swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_blue_bright,
@@ -83,7 +84,17 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
     @Override
     public void onStart() {
         super.onStart();
-        getLikeInformations();
+//        if (list != null) {
+//            selectedAdapter.notifyDataSetChanged();
+//        } else {
+
+        //  }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        selectedAdapter.notifyDataSetChanged();
     }
 
     @Override
