@@ -158,7 +158,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
 
     private void setEditInformationFromServer() {
         if (filedTest.inspection() == false) {
-            filedTest.inspection();
+            filedTest.inspection1();
         } else {
             data.put("title", theme.getText().toString());
             data.put("short_description", shortDescription.getText().toString());
