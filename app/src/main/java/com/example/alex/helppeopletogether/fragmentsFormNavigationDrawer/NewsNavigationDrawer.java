@@ -84,12 +84,14 @@ public class NewsNavigationDrawer extends AppCompatActivity
 
     }
 
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("fullName", name);
         outState.putString("foto", foto);
     }
+
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -108,6 +110,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
         }
 
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

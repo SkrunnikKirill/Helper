@@ -234,7 +234,7 @@ public class Registration extends Activity implements View.OnClickListener {
     }
 
     private void registerViewsEmail(final EditText text) {
-        text.addTextChangedListener(new TextWatcher() {
+        email.addTextChangedListener(new TextWatcher() {
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
@@ -243,7 +243,7 @@ public class Registration extends Activity implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Validation.isEmailAddress(text, true);
+                Validation.isEmailAddress(email, true);
 
             }
 
@@ -295,9 +295,7 @@ public class Registration extends Activity implements View.OnClickListener {
 
     private boolean checkValidationPassword(EditText text) {
         boolean ret = true;
-        if (!Validation.isPassword(text, true)) {
-            ret = false;
-        }
+
         return ret;
     }
 

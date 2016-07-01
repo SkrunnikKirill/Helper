@@ -312,12 +312,12 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         } else if (theme.getText().toString().length() > 0 && shortDescription.getText().toString().length() > 0 && fullDescription.getText().toString().length() > 0 &&
                 money.getText().toString().length() > 0 && day.getText().toString().length() > 0 && account.getText().toString().length() > 0 && selectedImageUri != null) {
             dataAdvertisement = new LinkedHashMap<>();
-            dataAdvertisement.put("title", String.valueOf(theme.getText()));
-            dataAdvertisement.put("short_description", String.valueOf(shortDescription.getText()));
-            dataAdvertisement.put("description", String.valueOf(fullDescription.getText()));
+            dataAdvertisement.put("title", theme.getText().toString());
+            dataAdvertisement.put("short_description", shortDescription.getText().toString());
+            dataAdvertisement.put("description", fullDescription.getText().toString());
             dataAdvertisement.put("expected_amount", String.valueOf(money.getText() + currency));
-            dataAdvertisement.put("final_date", String.valueOf(day.getText()));
-            dataAdvertisement.put("payment_account", String.valueOf(account.getText()));
+            dataAdvertisement.put("final_date", day.getText().toString());
+            dataAdvertisement.put("payment_account", account.getText().toString());
             dataAdvertisement.put("user_id", userid);
             File file = new File(getPath(selectedImageUri));
             TypedFile image = new TypedFile("image/*", file);
@@ -325,10 +325,13 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             Retrofit.sendAdvertisement(dataAdvertisement, image, new Callback<RegistrationResponseFromServer>() {
                 @Override
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-
-                    Intent intent = new Intent(DescriptionProblem.this, NewsNavigationDrawer.class);
-                    startActivityForResult(intent, 1);
-                    overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                    if (registrationResponseFromServer == null) {
+                        Toast.makeText(DescriptionProblem.this, R.string.error_data_from_server, Toast.LENGTH_SHORT).show();
+                    } else {
+                        Intent intent = new Intent(DescriptionProblem.this, NewsNavigationDrawer.class);
+                        startActivityForResult(intent, 1);
+                        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                    }
                 }
 
                 @Override

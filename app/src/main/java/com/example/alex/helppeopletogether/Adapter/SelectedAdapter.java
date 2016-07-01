@@ -23,6 +23,7 @@ public class SelectedAdapter extends BaseAdapter {
     LayoutInflater layoutInflater;
     ArrayList<SelectedNews> likeNews;
 
+
     public SelectedAdapter(Context context, ArrayList<SelectedNews> likeNews) {
         this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -47,22 +48,30 @@ public class SelectedAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
+        ViewHolder viewHolder;
+        SelectedNews selectedNews = getSelectedNews(position);
         if (view == null){
             view = layoutInflater.inflate(R.layout.datail_news_item,parent,false);
+            viewHolder = new ViewHolder();
+            viewHolder.txtTitle = (TextView) view.findViewById(R.id.detail_news_theme);
+            viewHolder.timeDate = (TextView) view.findViewById(R.id.date_text);
+            viewHolder.test = (TextView) view.findViewById(R.id.detail_news_persent);
+            viewHolder.date = (TextView) view.findViewById(R.id.detail_news_days_left);
+            viewHolder.summa = (TextView) view.findViewById(R.id.detail_news_summa);
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.detail_news_image);
+            view.setTag(viewHolder);
+
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
         }
-        SelectedNews selectedNews =getSelectedNews(position);
-        TextView txtTitle = (TextView) view.findViewById(R.id.detail_news_theme);
-        TextView timeDate = (TextView) view.findViewById(R.id.date_text);
-        TextView test = (TextView) view.findViewById(R.id.detail_news_persent);
-        TextView date = (TextView) view.findViewById(R.id.detail_news_days_left);
-        TextView summa = (TextView) view.findViewById(R.id.detail_news_summa);
-        ImageView imageView = (ImageView) view.findViewById(R.id.detail_news_image);
-        timeDate.setText(selectedNews.created_at);
-        txtTitle.setText(selectedNews.short_description);
-        summa.setText(selectedNews.expected_amount);
-        date.setText(selectedNews.final_date);
+
+        viewHolder.timeDate.setText(selectedNews.created_at);
+        viewHolder.txtTitle.setText(selectedNews.short_description);
+        viewHolder.summa.setText(selectedNews.expected_amount);
+        viewHolder.date.setText(selectedNews.final_date);
+
         Dimensions dimensions = new Dimensions();
-        Glide.with(context).load(selectedNews.image).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(context), 400).centerCrop().into(imageView);
+        Glide.with(context).load(selectedNews.image).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(context), 400).centerCrop().into(viewHolder.imageView);
 
 
         return view;
@@ -71,6 +80,17 @@ public class SelectedAdapter extends BaseAdapter {
     SelectedNews getSelectedNews(int position){
         return ((SelectedNews)getItem(position));
     }
+
+    static class ViewHolder {
+        TextView txtTitle;
+        TextView timeDate;
+        TextView test;
+        TextView date;
+        TextView summa;
+        ImageView imageView;
+
+    }
+
 
 
 }

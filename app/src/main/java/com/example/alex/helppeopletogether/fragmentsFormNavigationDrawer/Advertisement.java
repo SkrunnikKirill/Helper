@@ -60,14 +60,14 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
         proDialog = new ProDialog();
         proDialog.defenitionProgressBar(getActivity());
         Registration registration = new Registration();
-
+        fm = getActivity().getSupportFragmentManager();
         noLikeData = new NoLikeData();
         if (login.userId != null) {
             idUser = String.valueOf(login.userId);
         } else if (registration.responseFromServiseRegistrationId != null) {
             idUser = String.valueOf(registration.responseFromServiseRegistrationId);
         }
-
+        getAdvertisementFromTheServer();
 
     }
 
@@ -87,7 +87,6 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
                         registrationResponseFromServer.short_description.get(0).equals("0") &&
                         registrationResponseFromServer.description.get(0).equals("0") &&
                         registrationResponseFromServer.created_at.get(0).equals("0")) {
-                    fm = getActivity().getSupportFragmentManager();
                     fm.beginTransaction().replace(R.id.container, noLikeData).commit();
                     proDialog.connectionProgressBar();
                 } else {
@@ -97,6 +96,7 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
                     image = registrationResponseFromServer.image;
                     expectedAmount = registrationResponseFromServer.expected_amount;
                     finalDate = registrationResponseFromServer.final_date;
+                    idNews = registrationResponseFromServer.id;
                     paymentAccount = registrationResponseFromServer.payment_account;
                     adapter();
                     proDialog.connectionProgressBar();
@@ -130,12 +130,12 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onStart() {
         super.onStart();
-        getAdvertisementFromTheServer();
+
     }
 
     private void adapter() {
         AdvertisementAdapter adapter = new
-                AdvertisementAdapter(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate);
+                AdvertisementAdapter(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate, idNews);
         list.setAdapter((ListAdapter) adapter);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -177,6 +177,6 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onResume() {
         super.onResume();
-        getAdvertisementFromTheServer();
+
     }
 }
