@@ -1,9 +1,11 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -26,9 +28,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-//import com.example.alex.helppeopletogether.R;
-//import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsItem.DummyItem;
-//import com.example.alex.helppeopletogether.navigationDrawer.NewsRecyclerViewAdapter;
+
 
 
 public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
@@ -47,6 +47,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     CustomList adapter;
     ProDialog proDialog;
     NewsFragment newsFragment;
+    Context context;
     private ListView list;
     private String userId;
     private Login login;
@@ -57,38 +58,79 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
+
         list = (ListView) view.findViewById(R.id.list);
         login = new Login();
         newsFragment = new NewsFragment();
         registration = new Registration();
         proDialog = new ProDialog();
-        likeNewsFromServer = new ArrayList<Integer>();
+
         proDialog.defenitionProgressBar(getActivity());
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
-
-
         swipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        if (login.userId != null) {
-            userId = String.valueOf(login.userId);
-        } else if (registration.responseFromServiseRegistrationId != null) {
-            userId = String.valueOf(registration.responseFromServiseRegistrationId);
-        }
+
         idNews = new ArrayList<>();
-
-
         swipeRefreshLayout.setOnRefreshListener(this);
+
+
         return view;
+
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            if (login.userId != null) {
+                userId = String.valueOf(login.userId);
+            } else if (registration.responseFromServiseRegistrationId != null) {
+                userId = String.valueOf(registration.responseFromServiseRegistrationId);
+            }
+
+        } else {
+            userId = savedInstanceState.getString("userId");
+        }
+        context = getActivity();
+        idServerNews = new ArrayList<>();
+        datePublication = new ArrayList<>();
+        title = new ArrayList<>();
+        shortDescription = new ArrayList<>();
+        description = new ArrayList<>();
+        image = new ArrayList<>();
+        expectedAmount = new ArrayList<>();
+        finalDate = new ArrayList<>();
+        paymentAccount = new ArrayList<>();
+        likeNews = new ArrayList<>();
+        idNews = new ArrayList<>();
+        idServerNews = new ArrayList<>();
+        likeNewsFromServer = new ArrayList<>();
         newsInformationFromServer();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("userId", userId);
+        outState.putStringArrayList("datePublication", datePublication);
+        outState.putStringArrayList("title", title);
+        outState.putStringArrayList("shortDescription", shortDescription);
+        outState.putStringArrayList("description", description);
+        outState.putStringArrayList("image", image);
+        outState.putStringArrayList("expectedAmount", expectedAmount);
+        outState.putStringArrayList("finalDate", finalDate);
+        outState.putStringArrayList("paymentAccount", paymentAccount);
+        outState.putIntegerArrayList("idServerNews", idServerNews);
+        outState.putIntegerArrayList("likeNewsFromServer", likeNewsFromServer);
+        outState.putIntegerArrayList("likeNews", likeNews);
+        outState.putIntegerArrayList("idNews", idNews);
+
+
+    }
+
 
     private void newsInformationFromServer() {
         Retrofit.getArrays(userId, new Callback<RegistrationResponseFromServer>() {
@@ -125,7 +167,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
     public void adapter() {
-        adapter = new CustomList(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate, likeNews, idServerNews, idNews);
+        adapter = new CustomList(context, shortDescription, image, datePublication, expectedAmount, finalDate, likeNews, idServerNews, idNews);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -168,12 +210,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         });
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        newsInformationFromServer();
 
-    }
 
     @Override
     public void onPause() {
@@ -203,7 +240,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(false);
-
                 newsInformationFromServer();
             }
         }, 4000);

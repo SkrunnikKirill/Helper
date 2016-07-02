@@ -59,6 +59,11 @@
             android:name=".fragmentsFormNavigationDrawer.DescriptionProblem"
             android:label="Информация объявления"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".fragmentsFormNavigationDrawer.EditAdvertisement"
+            android:label="Редактирование объявления"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
 <activity
             android:name="com.facebook.FacebookActivity"
     android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -66,7 +71,7 @@
     android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".fragmentsFormNavigationDrawer.DetailNews"
-            android:label="Нвость"
+            android:label="Ность"
             android:screenOrientation="portrait" />
 
     </application>
