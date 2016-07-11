@@ -1,6 +1,7 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,22 +9,23 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.example.alex.helppeopletogether.Adapter.AdvertisementAdapter;
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
+import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
-import com.example.alex.helppeopletogether.registration.Login;
-import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import retrofit.Callback;
@@ -33,7 +35,7 @@ import retrofit.client.Response;
 /**
  * Created by User on 29.03.2016.
  */
-public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ConstantPreferences {
     public ArrayList<String> datePublication;
     public ArrayList<String> title;
     public ArrayList<String> shortDescription;
@@ -49,29 +51,38 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
     FragmentTransaction ft;
     NoLikeData noLikeData;
     ProDialog proDialog;
-    private TextView advertisementText;
+    Preferences preferences;
+    Context context;
+    InternetCheck internet;
+    private AdvertisementAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Login login = new Login();
+        context = getActivity();
         proDialog = new ProDialog();
-        proDialog.defenitionProgressBar(getActivity());
-        Registration registration = new Registration();
+        proDialog.defenitionProgressBar(context);
         fm = getActivity().getSupportFragmentManager();
         noLikeData = new NoLikeData();
-        if (login.userId != null) {
-            idUser = String.valueOf(login.userId);
-        } else if (registration.responseFromServiseRegistrationId != null) {
-            idUser = String.valueOf(registration.responseFromServiseRegistrationId);
-        }
+        preferences = new Preferences(context);
+        idUser = preferences.loadText(PREFERENCES_ID);
+        datePublication = new ArrayList<>();
+        title = new ArrayList<>();
+        shortDescription = new ArrayList<>();
+        description = new ArrayList<>();
+        image = new ArrayList<>();
+        expectedAmount = new ArrayList<>();
+        finalDate = new ArrayList<>();
+        idNews = new ArrayList<>();
+        paymentAccount = new ArrayList<>();
+
         getAdvertisementFromTheServer();
 
     }
 
     private void getAdvertisementFromTheServer() {
+        Log.d("Advertisement1", "newsInformationFromServer() called with: userId" + idUser);
         Retrofit.getMyAdvertisementArrays(idUser, new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
@@ -90,6 +101,7 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
                     fm.beginTransaction().replace(R.id.container, noLikeData).commit();
                     proDialog.connectionProgressBar();
                 } else {
+                    Log.d("Advertisement", "newsInformationFromServer() called with: paymentAccount" + paymentAccount);
                     shortDescription = registrationResponseFromServer.short_description;
                     description = registrationResponseFromServer.description;
                     datePublication = registrationResponseFromServer.created_at;
@@ -105,9 +117,11 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
 
             @Override
             public void failure(RetrofitError error) {
-                System.out.println(error.getMessage());
-                //   Toast.makeText(getActivity(), "Сервер не доступен", Toast.LENGTH_LONG).show();
-                proDialog.connectionProgressBar();
+                if (error.getCause() instanceof UnknownHostException) {
+                    internet = new InternetCheck(context, swipeRefreshLayout);
+                    internet.execute();
+                    proDialog.connectionProgressBar();
+                }
             }
         });
     }
@@ -134,9 +148,9 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     private void adapter() {
-        AdvertisementAdapter adapter = new
-                AdvertisementAdapter(getActivity(), shortDescription, image, datePublication, expectedAmount, finalDate, idNews);
-        list.setAdapter((ListAdapter) adapter);
+        adapter = new
+                AdvertisementAdapter(context, shortDescription, image, datePublication, expectedAmount, finalDate, idNews);
+
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
@@ -158,7 +172,9 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
                 startActivity(news);
 
             }
+
         });
+        list.setAdapter(adapter);
     }
 
 
@@ -168,6 +184,7 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(false);
+
                 getAdvertisementFromTheServer();
 
             }

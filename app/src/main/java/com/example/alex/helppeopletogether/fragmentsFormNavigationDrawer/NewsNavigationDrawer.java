@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.registration.Login;
 import com.example.alex.helppeopletogether.registration.Registration;
 
@@ -21,7 +23,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class NewsNavigationDrawer extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, ConstantPreferences {
     Advertisement advertisement;
     Favorite favorite;
     NewsFragment news;
@@ -34,6 +36,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
     Toolbar toolbar;
     Login login;
     Registration registration;
+    Preferences preferences;
 
 
     @Override
@@ -43,24 +46,15 @@ public class NewsNavigationDrawer extends AppCompatActivity
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         advertisement = new Advertisement();
+        preferences = new Preferences(NewsNavigationDrawer.this);
         favorite = new Favorite();
         news = new NewsFragment();
         postAdvertisement = new PostAdvertisementFragment();
         exit = new ExitFragment();
         login = new Login();
         registration = new Registration();
-        if (registration.responseFromServiseFullName != null && registration.responseFromServiseImage != null) {
-            name = "";
-            foto = "";
-            name = registration.responseFromServiseFullName;
-            foto = registration.responseFromServiseImage;
-        } else {
-            name = "";
-            foto = "";
-            name = login.fullName;
-            foto = login.UserPhoto;
-        }
-
+        name = preferences.loadText(PREFERENCES_NAME);
+        foto = preferences.loadText(PREFERENCES_FOTO);
 
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.container, news).commit();
@@ -146,6 +140,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
             ftrans.replace(R.id.container, postAdvertisement);
         } else if (id == R.id.nav_exit) {
             ftrans.replace(R.id.container, exit);
+
         }
         ftrans.commit();
 

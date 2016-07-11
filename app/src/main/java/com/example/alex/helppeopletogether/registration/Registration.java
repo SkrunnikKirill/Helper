@@ -22,7 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
+import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.SupportClasses.Validation;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
@@ -42,7 +44,7 @@ import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
 
-public class Registration extends Activity implements View.OnClickListener {
+public class Registration extends Activity implements View.OnClickListener, ConstantPreferences {
     public static Integer responseFromServiseRegistrationId;
     public static String responseFromServiseFullName, responseFromServiseImage;
     Intent intent;
@@ -51,6 +53,7 @@ public class Registration extends Activity implements View.OnClickListener {
     String selectedImagePath;
     int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     RelativeLayout relativeLayoutRegistrationSnackBar;
+    Preferences preferences;
     private EditText firstName, secondName, email, password;
     private ImageView face;
     private Button buttonRegistration;
@@ -66,6 +69,7 @@ public class Registration extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
+        preferences = new Preferences(Registration.this);
         relativeLayoutRegistrationSnackBar = (RelativeLayout) findViewById(R.id.relativeLayoutRegistration);
         checkInternet();
         face = (ImageView) findViewById(R.id.registration_face_image);
@@ -351,6 +355,11 @@ public class Registration extends Activity implements View.OnClickListener {
                         } else if (responseFromServiseRegistration == 1) {
                             Toast.makeText(Registration.this, "Email занят", Toast.LENGTH_LONG).show();
                         } else if (responseFromServiseRegistration == 2) {
+                            preferences.saveText(email.getText().toString(), PREFERENCES_LOGIN);
+                            preferences.saveText(password.getText().toString(), PREFERENCES_PASSWORD);
+                            preferences.saveText(responseFromServiseRegistrationId.toString(), PREFERENCES_ID);
+                            preferences.saveText(responseFromServiseFullName, PREFERENCES_NAME);
+                            preferences.saveText(responseFromServiseImage, PREFERENCES_FOTO);
                             intent = new Intent(Registration.this, Agreement.class);
                             // intent.putExtra("id",responseFromServiseRegistrationId);
                             startActivity(intent);

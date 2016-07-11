@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/post_advertisemet_relative_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:background="@color/blue"
     android:orientation="vertical">
 
 
@@ -17,6 +19,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/blue"
             android:orientation="vertical"
             tools:context="com.wdullaer.materialdatetimepicker.PostAdvertisement">
 
@@ -28,67 +32,111 @@
                 android:clickable="true"
                 android:hint="Дата рождения"
                 android:padding="7dp"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
                 android:textSize="20dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/divider" />
 
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@color/white">
 
                 <AutoCompleteTextView
                     android:id="@+id/post_advertisement_region"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/post_advertisement_date_of_birth"
+                    android:background="@null"
                     android:completionThreshold="2"
                     android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
                 ЯЧСМИТЬБЮ"
                     android:hint="Область"
                     android:imeOptions="actionGo"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/white" />
             </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/divider" />
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@color/white">
 
                 <AutoCompleteTextView
                     android:id="@+id/post_advertisement_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/post_advertisement_region"
+                    android:background="@null"
                     android:completionThreshold="2"
+                    android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
+                ЯЧСМИТЬБЮ"
                     android:hint="Город"
-                    android:singleLine="true" />
+                    android:singleLine="true"
+                    android:textColor="@color/white" />
             </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/divider" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:textColorHint="@color/white">
 
                 <EditText
                     android:id="@+id/post_advertisement_phone_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/post_advertisement_city"
+                    android:background="@null"
                     android:digits="0123456789+"
                     android:hint="Телефон"
                     android:inputType="phone"
                     android:maxLength="13"
                     android:singleLine="true"
-                    android:text="+380" />
+                    android:text="+380"
+                    android:textColor="@color/white" />
             </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:id="@+id/post_advertisement_next"
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/post_advertisement_phone_number"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:text="Далее" />
+                android:src="@drawable/divider" />
+
 
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+
+    <Button
+        android:id="@+id/post_advertisement_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/button"
+        android:text="Далее"
+        android:textColor="@color/white" />
+
+
+</RelativeLayout>

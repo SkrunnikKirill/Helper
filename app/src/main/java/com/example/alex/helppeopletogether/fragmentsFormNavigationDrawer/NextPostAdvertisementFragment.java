@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.provider.Telephony;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -21,11 +20,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
-import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -50,6 +47,7 @@ public class NextPostAdvertisementFragment extends Activity implements View.OnCl
     Uri selectedPassport;
     Bitmap bitmapPassport;
     Bitmap bitmapCopying;
+    int REQUEST_CAMERA = 0, SELECT_FILE = 1, idImagePassport, idImageCopying;
     private EditText serialPassport;
     private EditText numberPassport;
     private TextView licenseText;
@@ -59,7 +57,6 @@ public class NextPostAdvertisementFragment extends Activity implements View.OnCl
     private Button next;
     private LinkedHashMap<String, TypedFile> imageData;
     private Integer responseFromServiseNextPostAdvertisementFragment;
-    int REQUEST_CAMERA = 0, SELECT_FILE = 1,idImagePassport,idImageCopying;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

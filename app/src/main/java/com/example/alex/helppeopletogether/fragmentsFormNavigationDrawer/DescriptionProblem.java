@@ -2,6 +2,7 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,7 +15,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -25,8 +28,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.registration.Login;
-import com.example.alex.helppeopletogether.registration.Registration;
+import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
+import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
+import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -47,20 +52,22 @@ import retrofit.mime.TypedFile;
 /**
  * Created by Alex on 13.04.2016.
  */
-public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
-    static final int GALLERY_REQUEST_IMAGE = 1;
-    int DIALOG_DATE = 1;
+public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, ConstantPreferences {
+
 
     ImageView imageAdvertisement;
     int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     Uri selectedImageUri;
     String selectedImagePath;
-    Registration registration;
-    Login login;
     String userid;
     String[] nameCurrency = {"USD", "EUR", "UAH"};
+    int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna};
     String currency;
+    GetCurensyYear year;
     NewsFragment news;
+    DatePickerDialog datePickerDialog;
+    Preferences preferences;
+    FiledTest filedTest;
 
 
     private TextView day;
@@ -75,6 +82,9 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.description_problem);
         news = new NewsFragment();
+        year = new GetCurensyYear();
+        preferences = new Preferences(DescriptionProblem.this);
+        userid = preferences.loadText(PREFERENCES_ID);
         imageAdvertisement = (ImageView) findViewById(R.id.description_problem_image);
         theme = (EditText) findViewById(R.id.description_problem_theme);
         shortDescription = (EditText) findViewById(R.id.description_problem_short_description);
@@ -83,15 +93,11 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         day = (TextView) findViewById(R.id.description_problem_day);
         account = (EditText) findViewById(R.id.description_problem_account);
         locate = (Button) findViewById(R.id.description_problem_locate);
-        registration = new Registration();
         imageAdvertisement.setOnClickListener(this);
         locate.setOnClickListener(this);
-        login = new Login();
-        if (login.userId != null) {
-            userid = String.valueOf(login.userId);
-        } else if (registration.responseFromServiseRegistrationId != null) {
-            userid = String.valueOf(registration.responseFromServiseRegistrationId);
-        }
+        filedTest = new FiledTest(theme, shortDescription, fullDescription, money, account, locate);
+        filedTest.inspection1();
+
         dataPicker();
         spiner();
         Toolbar toolbar = (Toolbar) findViewById(R.id.description_problem_toolbar);
@@ -107,6 +113,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
 
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -114,10 +121,8 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     }
 
     private void spiner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nameCurrency);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner spinner = (Spinner) findViewById(R.id.spinnerstate);
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(new MyAdapter(this, R.layout.custom_spinner, nameCurrency));
         spinner.setPrompt("Title");
         // выделяем элемент
         spinner.setSelection(2);
@@ -149,19 +154,26 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                datePickerDialog = DatePickerDialog.newInstance(
                         DescriptionProblem.this,
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)
                 );
+                datePickerDialog.setMinDate(calendar);
                 datePickerDialog.setAccentColor(Color.parseColor("#03a9f4"));
                 datePickerDialog.setThemeDark(true);
                 datePickerDialog.dismissOnPause(true);
+                int startYear = year.getCurrentYear();
+                int nextYear = year.getCurrentYear() + 5;
+                datePickerDialog.setYearRange(startYear, nextYear);
+
+
                 datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
             }
         });
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -348,5 +360,32 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         String finalDay = dayOfMonth + "/" + (++monthOfYear) + "/" + year;
 
         day.setText(finalDay);
+    }
+
+    public class MyAdapter extends ArrayAdapter<String> {
+        public MyAdapter(Context ctx, int txtViewResourceId, String[] objects) {
+            super(ctx, txtViewResourceId, objects);
+        }
+
+        @Override
+        public View getView(int pos, View cnvtView, ViewGroup prnt) {
+            return getCustomView(pos, cnvtView, prnt);
+        }
+
+        @Override
+        public View getDropDownView(int position, View cnvtView, ViewGroup prnt) {
+            return getCustomView(position, cnvtView, prnt);
+        }
+
+
+        public View getCustomView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            View mySpinner = inflater.inflate(R.layout.custom_spinner, parent, false);
+            TextView main_text = (TextView) mySpinner.findViewById(R.id.text_main_seen);
+            main_text.setText(nameCurrency[position]);
+            ImageView left_icon = (ImageView) mySpinner.findViewById(R.id.left_pic);
+            left_icon.setImageResource(total_images[position]);
+            return mySpinner;
+        }
     }
 }

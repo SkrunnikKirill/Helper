@@ -13,7 +13,7 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
-import com.example.alex.helppeopletogether.SupportClasses.GetUserId;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 public class CustomList extends ArrayAdapter<String> {
     Dimensions dimensions;
-    GetUserId getUserId;
     String idUser;
     LayoutInflater layoutInflater;
     private Context context;
@@ -55,7 +54,6 @@ public class CustomList extends ArrayAdapter<String> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
         dimensions = new Dimensions();
-        getUserId = new GetUserId();
         View rowView = layoutInflater.inflate(R.layout.datail_news_item, parent, false);
         viewHolder = new ViewHolder();
         viewHolder.like = (ToggleButton) rowView.findViewById(R.id.datail_news_like);

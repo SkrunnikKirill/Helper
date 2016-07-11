@@ -1,6 +1,7 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -8,7 +9,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +17,16 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.alex.helppeopletogether.Adapter.SelectedAdapter;
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
+import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
 import com.example.alex.helppeopletogether.SupportClasses.SelectedNews;
-import com.example.alex.helppeopletogether.Adapter.SelectedAdapter;
-import com.example.alex.helppeopletogether.registration.Login;
-import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,20 +37,19 @@ import retrofit.client.Response;
 /**
  * Created by Alex on 04.04.2016.
  */
-public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ConstantPreferences {
     String userId;
     ArrayList<SelectedNews> likeNews;
     ListView list;
     SelectedAdapter selectedAdapter;
     FragmentManager fm;
-    FragmentTransaction ft;
     NoLikeData noLikeData;
     DonloadInformationFromServer donloadInformationFromServer;
-    Login login;
     ProDialog prodialog;
     SwipeRefreshLayout swipeRefreshLayout;
-    Registration registration;
-    String idUser;
+    Context context;
+    Preferences preferences;
+    InternetCheck internet;
 
 
     @Nullable
@@ -56,15 +57,6 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.my_advertisement, container, false);
         list = (ListView) root.findViewById(R.id.like_list);
-        login = new Login();
-        registration = new Registration();
-        if (login.userId != null) {
-            userId = String.valueOf(login.userId);
-        } else if (registration.responseFromServiseRegistrationId != null) {
-            userId = String.valueOf(registration.responseFromServiseRegistrationId);
-        }
-        prodialog = new ProDialog();
-        getLikeInformations();
         swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.my_advertisement_swipe_refresh);
         swipeRefreshLayout.setColorSchemeResources(
                 android.R.color.holo_blue_bright,
@@ -82,13 +74,20 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context = getActivity();
+        likeNews = new ArrayList<>();
+        prodialog = new ProDialog();
+        preferences = new Preferences(context);
+        userId = preferences.loadText(PREFERENCES_ID);
+        getLikeInformations();
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
-//        if (list != null) {
-//            selectedAdapter.notifyDataSetChanged();
-//        } else {
 
-        //  }
     }
 
     @Override
@@ -103,7 +102,7 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(false);
-
+                getLikeInformations();
 
             }
         }, 4000);
@@ -116,7 +115,7 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
                 if (selectedNews.size() == 0) {
                     fm = getActivity().getSupportFragmentManager();
                     fm.beginTransaction().replace(R.id.container, noLikeData).commit();
-                    Toast.makeText(getActivity(), "У вас нет избранных новостей", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "У вас нет избранных новостей", Toast.LENGTH_LONG).show();
                     prodialog.connectionProgressBar();
 
                 } else {
@@ -154,7 +153,11 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
 
             @Override
             public void failure(RetrofitError error) {
-                System.out.println(error.toString());
+                if (error.getCause() instanceof UnknownHostException) {
+                    internet = new InternetCheck(context, swipeRefreshLayout);
+                    internet.execute();
+                    prodialog.connectionProgressBar();
+                }
             }
         });
     }
@@ -164,7 +167,7 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            prodialog.defenitionProgressBar(getActivity());
+            prodialog.defenitionProgressBar(context);
 
         }
 
@@ -178,7 +181,7 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
             }
 
             likeNews = new ArrayList<SelectedNews>();
-            selectedAdapter = new SelectedAdapter(getActivity(), likeNews);
+            selectedAdapter = new SelectedAdapter(context, likeNews);
             noLikeData = new NoLikeData();
             getLikeNewsFromServer();
             return null;

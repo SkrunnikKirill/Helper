@@ -1,132 +1,132 @@
 package com.example.alex.helppeopletogether.SupportClasses;
 
 
-import android.view.View;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
-/**
- * Created by PM on 30.06.2016.
- */
+
 public class FiledTest {
     EditText theme, shortDescription, fullDescription, money, account;
-    TextView day;
+    Button edit;
 
-    public FiledTest(EditText theme, EditText shortDescription, EditText fullDescription, EditText money, EditText account, TextView day) {
+
+    public FiledTest(EditText theme, EditText shortDescription, EditText fullDescription, EditText money, EditText account, Button edit) {
         this.theme = theme;
         this.shortDescription = shortDescription;
         this.fullDescription = fullDescription;
         this.money = money;
         this.account = account;
-        this.day = day;
+        this.edit = edit;
+
     }
 
     public void inspection1() {
-        theme.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        theme.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (theme.getText().toString().isEmpty()) {
-                    theme.setError("обязательные");
-                } else if (theme.getText().toString().length() > 50) {
-                    theme.setError("количество символов");
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(theme, 50);
+
+            }
+        });
+        shortDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(shortDescription, 100);
+
             }
         });
 
-        shortDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        fullDescription.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (shortDescription.getText().toString().isEmpty()) {
-                    shortDescription.setError("обязательные");
-                } else if (shortDescription.getText().toString().length() > 100) {
-                    shortDescription.setError("количество символов");
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(fullDescription, 1000);
+
             }
         });
 
-        fullDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        money.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (fullDescription.getText().toString().isEmpty()) {
-                    fullDescription.setError("обязательные");
-                } else if (fullDescription.getText().toString().length() > 1000) {
-                    fullDescription.setError("количество символов");
-                }
-            }
-        });
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        money.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            }
+
             @Override
-            public void onFocusChange(View view, boolean b) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
                 if (money.getText().toString().isEmpty()) {
                     money.setError("обязательные");
                 }
             }
         });
 
-        account.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        account.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (account.getText().toString().isEmpty()) {
-                    account.setError("обязательные");
-                    b = false;
-                } else if (account.getText().toString().length() > 20) {
-                    account.setError("количество символов");
-                    b = false;
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(account, 20);
             }
         });
-    }
-
-    public boolean inspection() {
-
-        if (theme.getText().toString().isEmpty()) {
-            theme.setError("обязательные");
-            return false;
-        }
-        if (shortDescription.getText().toString().isEmpty()) {
-            shortDescription.setError("обязательные");
-            return false;
-        }
-        if (fullDescription.getText().toString().isEmpty()) {
-            fullDescription.setError("обязательные");
-            return false;
-
-        }
-        if (money.getText().toString().isEmpty()) {
-            money.setError("обязательные");
-            return false;
-
-        }
-        if (account.getText().toString().isEmpty()) {
-            account.setError("обязательные");
-            return false;
-
-        }
-        if (theme.getText().toString().length() > 50) {
-            theme.setError("количество символов");
-            return false;
-        }
-        if (shortDescription.getText().length() > 100) {
-            shortDescription.setError("количество символов");
-            return false;
-        }
-        if (fullDescription.getText().length() > 1000) {
-            fullDescription.setError("количество символов");
-            return false;
-        }
-        if (account.getText().length() > 20) {
-            account.setError("количество символов");
-            return false;
-        }
-        return true;
 
 
     }
 
-    public void registeView(EditText text) {
-        text.setError("обязательные");
-
+    public void check(EditText editText, int number) {
+        final String text = editText.getText().toString().trim();
+        if (text.length() == 0) {
+            editText.setError("обязательные");
+            edit.setEnabled(false);
+        } else if (text.length() > number) {
+            editText.setError("количество символов");
+            edit.setEnabled(false);
+        } else {
+            editText.setError(null);
+            edit.setEnabled(true);
+        }
     }
 
 

@@ -4,7 +4,6 @@ package com.example.alex.helppeopletogether.registration;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
@@ -20,7 +19,9 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
+import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsNavigationDrawer;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
@@ -39,7 +40,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.vk.sdk.VKAccessToken;
@@ -56,6 +56,7 @@ import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKList;
 import com.vk.sdk.util.VKUtil;
 
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -65,23 +66,18 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class Login extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
-    public static final String PROFILE_IMAGE_URL = "PROFILE_IMAGE_URL";
+public class Login extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, ConstantPreferences {
+
     private static final int RC_SIGN_IN = 0;
     private static final String TAG = "Login";
-    private static final int PROFILE_PIC_SIZE = 400;
-    private static final String MyPREF = "MyPrefs";
-    private static final String emaill = "emailKey";
-    private static final String pass = "passKey";
     public static Integer userId;
     public static String UserPhoto;
     public static String fullName;
-    public static String userProfilePhoto;
-    SharedPreferences sharedpreferences;
     LoginManager loginManager;
     Context context;
     Profile profile;
     InternetCheck internetCheck;
+    Preferences preferences;
     private EditText email;
     private EditText password;
     private Button buttonNext, facebook, vk, googlePlus;
@@ -90,14 +86,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private LinkedHashMap<String, String> loginData, socialUserData;
     private Integer responseFromServiseLogin, responseFromServiseSocialNetwork;
     private CallbackManager callbackManager;
-    private FacebookCallback<LoginResult> mCallback;
     private String[] scope = new String[]{VKScope.EMAIL, VKScope.PHOTOS, VKScope.MESSAGES, VKScope.FRIENDS};
-    private String vkPhoto, vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId, token;
+    private String vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId;
     private GoogleApiClient mGoogleApiClient;
-    private boolean mIntentInProgress;
-    private boolean mSignInClicked;
     private ConnectionResult mConnectionResult;
-    private SignInButton btnSignIn;
     private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId;
     private ProfileTracker profileTracker;
     private RelativeLayout relativeLayoutSnackBar;
@@ -108,7 +100,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
         relativeLayoutSnackBar = (RelativeLayout) findViewById(R.id.relativeLayoutLogin);
-        checkInternet();
         email = (EditText) findViewById(R.id.login_email);
         facebook = (Button) findViewById(R.id.login_button_facebook);
         vk = (Button) findViewById(R.id.login_button_vk);
@@ -128,6 +119,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         loginGoogle();
         loginManager = LoginManager.getInstance();
         context = getApplicationContext();
+        preferences = new Preferences(Login.this);
 
         showPassword = (ToggleButton) findViewById(R.id.togglePassword);
         showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -147,14 +139,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
     @Override
     protected void onResume() {
-        sharedpreferences = getSharedPreferences(MyPREF, context.MODE_PRIVATE);
-        if (sharedpreferences.contains(emaill)) {
-        }
-        if (sharedpreferences.contains(pass)) {
-            intentNextStep = new Intent(Login.this, NewsNavigationDrawer.class);
-            startActivity(intentNextStep);
-        }
         super.onResume();
+        setPreferences();
     }
 
 
@@ -237,7 +223,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
     private void loginFacebook() {
         loginManager.logInWithReadPermissions(this, Arrays.asList(new String[]{"public_profile", "user_friends"}));
-
         loginManager.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
@@ -306,6 +291,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
 
                     if (responseFromServiseSocialNetwork == 1) {
+                        preferences.saveText(userId.toString(), PREFERENCES_ID);
+                        preferences.saveText(fullName, PREFERENCES_NAME);
+                        preferences.saveText(UserPhoto, PREFERENCES_FOTO);
                         newsFragment();
 
                     } else if (responseFromServiseSocialNetwork == 2) {
@@ -318,15 +306,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
             @Override
             public void failure(RetrofitError error) {
-                Toast.makeText(Login.this, "Данные пользователя соц сети не отправились", Toast.LENGTH_LONG).show();
+                if (error.getCause() instanceof UnknownHostException) {
+                    checkInternet();
+                }
+
             }
         });
     }
 
     private void newsFragment() {
         Intent intent = new Intent(Login.this, NewsNavigationDrawer.class);
-        intent.putExtra("fullName", fullName);
-        intent.putExtra("foto", UserPhoto);
+        // intent.putExtra("fullName", fullName);
+        // intent.putExtra("foto", UserPhoto);
         //intent.putExtra("userId",userId);
         startActivity(intent);
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
@@ -338,7 +329,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-
             handleSignInResult(result);
         }
         if (!VKSdk.onActivityResult(requestCode, resultCode, data, new VKCallback<VKAccessToken>() {
@@ -410,6 +400,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             loginData = new LinkedHashMap<>();
             loginData.put("email", email.getText().toString());
             loginData.put("password", password.getText().toString());
+
             Retrofit.sendLoginData(loginData, new Callback<RegistrationResponseFromServer>() {
                 @Override
                 public void success(RegistrationResponseFromServer responseLogin, Response response) {
@@ -425,6 +416,11 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                         if (responseFromServiseLogin == 1) {
                             Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
                         } else if (responseFromServiseLogin == 2) {
+                            preferences.saveText(email.getText().toString(), PREFERENCES_LOGIN);
+                            preferences.saveText(password.getText().toString(), PREFERENCES_PASSWORD);
+                            preferences.saveText(userId.toString(), PREFERENCES_ID);
+                            preferences.saveText(fullName, PREFERENCES_NAME);
+                            preferences.saveText(UserPhoto, PREFERENCES_FOTO);
                             newsFragment();
                         }
                     }
@@ -432,8 +428,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
                 @Override
                 public void failure(RetrofitError error) {
-                    System.out.println(error.getMessage());
-                    Toast.makeText(getApplication(), "Data don't sent. Check internet connection", Toast.LENGTH_LONG).show();
+                    if (error.getCause() instanceof UnknownHostException) {
+                        checkInternet();
+                    }
+
                 }
             });
 
@@ -449,6 +447,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             GoogleSignInAccount acct = result.getSignInAccount();
             String email = acct.getEmail();
             googleId = acct.getId();
+
 
             String name = acct.getDisplayName();
             if (name != null) {
@@ -496,6 +495,25 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         }
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
         return false;
+    }
+
+    public void setPreferences() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (preferences.loadText(PREFERENCES_PASSWORD) != null || preferences.loadText(PREFERENCES_LOGIN) != null || preferences.loadText(PREFERENCES_ID) != null) {
+                        newsFragment();
+                        Thread.sleep(2000);
+                    }
+                } catch (NullPointerException e) {
+                    return;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }).start();
     }
 
 

@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,14 @@ import android.widget.ListView;
 
 import com.example.alex.helppeopletogether.Adapter.CustomList;
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
+import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
-import com.example.alex.helppeopletogether.registration.Login;
-import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import retrofit.Callback;
@@ -29,9 +32,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-
-
-public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ConstantPreferences {
     public ArrayList<Integer> idServerNews;
     public ArrayList<String> datePublication;
     public ArrayList<String> title;
@@ -48,22 +49,22 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     ProDialog proDialog;
     NewsFragment newsFragment;
     Context context;
+    Preferences preferences;
+    InternetCheck internet;
     private ListView list;
     private String userId;
-    private Login login;
-    private Registration registration;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("message", "onCreateView() called with: " + "onCreateView");
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
 
         list = (ListView) view.findViewById(R.id.list);
-        login = new Login();
         newsFragment = new NewsFragment();
-        registration = new Registration();
         proDialog = new ProDialog();
+
 
         proDialog.defenitionProgressBar(getActivity());
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
@@ -84,17 +85,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            if (login.userId != null) {
-                userId = String.valueOf(login.userId);
-            } else if (registration.responseFromServiseRegistrationId != null) {
-                userId = String.valueOf(registration.responseFromServiseRegistrationId);
-            }
-
-        } else {
-            userId = savedInstanceState.getString("userId");
-        }
         context = getActivity();
+        preferences = new Preferences(getActivity());
+        userId = preferences.loadText(PREFERENCES_ID);
+        Log.d("message", "onCreate() called with: " + "savedInstanceState = [" + userId + "]" + "OnCreate");
         idServerNews = new ArrayList<>();
         datePublication = new ArrayList<>();
         title = new ArrayList<>();
@@ -111,31 +105,13 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         newsInformationFromServer();
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("userId", userId);
-        outState.putStringArrayList("datePublication", datePublication);
-        outState.putStringArrayList("title", title);
-        outState.putStringArrayList("shortDescription", shortDescription);
-        outState.putStringArrayList("description", description);
-        outState.putStringArrayList("image", image);
-        outState.putStringArrayList("expectedAmount", expectedAmount);
-        outState.putStringArrayList("finalDate", finalDate);
-        outState.putStringArrayList("paymentAccount", paymentAccount);
-        outState.putIntegerArrayList("idServerNews", idServerNews);
-        outState.putIntegerArrayList("likeNewsFromServer", likeNewsFromServer);
-        outState.putIntegerArrayList("likeNews", likeNews);
-        outState.putIntegerArrayList("idNews", idNews);
-
-
-    }
-
 
     private void newsInformationFromServer() {
+        Log.d("NewsFragment1", "newsInformationFromServer() called with: userId" + userId);
         Retrofit.getArrays(userId, new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
+                Log.d("NewsFragment", "newsInformationFromServer() called with: " + likeNews);
                 likeNews = registrationResponseFromServer.liked_advers;
                 likeNewsFromServer.addAll(likeNews);
                 paymentAccount = registrationResponseFromServer.payment_account;
@@ -160,9 +136,23 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             @Override
             public void failure(RetrofitError error) {
+                if (error.getCause() instanceof UnknownHostException) {
+                    internet = new InternetCheck(context, swipeRefreshLayout);
+                    internet.execute();
+                    proDialog.connectionProgressBar();
+                }
 
             }
         });
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //userId = getUserId.getUserId(userId);
+        Log.d("message", "onResume() called with: " + "onResume()");
+
     }
 
 
@@ -197,6 +187,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     private void sendServer() {
+
         Retrofit.getLike(userId, adapter.getIdNewsJson(), new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
@@ -205,30 +196,38 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
             @Override
             public void failure(RetrofitError error) {
-
+                if (error.getCause() instanceof UnknownHostException) {
+                    internet = new InternetCheck(context, swipeRefreshLayout);
+                    internet.execute();
+                    proDialog.connectionProgressBar();
+                }
             }
         });
     }
 
 
-
     @Override
     public void onPause() {
         super.onPause();
+        Log.d("message", "onPause() called with: " + "onPause()");
         addLikeNewsToTheServer();
 
 
     }
 
     private void addLikeNewsToTheServer() {
-        if (likeNewsFromServer.size() != 0 && adapter.getLikeNews().size() != 0 && likeNewsFromServer.size() == adapter.getLikeNews().size()) {
-            for (int i = 0; i < likeNewsFromServer.size(); i++) {
-                if (adapter.getLikeNews().contains(likeNewsFromServer.get(i)) != true) {
-                    sendServer();
+        try {
+            if (likeNewsFromServer.size() != 0 && adapter.getLikeNews().size() != 0 && likeNewsFromServer.size() == adapter.getLikeNews().size()) {
+                for (int i = 0; i < likeNewsFromServer.size(); i++) {
+                    if (adapter.getLikeNews().contains(likeNewsFromServer.get(i)) != true) {
+                        sendServer();
+                    }
                 }
+            } else {
+                sendServer();
             }
-        } else {
-            sendServer();
+        } catch (NullPointerException e) {
+            return;
         }
     }
 
@@ -240,8 +239,11 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void run() {
                 swipeRefreshLayout.setRefreshing(false);
+
                 newsInformationFromServer();
             }
         }, 4000);
     }
+
+
 }

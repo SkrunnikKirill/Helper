@@ -39,7 +39,8 @@
             android:name=".registration.Registration"
             android:label="@string/title_activity_main2"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".registration.Agreement"
             android:label="Соглашение"
@@ -50,7 +51,8 @@
             android:name=".fragmentsFormNavigationDrawer.NewsNavigationDrawer"
             android:label="Новости"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name=".fragmentsFormNavigationDrawer.NextPostAdvertisementFragment"
             android:label="NextPostAdvertisementFragment"
