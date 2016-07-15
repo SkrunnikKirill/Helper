@@ -59,7 +59,6 @@ public class CustomList extends ArrayAdapter<String> {
         viewHolder.like = (ToggleButton) rowView.findViewById(R.id.datail_news_like);
         viewHolder.txtTitle = (TextView) rowView.findViewById(R.id.detail_news_theme);
         // viewHolder.timeDate = (TextView) rowView.findViewById(R.id.date_text);
-        viewHolder.test = (TextView) rowView.findViewById(R.id.detail_news_persent);
         viewHolder.date = (TextView) rowView.findViewById(R.id.detail_news_days_left);
         viewHolder.summa = (TextView) rowView.findViewById(R.id.detail_news_summa);
         viewHolder.imageView = (ImageView) rowView.findViewById(R.id.detail_news_image);
@@ -143,8 +142,6 @@ public class CustomList extends ArrayAdapter<String> {
 
     static class ViewHolder {
         TextView txtTitle;
-        TextView timeDate;
-        TextView test;
         TextView date;
         TextView summa;
         ImageView imageView;

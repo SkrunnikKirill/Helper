@@ -55,7 +55,6 @@ public class SelectedAdapter extends BaseAdapter {
             viewHolder = new ViewHolder();
             viewHolder.txtTitle = (TextView) view.findViewById(R.id.detail_news_theme);
             // viewHolder.timeDate = (TextView) view.findViewById(R.id.date_text);
-            viewHolder.test = (TextView) view.findViewById(R.id.detail_news_persent);
             viewHolder.date = (TextView) view.findViewById(R.id.detail_news_days_left);
             viewHolder.summa = (TextView) view.findViewById(R.id.detail_news_summa);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.detail_news_image);
@@ -84,7 +83,6 @@ public class SelectedAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView txtTitle;
         TextView timeDate;
-        TextView test;
         TextView date;
         TextView summa;
         ImageView imageView;
