@@ -63,7 +63,6 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
     TextView day;
     Spinner currency;
     Button editButton;
-    int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     Uri selectedImageUri;
     String selectedImagePath;
     FiledTest filedTest;
@@ -148,7 +147,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
                 }
             }
         });
-        filedTest = new FiledTest(theme, shortDescription, fullDescription, money, account, editButton);
+        filedTest = new FiledTest(theme, shortDescription, fullDescription, money, account);
         filedTest.inspection1();
         editButton.setOnClickListener(this);
     }
@@ -239,6 +238,8 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
     }
 
     private void setEditInformationFromServer() {
+        if (theme.getText().toString().length() > 0 && shortDescription.getText().toString().length() > 0 && fullDescription.getText().toString().length() > 0 &&
+                money.getText().toString().length() > 0 && day.getText().toString().length() > 0 && account.getText().toString().length() > 0) {
             data.put("title", theme.getText().toString());
             data.put("short_description", shortDescription.getText().toString());
             data.put("description", fullDescription.getText().toString());
@@ -247,14 +248,14 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
             data.put("expected_amount", money.getText().toString());
             data.put("user_id", userId);
             data.put("adver_id", newsId);
-        if (imageFile != null) {
-            file = new File(imageFile);
-            editImage = new TypedFile("image/*", file);
-            data.put("imageAdvertisement", editImage);
-        } else {
-            data.put("imageAdvertisement", eAImage);
-        }
-        Retrofit.sendEditInformationFromServer(data, new Callback<RegistrationResponseFromServer>() {
+            if (imageFile != null) {
+                file = new File(imageFile);
+                editImage = new TypedFile("image/*", file);
+                data.put("imageAdvertisement", editImage);
+            } else {
+                data.put("imageAdvertisement", eAImage);
+            }
+            Retrofit.sendEditInformationFromServer(data, new Callback<RegistrationResponseFromServer>() {
                 @Override
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                     if (registrationResponseFromServer == null) {
@@ -267,10 +268,17 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
 
                 @Override
                 public void failure(RetrofitError error) {
+                    if (error.getCause() instanceof UnknownHostException) {
+                        internet = new InternetCheck(context, linearLayout);
+                        internet.execute();
 
+                    }
                 }
             });
+        } else {
+            Toast.makeText(EditAdvertisement.this, "Заполните все поля", Toast.LENGTH_SHORT).show();
         }
+    }
 
 
     public String getPath(Uri uri) {
@@ -306,26 +314,26 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
     }
 
     public void selectImage() {
-        final CharSequence[] items = {"Сделать фотографию", "Выбрать фотографию",
-                "Отмена"};
+        final CharSequence[] items = {getString(R.string.take_a_photo), getString(R.string.select_a_photo),
+                getString(R.string.cancel)};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditAdvertisement.this);
-        builder.setTitle("Добавить фотографию");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.add_photo);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Сделать фотографию")) {
+                if (items[item].equals(getString(R.string.take_a_photo))) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, REQUEST_CAMERA);
-                } else if (items[item].equals("Выбрать фотографию")) {
+                } else if (items[item].equals(getString(R.string.select_a_photo))) {
                     Intent intent = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(
-                            Intent.createChooser(intent, "Select File"),
+                            Intent.createChooser(intent, getString(R.string.select_a_photo)),
                             SELECT_FILE);
-                } else if (items[item].equals("Отмена")) {
+                } else if (items[item].equals(getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -420,8 +428,6 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
         public View getCustomView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
             View mySpinner = inflater.inflate(R.layout.custom_spinner, parent, false);
-            TextView main_text = (TextView) mySpinner.findViewById(R.id.text_main_seen);
-            main_text.setText(nameCurrency[position]);
             ImageView left_icon = (ImageView) mySpinner.findViewById(R.id.left_pic);
             left_icon.setImageResource(total_images[position]);
             return mySpinner;

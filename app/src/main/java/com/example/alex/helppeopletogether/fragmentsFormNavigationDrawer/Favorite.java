@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.alex.helppeopletogether.Adapter.SelectedAdapter;
 import com.example.alex.helppeopletogether.R;
@@ -81,6 +82,7 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
         prodialog = new ProDialog();
         preferences = new Preferences(context);
         userId = preferences.loadText(PREFERENCES_ID);
+
         getLikeInformations();
     }
 
@@ -117,6 +119,7 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
                     fm.beginTransaction().replace(R.id.container, noLikeData).commit();
                     Toast.makeText(context, "У вас нет избранных новостей", Toast.LENGTH_LONG).show();
                     prodialog.connectionProgressBar();
+
 
                 } else {
                     for (int i = 0; i < selectedNews.size(); i++) {

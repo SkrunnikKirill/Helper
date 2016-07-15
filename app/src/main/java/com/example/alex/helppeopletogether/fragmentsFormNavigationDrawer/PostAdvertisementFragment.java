@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
@@ -48,7 +49,8 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     InternetCheck internet;
     RelativeLayout relativeLayout;
     GetCurensyYear year;
-    private EditText  phoneNumber;
+    FiledTest test;
+    private EditText phoneNumber;
     private AutoCompleteTextView region;
     private AutoCompleteTextView city;
     private TextView dayOfBirth;
@@ -101,6 +103,8 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         dayOfBirth = (TextView) root.findViewById(R.id.post_advertisement_date_of_birth);
         next = (Button) root.findViewById(R.id.post_advertisement_next);
         phoneNumber = (EditText) root.findViewById(R.id.post_advertisement_phone_number);
+        test = new FiledTest(city, region, phoneNumber);
+        test.checkPostAdvertisementData();
         region.addTextChangedListener(this);
         city.addTextChangedListener(this);
         relativeLayout = (RelativeLayout) root.findViewById(R.id.post_advertisemet_relative_layout);
@@ -124,15 +128,13 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     @Override
     public void onPause() {
         super.onPause();
-        region.setText("");
-        city.setText("");
-        phoneNumber.setText("");
-        dayOfBirth.setText("");
+
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         context = getActivity();
         preferences = new Preferences(context);
         year = new GetCurensyYear();
@@ -142,6 +144,9 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     @Override
     public void onResume() {
         super.onResume();
+        region.setError(null);
+        city.setError(null);
+        phoneNumber.setError(null);
         DatePickerDialog dpd = (DatePickerDialog) getActivity().getFragmentManager().findFragmentByTag("Datepickerdialog");
         if (dpd != null) dpd.setOnDateSetListener(this);
     }
@@ -198,10 +203,8 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
 
     private void dateRetrofit() {
         advertisementData = new LinkedHashMap<>();
-        if (phoneNumber.getText().toString().length() < 13) {
-            Toast.makeText(getActivity(), "Введите свой номер", Toast.LENGTH_LONG).show();
-        } else if (region.getText().length() > 0 && city.getText().length() > 0 && phoneNumber.getText().length() > 0 &&
-                dayOfBirth.getText().length() > 0) {
+        if (region.getText().length() > 0 && city.getText().length() > 0 && phoneNumber.getText().length() > 0 &&
+                dayOfBirth.getText().length() > 0 && phoneNumber.getText().toString().length() > 12) {
             advertisementData.put("region", region.getText().toString());
             advertisementData.put("city", city.getText().toString());
             advertisementData.put("date", String.valueOf(installedDay));
@@ -217,8 +220,11 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
                     if (answer == 1) {
                         Toast.makeText(getActivity(), "Данные не отпраленны", Toast.LENGTH_LONG).show();
                     } else if (answer == 2) {
-                        Toast.makeText(getActivity(), "Это успех детка", Toast.LENGTH_LONG).show();
                         nextActivity();
+                        region.setText("");
+                        city.setText("");
+                        phoneNumber.setText("+380");
+                        dayOfBirth.setText("");
                     }
                 }
 
@@ -233,7 +239,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
 
         } else {
 
-            Toast.makeText(getActivity(), "Не все поля заполнены, заполнети все поля", Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(), R.string.all_filed, Toast.LENGTH_LONG).show();
         }
     }
 

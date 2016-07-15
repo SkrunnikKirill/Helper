@@ -58,7 +58,7 @@ public class CustomList extends ArrayAdapter<String> {
         viewHolder = new ViewHolder();
         viewHolder.like = (ToggleButton) rowView.findViewById(R.id.datail_news_like);
         viewHolder.txtTitle = (TextView) rowView.findViewById(R.id.detail_news_theme);
-        viewHolder.timeDate = (TextView) rowView.findViewById(R.id.date_text);
+        // viewHolder.timeDate = (TextView) rowView.findViewById(R.id.date_text);
         viewHolder.test = (TextView) rowView.findViewById(R.id.detail_news_persent);
         viewHolder.date = (TextView) rowView.findViewById(R.id.detail_news_days_left);
         viewHolder.summa = (TextView) rowView.findViewById(R.id.detail_news_summa);
@@ -70,12 +70,12 @@ public class CustomList extends ArrayAdapter<String> {
             idNews = new ArrayList<Integer>();
         }
 
-        viewHolder.timeDate.setText(datePublication.get(position));
+//        viewHolder.timeDate.setText(datePublication.get(position));
         viewHolder.txtTitle.setText(shortDescription.get(position));
-        viewHolder.summa.setText(expected_amount.get(position));
-        viewHolder.date.setText(finalDate.get(position));
+        viewHolder.summa.setText("необходимо:  " + expected_amount.get(position));
+        viewHolder.date.setText("до:  " + finalDate.get(position));
 
-        Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 400).centerCrop().into(viewHolder.imageView);
+        Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 550).centerCrop().into(viewHolder.imageView);
 
         if (likeNews.indexOf(idServerNews.get(position)) >= 0) {
             viewHolder.like.getText();

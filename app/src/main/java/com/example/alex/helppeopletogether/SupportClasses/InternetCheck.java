@@ -35,9 +35,9 @@ public class InternetCheck extends AsyncTask<String, String, Boolean> {
     protected void onPreExecute() {
         super.onPreExecute();
         nDialog = new ProgressDialog(context);
-        nDialog.setTitle("Проверка подключения к интернету");
-        nDialog.setMessage("Пожалуйста подождите");
-        nDialog.setIndeterminate(false);
+        nDialog.setTitle(context.getString(R.string.check_internet_connection));
+        nDialog.setMessage(context.getString(R.string.please_wait));
+        nDialog.setIndeterminate(true);
         nDialog.setCancelable(false);
         nDialog.show();
     }
@@ -78,7 +78,7 @@ public class InternetCheck extends AsyncTask<String, String, Boolean> {
 
     public void snackBar() {
         try {
-            Snackbar snackbar = Snackbar.make(view, "Нет интернет соеденения", Snackbar.LENGTH_SHORT);
+            Snackbar snackbar = Snackbar.make(view, R.string.no_internet, Snackbar.LENGTH_SHORT);
             // Changing message text color
             // Changing action button text color
             View sbView = snackbar.getView();

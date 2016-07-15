@@ -6,22 +6,21 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
+import com.example.alex.helppeopletogether.Vk.VkArrayDates;
+import com.example.alex.helppeopletogether.Vk.VkPersonDates;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsNavigationDrawer;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
@@ -93,7 +92,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId;
     private ProfileTracker profileTracker;
     private RelativeLayout relativeLayoutSnackBar;
-    private ToggleButton showPassword;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,19 +120,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         context = getApplicationContext();
         preferences = new Preferences(Login.this);
 
-        showPassword = (ToggleButton) findViewById(R.id.togglePassword);
-        showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    showPassword.setBackgroundResource(R.drawable.onn);
-                    password.setTransformationMethod(null);
-                } else {
-                    showPassword.setBackgroundResource(R.drawable.offff);
-                    password.setTransformationMethod(new PasswordTransformationMethod());
-                }
-            }
-        });
+
 
     }
 
@@ -179,7 +166,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
     @Override
     protected void onRestart() {
         super.onRestart();
-        checkInternet();
+
 
     }
 
@@ -236,7 +223,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                                     facebookId = currentProfile.getId();
                                     UserPhoto = String.valueOf(currentProfile.getProfilePictureUri(150, 150));
                                     profileTracker.stopTracking();
-                                    facebookSocialName = "Facebook";
+                                    facebookSocialName = getString(R.string.facebook);
                                     socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId, UserPhoto);
                                 }
                             };
@@ -246,7 +233,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                             UserPhoto = String.valueOf(profile.getProfilePictureUri(150, 150));
                             facebookSecondName = profile.getLastName();
                             facebookId = profile.getId();
-                            facebookSocialName = "Facebook";
+                            facebookSocialName = getString(R.string.facebook);
                             socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId, UserPhoto);
                         }
 
@@ -255,7 +242,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
                     @Override
                     public void onCancel() {
-                        Toast.makeText(Login.this, "у вас, не получилось авторизироваться через Facebook, попробуйте еще раз"
+                        Toast.makeText(Login.this, R.string.do_not_registration_from_facebook
                                 , Toast.LENGTH_LONG).show();
                     }
 
@@ -316,9 +303,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
     private void newsFragment() {
         Intent intent = new Intent(Login.this, NewsNavigationDrawer.class);
-        // intent.putExtra("fullName", fullName);
-        // intent.putExtra("foto", UserPhoto);
-        //intent.putExtra("userId",userId);
         startActivity(intent);
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
     }
@@ -343,7 +327,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     @Override
                     public void onError(VKError error) {
                         super.onError(error);
-                        Toast.makeText(Login.this, "Все плохо", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -362,7 +345,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             @Override
             public void onError(VKError error) {
 
-                Toast.makeText(getApplicationContext(), "у вас, не получилось авторизироваться через VK, попробуйте еще раз", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), R.string.do_not_registration_from_vk, Toast.LENGTH_LONG).show();
             }
         }))
 
@@ -392,10 +375,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         Registration loginEmail = new Registration();
         if (loginEmail.resultRegularExprensionsEmail(email) == false || password.getText().length() < 6) {
 
-            Toast.makeText(Login.this, "Не правильно введен логин или пароль", Toast.LENGTH_LONG).show();
+            Toast.makeText(Login.this, R.string.not_correct_login_or_password, Toast.LENGTH_LONG).show();
         } else if (email.getText().toString().isEmpty() || password.getText().toString().isEmpty()) {
 
-            Toast.makeText(Login.this, "Не правильно введен логин или пароль", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Login.this, R.string.not_correct_login_or_password, Toast.LENGTH_SHORT).show();
         } else {
             loginData = new LinkedHashMap<>();
             loginData.put("email", email.getText().toString());
@@ -414,7 +397,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                         fullName = responseLogin.full_name;
                         UserPhoto = responseLogin.avatar;
                         if (responseFromServiseLogin == 1) {
-                            Toast.makeText(Login.this, "Не правильно введен email или пароль", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Login.this, R.string.not_correct_login_or_password, Toast.LENGTH_LONG).show();
                         } else if (responseFromServiseLogin == 2) {
                             preferences.saveText(email.getText().toString(), PREFERENCES_LOGIN);
                             preferences.saveText(password.getText().toString(), PREFERENCES_PASSWORD);
@@ -460,7 +443,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
             googleSocialName = "Google";
             socialNetworksRegistration(googleFirstName, googleSecondName, googleSocialName, googleId, UserPhoto);
         } else {
-            Toast.makeText(Login.this, "Интернет соеденение отсутствует", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Login.this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +81,6 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     private void getAdvertisementFromTheServer() {
-        Log.d("Advertisement1", "newsInformationFromServer() called with: userId" + idUser);
         Retrofit.getMyAdvertisementArrays(idUser, new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
@@ -101,7 +99,6 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
                     fm.beginTransaction().replace(R.id.container, noLikeData).commit();
                     proDialog.connectionProgressBar();
                 } else {
-                    Log.d("Advertisement", "newsInformationFromServer() called with: paymentAccount" + paymentAccount);
                     shortDescription = registrationResponseFromServer.short_description;
                     description = registrationResponseFromServer.description;
                     datePublication = registrationResponseFromServer.created_at;

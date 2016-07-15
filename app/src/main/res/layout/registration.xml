@@ -21,10 +21,10 @@
             android:padding="16dp">
 
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/registration_face_image"
                 android:layout_width="wrap_content"
-                android:layout_height="150dp"
+                android:layout_height="wrap_content"
                 android:clickable="true"
                 android:padding="7dp"
                 android:src="@drawable/photoicon" />
@@ -33,6 +33,7 @@
                 android:id="@+id/line3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/divider"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -52,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="Имя"
+                        android:hint="@string/name"
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/white" />
@@ -61,15 +62,13 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
+
 
             <LinearLayout
                 android:id="@+id/line4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/divider"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -89,7 +88,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="Фамилия"
+                        android:hint="@string/second_name"
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/white" />
@@ -98,15 +97,12 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
 
             <LinearLayout
                 android:id="@+id/line5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/divider"
                 android:orientation="horizontal">
 
 
@@ -128,7 +124,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/registration_login"
                         android:background="@null"
-                        android:hint="email"
+                        android:hint="@string/email"
                         android:inputType="textEmailAddress"
                         android:padding="10dp"
                         android:singleLine="true"
@@ -136,15 +132,12 @@
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
 
             <LinearLayout
                 android:id="@+id/line6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/divider"
                 android:orientation="horizontal">
 
                 <ImageView
@@ -157,6 +150,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:textColorHint="@color/white">
 
                     <EditText
@@ -165,19 +159,23 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/registration_email"
                         android:background="@null"
-                        android:hint="Пароль"
+                        android:hint="@string/password_registration"
                         android:inputType="textPassword"
                         android:padding="10dp"
                         android:singleLine="true"
                         android:textColor="@color/white" />
+
                 </android.support.design.widget.TextInputLayout>
 
+                <ToggleButton
+                    android:id="@+id/togglePassword"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/offff"
+                    android:textOff=""
+                    android:textOn="" />
             </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
 
 
         </LinearLayout>
@@ -191,7 +189,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:background="@drawable/button"
-        android:text="Далее"
+        android:text="@string/next"
         android:textColor="@color/white" />
 
 </RelativeLayout>

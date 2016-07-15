@@ -8,7 +8,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +57,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("message", "onCreateView() called with: " + "onCreateView");
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
 
         list = (ListView) view.findViewById(R.id.list);
@@ -88,7 +86,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         context = getActivity();
         preferences = new Preferences(getActivity());
         userId = preferences.loadText(PREFERENCES_ID);
-        Log.d("message", "onCreate() called with: " + "savedInstanceState = [" + userId + "]" + "OnCreate");
         idServerNews = new ArrayList<>();
         datePublication = new ArrayList<>();
         title = new ArrayList<>();
@@ -107,11 +104,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
     private void newsInformationFromServer() {
-        Log.d("NewsFragment1", "newsInformationFromServer() called with: userId" + userId);
         Retrofit.getArrays(userId, new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-                Log.d("NewsFragment", "newsInformationFromServer() called with: " + likeNews);
                 likeNews = registrationResponseFromServer.liked_advers;
                 likeNewsFromServer.addAll(likeNews);
                 paymentAccount = registrationResponseFromServer.payment_account;
@@ -147,13 +142,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        //userId = getUserId.getUserId(userId);
-        Log.d("message", "onResume() called with: " + "onResume()");
 
-    }
 
 
     public void adapter() {
@@ -209,7 +198,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("message", "onPause() called with: " + "onPause()");
         addLikeNewsToTheServer();
 
 

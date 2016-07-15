@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/description_problem_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/blue"
@@ -16,13 +17,16 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:weightSum="1">
+
+            >
 
             <ImageView
                 android:id="@+id/description_problem_image"
@@ -31,6 +35,8 @@
                 android:layout_gravity="center"
                 android:clickable="true"
                 android:src="@drawable/photoicon" />
+
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,23 +46,20 @@
                 app:counterOverflowTextAppearance="@style/counterOverride"
                 app:counterTextAppearance="@style/counterText">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/description_problem_theme"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
+                    android:layout_marginLeft="@dimen/marging_text_input_edit_text"
+                    android:layout_marginRight="@dimen/marging_text_input_edit_text"
+                    android:background="@drawable/divider"
                     android:gravity="center_horizontal"
-                    android:hint="Тема"
-                    android:singleLine="true"
+                    android:hint="@string/theme"
+                    android:maxLength="50"
+                    android:paddingTop="@dimen/pading_text_input_edit_text"
                     android:textColorHint="@color/white" />
             </android.support.design.widget.TextInputLayout>
 
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
-                android:src="@drawable/divider" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -67,155 +70,140 @@
                 app:counterOverflowTextAppearance="@style/counterOverride"
                 app:counterTextAppearance="@style/counterText">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/description_problem_short_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@null"
+                    android:layout_marginLeft="@dimen/marging_text_input_edit_text"
+                    android:layout_marginRight="@dimen/marging_text_input_edit_text"
+                    android:background="@drawable/divider"
                     android:gravity="center_horizontal"
-                    android:hint="Краткое описание проблемы" />
+                    android:hint="@string/short_description"
+                    android:maxLength="100"
+                    android:paddingTop="@dimen/pading_text_input_edit_text"
+                    android:textColorHint="@color/white" />
             </android.support.design.widget.TextInputLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColorHint="@color/white"
                 app:counterEnabled="true"
-                app:counterMaxLength="1000"
+                app:counterMaxLength="1500"
                 app:counterOverflowTextAppearance="@style/counterOverride"
                 app:counterTextAppearance="@style/counterText">
 
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/description_problem_full_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@null"
-                    android:gravity="center"
-                    android:hint="Полное описание проблемы" />
+                    android:layout_marginLeft="@dimen/marging_text_input_edit_text"
+                    android:layout_marginRight="@dimen/marging_text_input_edit_text"
+                    android:background="@drawable/divider"
+                    android:gravity="center_horizontal"
+                    android:hint="@string/full_description"
+                    android:maxLength="1500"
+                    android:paddingTop="@dimen/pading_text_input_edit_text"
+                    android:textColorHint="@color/white" />
             </android.support.design.widget.TextInputLayout>
 
-            <ImageView
+
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
+                android:singleLine="true"
+                android:textColorHint="@color/white"
+                app:counterEnabled="true"
+                app:counterMaxLength="20"
+                app:counterOverflowTextAppearance="@style/counterOverride"
+                app:counterTextAppearance="@style/counterText">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/description_problem_account"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginRight="25dp"
+                    android:background="@drawable/divider"
+                    android:gravity="center_horizontal"
+                    android:hint="@string/account"
+                    android:inputType="phone"
+                    android:maxLength="20"
+                    android:paddingTop="@dimen/pading_text_input_edit_text"
+                    android:textColorHint="@color/white" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/description_problem_day"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/marging_text_input_edit_text"
+                android:layout_marginRight="@dimen/marging_text_input_edit_text"
+                android:background="@drawable/divider"
+                android:clickable="true"
+                android:gravity="center"
+                android:hint="@string/day_of_fee"
+                android:inputType="phone"
+                android:paddingTop="@dimen/pading_text_input_edit_text"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="17sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/marging_text_input_edit_text"
+                android:layout_marginRight="@dimen/marging_text_input_edit_text"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/divider"
                 android:orientation="horizontal">
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
                     android:layout_weight="1"
                     android:textColorHint="@color/white"
                     app:counterOverflowTextAppearance="@style/counterOverride"
                     app:counterTextAppearance="@style/counterText">
 
-                    <EditText
+                    <android.support.design.widget.TextInputEditText
                         android:id="@+id/description_problem_money"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
                         android:background="@null"
                         android:digits="0123456789"
                         android:gravity="center"
-                        android:hint="Необходимая сумма"
+                        android:hint="@string/money"
                         android:inputType="phone"
+                        android:maxLength="7"
+                        android:paddingTop="@dimen/pading_text_input_edit_text"
                         android:singleLine="true" />
                 </android.support.design.widget.TextInputLayout>
+
                 <Spinner
                     android:id="@+id/spinnerstate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:popupBackground="@color/blue" />
-
             </LinearLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:src="@drawable/divider" />
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:counterEnabled="true"
-                app:counterMaxLength="20"
-                app:counterOverflowTextAppearance="@style/counterOverride"
-                app:counterTextAppearance="@style/counterText">
-                <EditText
-                    android:id="@+id/description_problem_account"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:background="@null"
-                    android:digits="0123456789"
-                    android:gravity="center_horizontal"
-                    android:hint="Номер расчетного счета "
-                    android:inputType="phone"
-                    android:singleLine="true" />
-            </android.support.design.widget.TextInputLayout>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
-
-
-            <TextView
-                android:id="@+id/description_problem_day"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:layout_weight="0.51"
-                android:clickable="true"
-                android:gravity="center"
-                android:hint="Количество дней для сбора"
-                android:inputType="phone"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="19dp" />
-
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
-
 
             <Button
                 android:id="@+id/description_problem_locate"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/page3_checkBox"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="25dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="@dimen/marging_text_input_edit_text"
                 android:background="@drawable/button"
-                android:text="Разместить обьявление"
+                android:text="@string/post__advertisement"
                 android:textColor="@color/white" />
         </LinearLayout>
-
-
     </ScrollView>
 
     <FrameLayout
         android:id="@+id/container1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
 
 </LinearLayout>

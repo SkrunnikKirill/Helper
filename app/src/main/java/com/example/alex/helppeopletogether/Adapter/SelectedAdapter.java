@@ -54,7 +54,7 @@ public class SelectedAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.datail_news_item,parent,false);
             viewHolder = new ViewHolder();
             viewHolder.txtTitle = (TextView) view.findViewById(R.id.detail_news_theme);
-            viewHolder.timeDate = (TextView) view.findViewById(R.id.date_text);
+            // viewHolder.timeDate = (TextView) view.findViewById(R.id.date_text);
             viewHolder.test = (TextView) view.findViewById(R.id.detail_news_persent);
             viewHolder.date = (TextView) view.findViewById(R.id.detail_news_days_left);
             viewHolder.summa = (TextView) view.findViewById(R.id.detail_news_summa);
@@ -65,13 +65,13 @@ public class SelectedAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.timeDate.setText(selectedNews.created_at);
+//        viewHolder.timeDate.setText(selectedNews.created_at);
         viewHolder.txtTitle.setText(selectedNews.short_description);
-        viewHolder.summa.setText(selectedNews.expected_amount);
-        viewHolder.date.setText(selectedNews.final_date);
+        viewHolder.summa.setText("необходимо:  " + selectedNews.expected_amount);
+        viewHolder.date.setText("до:  " + selectedNews.final_date);
 
         Dimensions dimensions = new Dimensions();
-        Glide.with(context).load(selectedNews.image).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(context), 400).centerCrop().into(viewHolder.imageView);
+        Glide.with(context).load(selectedNews.image).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(context), 550).centerCrop().into(viewHolder.imageView);
 
 
         return view;

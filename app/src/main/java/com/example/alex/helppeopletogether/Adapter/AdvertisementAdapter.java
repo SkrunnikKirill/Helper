@@ -62,7 +62,7 @@ public class AdvertisementAdapter extends ArrayAdapter<String> implements Consta
             viewHolder = new ViewHolder();
             viewHolder.txtTitle = (TextView) rowView.findViewById(R.id.advertisement_adapter_theme);
             viewHolder.edit = (Button) rowView.findViewById(R.id.advertisement_adapter_edit);
-            viewHolder.timeDate = (TextView) rowView.findViewById(R.id.advertisement_adapter_date_text);
+            //viewHolder.timeDate = (TextView) rowView.findViewById(R.id.advertisement_adapter_date_text);
             viewHolder.date = (TextView) rowView.findViewById(R.id.advertisement_adapter_days_left);
             viewHolder.summa = (TextView) rowView.findViewById(R.id.advertisement_adapter_summa);
             viewHolder.imageView = (ImageView) rowView.findViewById(R.id.advertisement_adapter_image);
@@ -71,12 +71,12 @@ public class AdvertisementAdapter extends ArrayAdapter<String> implements Consta
             viewHolder = (ViewHolder) rowView.getTag();
         }
 
-        viewHolder.timeDate.setText(datePublication.get(position));
+        //viewHolder.timeDate.setText(datePublication.get(position));
         viewHolder.txtTitle.setText(shortDescription.get(position));
-        viewHolder.summa.setText(expected_amount.get(position));
-        viewHolder.date.setText(finalDate.get(position));
+        viewHolder.summa.setText("необходимо:  " + expected_amount.get(position));
+        viewHolder.date.setText("до:  " + finalDate.get(position));
         Dimensions dimensions = new Dimensions();
-        Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 400).centerCrop().into(viewHolder.imageView);
+        Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 550).centerCrop().into(viewHolder.imageView);
         viewHolder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

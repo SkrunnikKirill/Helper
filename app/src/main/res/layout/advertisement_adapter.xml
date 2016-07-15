@@ -2,23 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fdf"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="7dp"
+        card_view:cardCornerRadius="10dp">
 
-        <TextView
-            android:id="@+id/advertisement_adapter_date_text"
+
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:text="Small Text" />
+            android:layout_height="wrap_content">
+
+
 
         <Button
             android:id="@+id/advertisement_adapter_edit"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_alignBaseline="@+id/advertisement_adapter_theme"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginTop="3dp"
@@ -26,40 +32,44 @@
             android:focusable="false"
 
             />
-
-        <ImageView
-            android:id="@+id/advertisement_adapter_image"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@+id/advertisement_adapter_date_text"
-            android:layout_centerHorizontal="true" />
-
         <TextView
             android:id="@+id/advertisement_adapter_theme"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/advertisement_adapter_image"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:gravity="center"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="20dp"
             android:text="Medium Text"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/advertisement_adapter_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/advertisement_adapter_theme"
+                android:layout_centerHorizontal="true" />
 
 
-        <RelativeLayout
+            <RelativeLayout
             android:id="@+id/advertisement_adapter_relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/advertisement_adapter_theme"
+                android:layout_alignBottom="@+id/advertisement_adapter_image"
+                android:background="@color/blue_grey"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/advertisement_adapter_summa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:text="7000$"
-                android:textSize="20dp" />
+                android:textColor="@color/white"
+                android:textSize="15sp" />
 
 
             <TextView
@@ -67,30 +77,35 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
                 android:text="14"
-                android:textSize="20dp" />
+                android:textColor="@color/white"
+                android:textSize="15sp" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/advertisement_adapter_relativeLayout1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/advertisement_adapter_relativeLayout"
-            android:orientation="horizontal">
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/advertisement_adapter_relativeLayout1"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/advertisement_adapter_relativeLayout"-->
+            <!--android:orientation="horizontal">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="необходимо" />
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:text="необходимо" />-->
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="недели осталось" />
-        </RelativeLayout>
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:text="дней" />-->
+            <!--</RelativeLayout>-->
     </RelativeLayout>
+    </android.support.v7.widget.CardView>
 
 
 </LinearLayout>

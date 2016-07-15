@@ -28,18 +28,7 @@ public class Validation {
         return isValid(editText, EMAIL_REGEX, EMAIL_MSG, required);
     }
 
-    // call this method when you need to check phone number validation
-    public static boolean isPassword(EditText editText, boolean required) {
-        return isValid(editText, PASSWORD_REGAX, PASSWORD_MSG, required);
-    }
 
-    public static boolean isName(EditText editText, boolean required) {
-        return isValid(editText, FULLNAME_REGAX, FULLNAME_MSG, required);
-    }
-
-    public static boolean isAll(EditText editText, boolean required) {
-        return isValid(editText, REQUIRED_MSG, required);
-    }
 
     // return true if the input field is valid, based on the parameter passed
     public static boolean isValid(EditText editText, String regex, String errMsg, boolean required) {

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#c8dbe8"
+    android:background="#E5E5E5"
     tools:context="com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NoLikeData">
 
 

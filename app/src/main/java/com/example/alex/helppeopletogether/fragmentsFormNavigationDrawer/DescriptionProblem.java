@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +32,7 @@ import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
+import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
@@ -41,6 +43,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 
@@ -56,18 +59,16 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
 
 
     ImageView imageAdvertisement;
-    int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     Uri selectedImageUri;
-    String selectedImagePath;
-    String userid;
+    String selectedImagePath, userid, currency;
     String[] nameCurrency = {"USD", "EUR", "UAH"};
     int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna};
-    String currency;
     GetCurensyYear year;
     NewsFragment news;
     DatePickerDialog datePickerDialog;
     Preferences preferences;
     FiledTest filedTest;
+    LinearLayout linearLayout;
 
 
     private TextView day;
@@ -81,6 +82,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.description_problem);
+        linearLayout = (LinearLayout) findViewById(R.id.description_problem_linear_layout);
         news = new NewsFragment();
         year = new GetCurensyYear();
         preferences = new Preferences(DescriptionProblem.this);
@@ -95,13 +97,13 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         locate = (Button) findViewById(R.id.description_problem_locate);
         imageAdvertisement.setOnClickListener(this);
         locate.setOnClickListener(this);
-        filedTest = new FiledTest(theme, shortDescription, fullDescription, money, account, locate);
+        filedTest = new FiledTest(theme, shortDescription, fullDescription, money, account);
         filedTest.inspection1();
 
         dataPicker();
         spiner();
         Toolbar toolbar = (Toolbar) findViewById(R.id.description_problem_toolbar);
-        toolbar.setTitle("Информация Обьявления");
+        toolbar.setTitle(R.string.information_advertisement);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_36dp));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,8 +169,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
                 int startYear = year.getCurrentYear();
                 int nextYear = year.getCurrentYear() + 5;
                 datePickerDialog.setYearRange(startYear, nextYear);
-
-
                 datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
             }
         });
@@ -218,26 +218,26 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     }
 
     public void selectImage() {
-        final CharSequence[] items = {"Сделать фотографию", "Выбрать фотографию",
-                "Отмена"};
+        final CharSequence[] items = {getString(R.string.take_a_photo), getString(R.string.select_a_photo),
+                getString(R.string.cancel)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DescriptionProblem.this);
-        builder.setTitle("Добавить фотографию");
+        builder.setTitle(R.string.add_photo);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Сделать фотографию")) {
+                if (items[item].equals(getString(R.string.take_a_photo))) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, REQUEST_CAMERA);
-                } else if (items[item].equals("Выбрать фотографию")) {
+                } else if (items[item].equals(getString(R.string.select_a_photo))) {
                     Intent intent = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(
-                            Intent.createChooser(intent, "Select File"),
+                            Intent.createChooser(intent, getString(R.string.select_a_photo)),
                             SELECT_FILE);
-                } else if (items[item].equals("Отмена")) {
+                } else if (items[item].equals(getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -317,12 +317,10 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     }
 
     private void sendDescriptionInformationFromServise() {
-        if (account.getText().toString().length() < 20 || account.getText().toString().length() > 20) {
-            Toast.makeText(DescriptionProblem.this, "Расчетный счет должен состоять из 20 символов", Toast.LENGTH_SHORT).show();
-        } else if (theme.getText().toString().length() > 50 || shortDescription.getText().toString().length() > 100 || fullDescription.getText().toString().length() > 1000) {
-            Toast.makeText(DescriptionProblem.this, "Превышено максимальное количество символов", Toast.LENGTH_SHORT).show();
-        } else if (theme.getText().toString().length() > 0 && shortDescription.getText().toString().length() > 0 && fullDescription.getText().toString().length() > 0 &&
-                money.getText().toString().length() > 0 && day.getText().toString().length() > 0 && account.getText().toString().length() > 0 && selectedImageUri != null) {
+        if (theme.getText().toString().length() > 0 && shortDescription.getText().toString().length() > 0 && fullDescription.getText().toString().length() > 0 &&
+                money.getText().toString().length() > 0 && day.getText().toString().length() > 0 && account.getText().toString().length() > 0 && selectedImageUri != null
+                && theme.getText().toString().length() <= 50 && shortDescription.getText().toString().length() <= 100 && fullDescription.getText().toString().length() <= 1500
+                && account.getText().toString().length() <= 20) {
             dataAdvertisement = new LinkedHashMap<>();
             dataAdvertisement.put("title", String.valueOf(theme.getText()));
             dataAdvertisement.put("short_description", String.valueOf(shortDescription.getText()));
@@ -345,13 +343,20 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Toast.makeText(DescriptionProblem.this, "Все плохо", Toast.LENGTH_LONG).show();
+                    if (error.getCause() instanceof UnknownHostException) {
+                        checkInternet();
+                    }
                 }
             });
         } else {
-            Toast.makeText(DescriptionProblem.this, "Заполните все поля и установите изображение", Toast.LENGTH_LONG).show();
+            Toast.makeText(DescriptionProblem.this, R.string.all_field_and_photo, Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public void checkInternet() {
+        InternetCheck internetCheck = new InternetCheck(DescriptionProblem.this, linearLayout);
+        internetCheck.execute();
     }
 
 
@@ -381,8 +386,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         public View getCustomView(int position, View convertView, ViewGroup parent) {
             LayoutInflater inflater = getLayoutInflater();
             View mySpinner = inflater.inflate(R.layout.custom_spinner, parent, false);
-            TextView main_text = (TextView) mySpinner.findViewById(R.id.text_main_seen);
-            main_text.setText(nameCurrency[position]);
             ImageView left_icon = (ImageView) mySpinner.findViewById(R.id.left_pic);
             left_icon.setImageResource(total_images[position]);
             return mySpinner;

@@ -55,11 +55,12 @@ public class NewsNavigationDrawer extends AppCompatActivity
         registration = new Registration();
         name = preferences.loadText(PREFERENCES_NAME);
         foto = preferences.loadText(PREFERENCES_FOTO);
-
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.container, news).commit();
-        setSupportActionBar(toolbar);
+        if (fragmentManager.findFragmentById(R.id.container) == null) {
+            fragmentManager.beginTransaction().replace(R.id.container, news).commit();
+        }
 
+        setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

@@ -29,17 +29,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/post_advertisement_therd_name"
+                android:background="@drawable/divider"
                 android:clickable="true"
-                android:hint="Дата рождения"
+                android:hint="@string/day_of_birthday"
                 android:padding="7dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="20dp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
+
 
 
             <android.support.design.widget.TextInputLayout
@@ -53,20 +51,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/post_advertisement_date_of_birth"
-                    android:background="@null"
+                    android:background="@drawable/divider"
                     android:completionThreshold="2"
                     android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
                 ЯЧСМИТЬБЮ"
-                    android:hint="Область"
+                    android:hint="@string/region"
                     android:imeOptions="actionGo"
                     android:singleLine="true"
                     android:textColor="@color/white" />
             </android.support.design.widget.TextInputLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
+
 
 
             <android.support.design.widget.TextInputLayout
@@ -80,19 +75,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/post_advertisement_region"
-                    android:background="@null"
+                    android:background="@drawable/divider"
                     android:completionThreshold="2"
                     android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
                 ЯЧСМИТЬБЮ"
-                    android:hint="Город"
+                    android:hint="@string/city"
                     android:singleLine="true"
                     android:textColor="@color/white" />
             </android.support.design.widget.TextInputLayout>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -105,20 +97,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/post_advertisement_city"
-                    android:background="@null"
+                    android:background="@drawable/divider"
                     android:digits="0123456789+"
-                    android:hint="Телефон"
+                    android:hint="@string/phone_number"
                     android:inputType="phone"
                     android:maxLength="13"
                     android:singleLine="true"
-                    android:text="+380"
+                    android:text="@string/number"
                     android:textColor="@color/white" />
             </android.support.design.widget.TextInputLayout>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/divider" />
 
 
         </LinearLayout>
@@ -135,7 +122,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/button"
-        android:text="Далее"
+        android:text="@string/next"
         android:textColor="@color/white" />
 
 
