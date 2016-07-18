@@ -42,7 +42,6 @@
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -69,13 +68,6 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textSize="17sp" />
 
-                    TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                    android:id="@+id/detail_news_mst"
-                        android:layout_below="@+id/detail_news_summa"
-                        android:text="необходимо" />
-
 
                     <TextView
                         android:id="@+id/detail_news_days_left"
@@ -86,23 +78,6 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textSize="17sp" />
 
-                    TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                    android:id="@+id/deteil_news_day"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/detail_news_summa"
-                        android:text="дней осталось" />
-
-                    TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/detail_news_accaunt"
-                    android:layout_below="@+id/detail_news_days_left"
-                    android:layout_marginTop="20dp"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center"
-                    android:text="Расчетный счет" />
 
                     <TextView
                         android:id="@+id/detail_news_expected_amount"

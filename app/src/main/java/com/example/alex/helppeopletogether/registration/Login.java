@@ -305,6 +305,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         Intent intent = new Intent(Login.this, NewsNavigationDrawer.class);
         startActivity(intent);
         overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+        finish();
     }
 
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
@@ -58,6 +59,7 @@ public class SelectedAdapter extends BaseAdapter {
             viewHolder.date = (TextView) view.findViewById(R.id.detail_news_days_left);
             viewHolder.summa = (TextView) view.findViewById(R.id.detail_news_summa);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.detail_news_image);
+            viewHolder.button = (ToggleButton) view.findViewById(R.id.datail_news_like);
             view.setTag(viewHolder);
 
         } else {
@@ -68,7 +70,7 @@ public class SelectedAdapter extends BaseAdapter {
         viewHolder.txtTitle.setText(selectedNews.short_description);
         viewHolder.summa.setText("необходимо:  " + selectedNews.expected_amount);
         viewHolder.date.setText("до:  " + selectedNews.final_date);
-
+        viewHolder.button.setVisibility(View.GONE);
         Dimensions dimensions = new Dimensions();
         Glide.with(context).load(selectedNews.image).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(context), 550).centerCrop().into(viewHolder.imageView);
 
@@ -86,6 +88,7 @@ public class SelectedAdapter extends BaseAdapter {
         TextView date;
         TextView summa;
         ImageView imageView;
+        ToggleButton button;
 
     }
 

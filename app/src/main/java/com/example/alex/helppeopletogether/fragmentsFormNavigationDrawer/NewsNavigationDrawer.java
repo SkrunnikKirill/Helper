@@ -72,7 +72,7 @@ public class NewsNavigationDrawer extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         fullName = (TextView) header.findViewById(R.id.navigation_drawer_full_name);
         userImage = (CircleImageView) header.findViewById(R.id.navigation_drawer_user_foto);
-        Glide.with(NewsNavigationDrawer.this).load(foto).override(150, 150).into(userImage);
+        Glide.with(NewsNavigationDrawer.this).load(foto).override(150, 150).centerCrop().error(R.mipmap.no_user_foto).into(userImage);
         fullName.setText(name);
         navigationView.setNavigationItemSelectedListener(this);
 

@@ -226,6 +226,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)
                 );
+                datePickerDialog.setMinDate(calendar);
                 datePickerDialog.setAccentColor(Color.parseColor("#03a9f4"));
                 datePickerDialog.setThemeDark(true);
                 datePickerDialog.dismissOnPause(true);

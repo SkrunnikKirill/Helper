@@ -125,11 +125,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         return root;
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
 
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,9 +140,6 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     @Override
     public void onResume() {
         super.onResume();
-        region.setError(null);
-        city.setError(null);
-        phoneNumber.setError(null);
         DatePickerDialog dpd = (DatePickerDialog) getActivity().getFragmentManager().findFragmentByTag("Datepickerdialog");
         if (dpd != null) dpd.setOnDateSetListener(this);
     }
