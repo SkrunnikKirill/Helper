@@ -121,7 +121,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         preferences = new Preferences(Login.this);
 
 
-
     }
 
     @Override
@@ -223,7 +222,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                                     facebookId = currentProfile.getId();
                                     UserPhoto = String.valueOf(currentProfile.getProfilePictureUri(150, 150));
                                     profileTracker.stopTracking();
-                                    facebookSocialName = getString(R.string.facebook);
+                                    facebookSocialName = getResources().getString(R.string.facebook);
                                     socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId, UserPhoto);
                                 }
                             };
@@ -233,7 +232,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                             UserPhoto = String.valueOf(profile.getProfilePictureUri(150, 150));
                             facebookSecondName = profile.getLastName();
                             facebookId = profile.getId();
-                            facebookSocialName = getString(R.string.facebook);
+                            facebookSocialName = getResources().getString(R.string.facebook);
                             socialNetworksRegistration(facebookFirstName, facebookSecondName, facebookSocialName, facebookId, UserPhoto);
                         }
 
@@ -263,7 +262,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
         socialUserData.put("first_name", firstName);
         socialUserData.put("second_name", secondName);
         socialUserData.put("social_network", nameSocial);
-        socialUserData.put("social_id", String.valueOf(idSocial));
+        socialUserData.put("social_id", idSocial.toString());
         socialUserData.put("avatar", userFoto);
         Retrofit.sendSocialNetworks(socialUserData, new Callback<RegistrationResponseFromServer>() {
             @Override
@@ -275,24 +274,25 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     userId = registrationResponseFromServer.user_id;
                     fullName = registrationResponseFromServer.full_name;
                     UserPhoto = registrationResponseFromServer.avatar;
-
-
-                    if (responseFromServiseSocialNetwork == 1) {
-                        preferences.saveText(userId.toString(), PREFERENCES_ID);
-                        preferences.saveText(fullName, PREFERENCES_NAME);
-                        preferences.saveText(UserPhoto, PREFERENCES_FOTO);
-                        newsFragment();
-
-                    } else if (responseFromServiseSocialNetwork == 2) {
-                        intentNextStep = new Intent(Login.this, Agreement.class);
-                        startActivity(intentNextStep);
-                        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
-                    }
                 }
+
+                if (responseFromServiseSocialNetwork == 1) {
+                    preferences.saveText(userId.toString(), PREFERENCES_ID);
+                    preferences.saveText(fullName, PREFERENCES_NAME);
+                    preferences.saveText(UserPhoto, PREFERENCES_FOTO);
+                    newsFragment();
+
+                } else if (responseFromServiseSocialNetwork == 2) {
+                    intentNextStep = new Intent(Login.this, Agreement.class);
+                    startActivity(intentNextStep);
+                    overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+                }
+
             }
 
             @Override
             public void failure(RetrofitError error) {
+                String p = error.getCause().toString();
                 if (error.getCause() instanceof UnknownHostException) {
                     checkInternet();
                 }

@@ -119,6 +119,11 @@ public class NewsNavigationDrawer extends AppCompatActivity
         return false;
     }
 
+    public void advertisement() {
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.container, advertisement).commit();
+    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

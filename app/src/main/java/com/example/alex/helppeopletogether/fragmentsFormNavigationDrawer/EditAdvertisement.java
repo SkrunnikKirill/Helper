@@ -2,6 +2,7 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -64,7 +65,6 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
     Spinner currency;
     Button editButton;
     Uri selectedImageUri;
-    String selectedImagePath;
     FiledTest filedTest;
     LinkedHashMap data;
     LinearLayout linearLayout;
@@ -72,21 +72,23 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
     Context context;
     Preferences preferences;
     GetCurensyYear year;
-    String currencySimvol;
-    String imageFile;
+    NewsNavigationDrawer navigationDrawer;
     File file;
     TypedFile editImage;
+    FragmentManager fragmentManager;
+    Integer answerFromServer;
     String[] nameCurrency = {"USD", "EUR", "UAH"};
     int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna};
-    private String userId, newsId;
-    private String eAId, eAThema, eACreatedat, eAShortDescription, eADescription, eAImage, eAExpectedAmount, eAFinalDate, eAPaymentAccount;
-
+    private String eAId, eAThema, eACreatedat, eAShortDescription, eADescription, eAImage, eAExpectedAmount, eAFinalDate, eAPaymentAccount, selectedImagePath, currencySimvol,
+            imageFile, userId, newsId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_advertisement);
+        fragmentManager = getFragmentManager();
         data = new LinkedHashMap<>();
         context = EditAdvertisement.this;
+        navigationDrawer = new NewsNavigationDrawer();
         preferences = new Preferences(context);
         userId = preferences.loadText(PREFERENCES_ID);
         newsId = preferences.loadText(PREFERENCES_ID_NEWS);
@@ -103,9 +105,6 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
         editButton = (Button) findViewById(R.id.edit_advertisement_edit_button);
         pictureAdvertisement.setOnClickListener(this);
         spiner();
-
-
-
 
         dataPicker();
         Toolbar toolbar = (Toolbar) findViewById(R.id.edit_advertisement_toolbar);
@@ -246,7 +245,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
             data.put("description", fullDescription.getText().toString());
             data.put("final_date", day.getText().toString());
             data.put("payment_account", account.getText().toString());
-            data.put("expected_amount", money.getText().toString());
+            data.put("expected_amount", money.getText().toString() + currencySimvol);
             data.put("user_id", userId);
             data.put("adver_id", newsId);
             if (imageFile != null) {
@@ -257,12 +256,22 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
                 data.put("imageAdvertisement", eAImage);
             }
             Retrofit.sendEditInformationFromServer(data, new Callback<RegistrationResponseFromServer>() {
+
                 @Override
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                     if (registrationResponseFromServer == null) {
                         Toast.makeText(EditAdvertisement.this, R.string.error_data_from_server, Toast.LENGTH_SHORT).show();
-                    } else {
+                        return;
+                    }
+                    answerFromServer = registrationResponseFromServer.response;
 
+
+                    if (answerFromServer == 1) {
+                        Intent intent = new Intent(EditAdvertisement.this, NewsNavigationDrawer.class);
+                        startActivityForResult(intent, 1);
+
+                    } else {
+                        Toast.makeText(EditAdvertisement.this, "У вас не получилось редактировать объявление", Toast.LENGTH_SHORT).show();
                     }
                     preferences.remove(PREFERENCES_ID_NEWS);
                 }

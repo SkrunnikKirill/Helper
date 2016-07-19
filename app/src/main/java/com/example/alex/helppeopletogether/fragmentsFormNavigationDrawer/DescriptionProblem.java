@@ -335,7 +335,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             Retrofit.sendAdvertisement(dataAdvertisement, image, new Callback<RegistrationResponseFromServer>() {
                 @Override
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-
                     Intent intent = new Intent(DescriptionProblem.this, NewsNavigationDrawer.class);
                     startActivityForResult(intent, 1);
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
