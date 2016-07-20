@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.Vk.VkArrayDates;
@@ -65,31 +65,24 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class Login extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, ConstantPreferences {
-
-    private static final int RC_SIGN_IN = 0;
-    private static final String TAG = "Login";
-    public static Integer userId;
-    public static String UserPhoto;
-    public static String fullName;
-    LoginManager loginManager;
-    Context context;
-    Profile profile;
-    InternetCheck internetCheck;
-    Preferences preferences;
-    private EditText email;
-    private EditText password;
+public class Login extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, Constant {
+    private LoginManager loginManager;
+    private Context context;
+    private Profile profile;
+    private InternetCheck internetCheck;
+    private Preferences preferences;
+    private EditText password, email;
     private Button buttonNext, facebook, vk, googlePlus;
     private TextView buttonNextStepRegistration;
     private Intent intentNextStep;
     private LinkedHashMap<String, String> loginData, socialUserData;
-    private Integer responseFromServiseLogin, responseFromServiseSocialNetwork;
+    private Integer responseFromServiseLogin, responseFromServiseSocialNetwork, userId;
     private CallbackManager callbackManager;
     private String[] scope = new String[]{VKScope.EMAIL, VKScope.PHOTOS, VKScope.MESSAGES, VKScope.FRIENDS};
-    private String vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId;
     private GoogleApiClient mGoogleApiClient;
     private ConnectionResult mConnectionResult;
-    private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId;
+    private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId, fullName,
+            UserPhoto, vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId;
     private ProfileTracker profileTracker;
     private RelativeLayout relativeLayoutSnackBar;
 
@@ -283,6 +276,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     newsFragment();
 
                 } else if (responseFromServiseSocialNetwork == 2) {
+                    preferences.saveText(userId.toString(), PREFERENCES_ID);
+                    preferences.saveText(fullName, PREFERENCES_NAME);
+                    preferences.saveText(UserPhoto, PREFERENCES_FOTO);
                     intentNextStep = new Intent(Login.this, Agreement.class);
                     startActivity(intentNextStep);
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
@@ -425,7 +421,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
 
     private void handleSignInResult(GoogleSignInResult result) {
 
-        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
 
         if (result.isSuccess()) {
             GoogleSignInAccount acct = result.getSignInAccount();

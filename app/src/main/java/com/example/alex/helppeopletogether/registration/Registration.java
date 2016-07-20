@@ -23,7 +23,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
@@ -47,24 +47,19 @@ import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
 
-public class Registration extends Activity implements View.OnClickListener, ConstantPreferences {
-    public static Integer responseFromServiseRegistrationId;
-    public static String responseFromServiseFullName, responseFromServiseImage;
-    Intent intent;
-    Integer responseFromServiseRegistration;
-    Uri selectedImageUri;
-    String selectedImagePath;
-    RelativeLayout relativeLayoutRegistrationSnackBar;
-    Preferences preferences;
-    FiledTest test;
+public class Registration extends Activity implements View.OnClickListener, Constant {
+    private Integer responseFromServiseRegistrationId, responseFromServiseRegistration;
+    private String responseFromServiseFullName, responseFromServiseImage, selectedImagePath, regularExprensionsEmail;
+    private Intent intent;
+    private Uri selectedImageUri;
+    private RelativeLayout relativeLayoutRegistrationSnackBar;
+    private Preferences preferences;
+    private FiledTest test;
     private EditText firstName, secondName, email, password;
     private CircleImageView face;
     private Button buttonRegistration;
     private HashMap<String, String> data;
-    private String regularExprensionsEmail;
-    private String regularExprensionsLogin;
     private boolean result;
-    private String response;
     private File file;
     private TypedFile imageFace;
     private ToggleButton showPassword;

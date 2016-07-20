@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import android.widget.ListView;
 
 import com.example.alex.helppeopletogether.Adapter.CustomList;
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
@@ -31,25 +32,15 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ConstantPreferences {
-    public ArrayList<Integer> idServerNews;
-    public ArrayList<String> datePublication;
-    public ArrayList<String> title;
-    public ArrayList<String> shortDescription;
-    public ArrayList<String> description;
-    public ArrayList<String> image;
-    public ArrayList<String> expectedAmount;
-    public ArrayList<String> finalDate;
-    public ArrayList<Integer> likeNews;
-    public ArrayList<String> paymentAccount;
-    public ArrayList<Integer> idNews;
-    public ArrayList<Integer> likeNewsFromServer;
-    CustomList adapter;
-    ProDialog proDialog;
-    NewsFragment newsFragment;
-    Context context;
-    Preferences preferences;
-    InternetCheck internet;
+public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Constant {
+    public ArrayList<Integer> idServerNews, likeNews, idNews, likeNewsFromServer;
+    public ArrayList<String> datePublication, title, shortDescription, description, image, expectedAmount, finalDate, paymentAccount;
+    private CustomList adapter;
+    private ProDialog proDialog;
+    private NewsFragment newsFragment;
+    private Context context;
+    private Preferences preferences;
+    private InternetCheck internet;
     private ListView list;
     private String userId;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -80,6 +71,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
     }
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +96,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
     private void newsInformationFromServer() {
+        if (userId == null) {
+            return;
+        }
+        Log.d("NewsFragment", "newsInformationFromServer() called with: " + userId);
         Retrofit.getArrays(userId, new Callback<RegistrationResponseFromServer>() {
             @Override
             public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
@@ -140,9 +136,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             }
         });
     }
-
-
-
 
 
     public void adapter() {

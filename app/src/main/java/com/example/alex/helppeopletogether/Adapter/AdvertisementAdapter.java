@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.EditAdvertisement;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 /**
  * Created by Alex on 27.05.2016.
  */
-public class AdvertisementAdapter extends ArrayAdapter<String> implements ConstantPreferences {
+public class AdvertisementAdapter extends ArrayAdapter<String> implements Constant {
 
     Preferences preferences;
     String idUser;

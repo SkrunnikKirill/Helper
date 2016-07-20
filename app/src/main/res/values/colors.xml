@@ -9,4 +9,7 @@
     <color name="black">#252525</color>
     <color name="blue_grey">#c8455a64</color>
     <color name="white_grey">#FFF5F5F5</color>
+    <color name="select_color">#c8455a64</color>
+    <color name="drawer_item_text">#A1A1A1</color>
+    <color name="drawer_background">#252525</color>
 </resources>

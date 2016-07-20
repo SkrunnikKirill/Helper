@@ -29,7 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
@@ -55,27 +55,26 @@ import retrofit.mime.TypedFile;
 /**
  * Created by Alex on 13.04.2016.
  */
-public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, ConstantPreferences {
+public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, Constant {
 
 
-    ImageView imageAdvertisement;
-    Uri selectedImageUri;
-    String selectedImagePath, userid, currency;
-    String[] nameCurrency = {"USD", "EUR", "UAH"};
-    int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna};
-    GetCurensyYear year;
-    NewsFragment news;
-    DatePickerDialog datePickerDialog;
-    Preferences preferences;
-    FiledTest filedTest;
-    LinearLayout linearLayout;
+    private Uri selectedImageUri;
+    private String selectedImagePath, userid, currency;
+    private String[] nameCurrency = {"USD", "EUR", "UAH"};
+    private int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna};
+    private GetCurensyYear year;
+    private NewsFragment news;
+    private DatePickerDialog datePickerDialog;
+    private Preferences preferences;
+    private FiledTest filedTest;
+    private LinearLayout linearLayout;
 
 
     private TextView day;
 
     private EditText theme, shortDescription, fullDescription, money, account;
     private Button locate;
-    private ImageView down;
+    private ImageView down, imageAdvertisement;
     private LinkedHashMap<String, String> dataAdvertisement;
 
     @Override
@@ -202,7 +201,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         super.onStop();
 
     }
-
 
 
     @Override

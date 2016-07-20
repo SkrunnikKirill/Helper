@@ -17,14 +17,14 @@
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:itemTextColor="@color/blue"
-        app:itemIconTint="@color/blue"
         android:layout_gravity="start"
-        android:background="@color/black"
+        android:background="@color/drawer_background"
         android:fitsSystemWindows="true"
-        app:menu="@menu/activity_news_navigation_drawer_drawer"
-        app:headerLayout="@layout/nav_header_news_navigation_drawer"/>
-
+        app:headerLayout="@layout/nav_header_news_navigation_drawer"
+        app:itemBackground="@drawable/select_news_item"
+        app:itemIconTint="@color/blue"
+        app:itemTextColor="@color/drawer_item_text"
+        app:menu="@menu/activity_news_navigation_drawer_drawer" />
 
 
 </android.support.v4.widget.DrawerLayout>

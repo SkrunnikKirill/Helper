@@ -16,7 +16,7 @@ import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsNav
  * Created by User on 29.03.2016.
  */
 public class Agreement extends Activity implements View.OnClickListener {
-    Intent intent;
+    private Intent intent;
     private TextView licenseText;
     private CheckBox licenseCheckBox;
     private Button registration;

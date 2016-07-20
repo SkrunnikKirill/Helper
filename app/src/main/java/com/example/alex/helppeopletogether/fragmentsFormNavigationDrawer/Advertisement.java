@@ -17,7 +17,7 @@ import android.widget.ListView;
 
 import com.example.alex.helppeopletogether.Adapter.AdvertisementAdapter;
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
@@ -34,25 +34,19 @@ import retrofit.client.Response;
 /**
  * Created by User on 29.03.2016.
  */
-public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ConstantPreferences {
-    public ArrayList<String> datePublication;
-    public ArrayList<String> title;
-    public ArrayList<String> shortDescription;
-    public ArrayList<String> description;
-    public ArrayList<String> image;
-    public ArrayList<String> expectedAmount;
-    public ArrayList<String> finalDate;
+public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Constant {
+    public ArrayList<String> datePublication, title, shortDescription, description, image, expectedAmount, finalDate,
+            paymentAccount;
     public ArrayList<Integer> idNews;
-    public ArrayList<String> paymentAccount;
-    ListView list;
-    String idUser;
-    FragmentManager fm;
-    FragmentTransaction ft;
-    NoLikeData noLikeData;
-    ProDialog proDialog;
-    Preferences preferences;
-    Context context;
-    InternetCheck internet;
+    private ListView list;
+    private String idUser;
+    private FragmentManager fm;
+    private FragmentTransaction ft;
+    private NoLikeData noLikeData;
+    private ProDialog proDialog;
+    private Preferences preferences;
+    private Context context;
+    private InternetCheck internet;
     private AdvertisementAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;
 

@@ -41,19 +41,12 @@ import retrofit.mime.TypedFile;
  * Created by Alex on 06.04.2016.
  */
 public class NextPostAdvertisementFragment extends Activity implements View.OnClickListener {
-    static final int GALLERY_REQUEST_PASSPORT = 1;
-    private static final int GALLERY_REQUEST_COPYING = 2;
-    Uri selectedCopying;
-    Uri selectedPassport;
-    Bitmap bitmapPassport;
-    Bitmap bitmapCopying;
-    int REQUEST_CAMERA = 0, SELECT_FILE = 1, idImagePassport, idImageCopying;
-    private EditText serialPassport;
-    private EditText numberPassport;
+    Uri selectedCopying, selectedPassport;
+    int REQUEST_CAMERA = 0, SELECT_FILE = 1;
+    private EditText serialPassport, numberPassport;
     private TextView licenseText;
     private CheckBox licenseCheckBox;
-    private ImageView imagePassport;
-    private ImageView imageCopying;
+    private ImageView imagePassport, imageCopying;
     private Button next;
     private LinkedHashMap<String, TypedFile> imageData;
     private Integer responseFromServiseNextPostAdvertisementFragment;

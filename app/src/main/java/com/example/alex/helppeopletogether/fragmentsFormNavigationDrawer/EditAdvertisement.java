@@ -31,7 +31,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
@@ -58,29 +58,30 @@ import retrofit.mime.TypedFile;
 /**
  * Created by PM on 29.06.2016.
  */
-public class EditAdvertisement extends Activity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, ConstantPreferences {
-    ImageView pictureAdvertisement;
-    EditText theme, shortDescription, fullDescription, money, account;
-    TextView day;
-    Spinner currency;
-    Button editButton;
-    Uri selectedImageUri;
-    FiledTest filedTest;
-    LinkedHashMap data;
-    LinearLayout linearLayout;
-    InternetCheck internet;
-    Context context;
-    Preferences preferences;
-    GetCurensyYear year;
-    NewsNavigationDrawer navigationDrawer;
-    File file;
-    TypedFile editImage;
-    FragmentManager fragmentManager;
-    Integer answerFromServer;
-    String[] nameCurrency = {"USD", "EUR", "UAH"};
-    int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna};
+public class EditAdvertisement extends Activity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, Constant {
+    private ImageView pictureAdvertisement;
+    private EditText theme, shortDescription, fullDescription, money, account;
+    private TextView day;
+    private Spinner currency;
+    private Button editButton;
+    private Uri selectedImageUri;
+    private FiledTest filedTest;
+    private LinkedHashMap data;
+    private LinearLayout linearLayout;
+    private InternetCheck internet;
+    private Context context;
+    private Preferences preferences;
+    private GetCurensyYear year;
+    private NewsNavigationDrawer navigationDrawer;
+    private File file;
+    private TypedFile editImage;
+    private FragmentManager fragmentManager;
+    private Integer answerFromServer;
+    private String[] nameCurrency = {"USD", "EUR", "UAH"};
+    private int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna};
     private String eAId, eAThema, eACreatedat, eAShortDescription, eADescription, eAImage, eAExpectedAmount, eAFinalDate, eAPaymentAccount, selectedImagePath, currencySimvol,
             imageFile, userId, newsId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,7 +109,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
 
         dataPicker();
         Toolbar toolbar = (Toolbar) findViewById(R.id.edit_advertisement_toolbar);
-        toolbar.setTitle("Редактирование Объявления");
+        toolbar.setTitle(R.string.edit_advertisement);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_36dp));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.registration.Login;
 import com.example.alex.helppeopletogether.registration.Registration;
@@ -23,20 +23,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class NewsNavigationDrawer extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ConstantPreferences {
-    Advertisement advertisement;
-    Favorite favorite;
-    NewsFragment news;
-    PostAdvertisementFragment postAdvertisement;
-    ExitFragment exit;
-    TextView fullName;
-    CircleImageView userImage;
-    android.support.v4.app.FragmentManager fragmentManager;
-    String name, foto, userId;
-    Toolbar toolbar;
-    Login login;
-    Registration registration;
-    Preferences preferences;
+        implements NavigationView.OnNavigationItemSelectedListener, Constant {
+    private Advertisement advertisement;
+    private Favorite favorite;
+    private NewsFragment news;
+    private PostAdvertisementFragment postAdvertisement;
+    private ExitFragment exit;
+    private TextView fullName;
+    private CircleImageView userImage;
+    private android.support.v4.app.FragmentManager fragmentManager;
+    private String name, foto, userId;
+    private Toolbar toolbar;
+    private Preferences preferences;
 
 
     @Override
@@ -51,8 +49,6 @@ public class NewsNavigationDrawer extends AppCompatActivity
         news = new NewsFragment();
         postAdvertisement = new PostAdvertisementFragment();
         exit = new ExitFragment();
-        login = new Login();
-        registration = new Registration();
         name = preferences.loadText(PREFERENCES_NAME);
         foto = preferences.loadText(PREFERENCES_FOTO);
         fragmentManager = getSupportFragmentManager();

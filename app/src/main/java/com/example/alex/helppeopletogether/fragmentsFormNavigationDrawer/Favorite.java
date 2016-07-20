@@ -16,11 +16,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.example.alex.helppeopletogether.Adapter.SelectedAdapter;
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
@@ -38,19 +37,20 @@ import retrofit.client.Response;
 /**
  * Created by Alex on 04.04.2016.
  */
-public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ConstantPreferences {
-    String userId;
-    ArrayList<SelectedNews> likeNews;
-    ListView list;
-    SelectedAdapter selectedAdapter;
-    FragmentManager fm;
-    NoLikeData noLikeData;
-    DonloadInformationFromServer donloadInformationFromServer;
-    ProDialog prodialog;
-    SwipeRefreshLayout swipeRefreshLayout;
-    Context context;
-    Preferences preferences;
-    InternetCheck internet;
+public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Constant {
+    private String userId, detailNewsImage, detailNewsShortDescription, detailNewsExpectedAmount, detailNewsFinalDate, detailNewsDescription, detailNewsPaymentAccount;
+    private ArrayList<SelectedNews> likeNews;
+    private ListView list;
+    private SelectedAdapter selectedAdapter;
+    private FragmentManager fm;
+    private NoLikeData noLikeData;
+    private DonloadInformationFromServer donloadInformationFromServer;
+    private ProDialog prodialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Context context;
+    private Preferences preferences;
+    private InternetCheck internet;
+    private Intent news;
 
 
     @Nullable
@@ -130,13 +130,13 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
                         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                String detailNewsImage = selectedNews.get(position).image;
-                                String detailNewsShortDescription = selectedNews.get(position).short_description;
-                                String detailNewsExpectedAmount = selectedNews.get(position).expected_amount;
-                                String detailNewsFinalDate = selectedNews.get(position).final_date;
-                                String detailNewsDescription = selectedNews.get(position).description;
-                                String detailNewsPaymentAccount = selectedNews.get(position).payment_account;
-                                Intent news = new Intent(getActivity(), DetailNews.class);
+                                detailNewsImage = selectedNews.get(position).image;
+                                detailNewsShortDescription = selectedNews.get(position).short_description;
+                                detailNewsExpectedAmount = selectedNews.get(position).expected_amount;
+                                detailNewsFinalDate = selectedNews.get(position).final_date;
+                                detailNewsDescription = selectedNews.get(position).description;
+                                detailNewsPaymentAccount = selectedNews.get(position).payment_account;
+                                news = new Intent(getActivity(), DetailNews.class);
                                 news.putExtra("image", detailNewsImage);
                                 news.putExtra("shortDescription", detailNewsShortDescription);
                                 news.putExtra("expectedAmount", detailNewsExpectedAmount);

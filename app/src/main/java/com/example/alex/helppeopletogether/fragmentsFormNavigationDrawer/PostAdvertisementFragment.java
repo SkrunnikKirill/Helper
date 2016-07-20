@@ -21,7 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
@@ -41,15 +41,15 @@ import retrofit.client.Response;
 /**
  * Created by User on 29.03.2016.
  */
-public class PostAdvertisementFragment extends Fragment implements TextWatcher, View.OnClickListener, DatePickerDialog.OnDateSetListener, ConstantPreferences {
+public class PostAdvertisementFragment extends Fragment implements TextWatcher, View.OnClickListener, DatePickerDialog.OnDateSetListener, Constant {
 
 
-    Preferences preferences;
-    Context context;
-    InternetCheck internet;
-    RelativeLayout relativeLayout;
-    GetCurensyYear year;
-    FiledTest test;
+    private Preferences preferences;
+    private Context context;
+    private InternetCheck internet;
+    private RelativeLayout relativeLayout;
+    private GetCurensyYear year;
+    private FiledTest test;
     private EditText phoneNumber;
     private AutoCompleteTextView region;
     private AutoCompleteTextView city;
@@ -124,7 +124,6 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
 
         return root;
     }
-
 
 
     @Override
