@@ -12,18 +12,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
-import com.example.alex.helppeopletogether.SupportClasses.Validation;
+import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
@@ -32,27 +35,30 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
 
-public class Registration extends Activity implements View.OnClickListener {
+public class Registration extends Activity implements View.OnClickListener, ConstantPreferences {
     public static Integer responseFromServiseRegistrationId;
     public static String responseFromServiseFullName, responseFromServiseImage;
     Intent intent;
     Integer responseFromServiseRegistration;
     Uri selectedImageUri;
     String selectedImagePath;
-    int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     RelativeLayout relativeLayoutRegistrationSnackBar;
+    Preferences preferences;
+    FiledTest test;
     private EditText firstName, secondName, email, password;
-    private ImageView face;
+    private CircleImageView face;
     private Button buttonRegistration;
     private HashMap<String, String> data;
     private String regularExprensionsEmail;
@@ -61,21 +67,40 @@ public class Registration extends Activity implements View.OnClickListener {
     private String response;
     private File file;
     private TypedFile imageFace;
+    private ToggleButton showPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
+        preferences = new Preferences(Registration.this);
         relativeLayoutRegistrationSnackBar = (RelativeLayout) findViewById(R.id.relativeLayoutRegistration);
         checkInternet();
-        face = (ImageView) findViewById(R.id.registration_face_image);
+        face = (CircleImageView) findViewById(R.id.registration_face_image);
         firstName = (EditText) findViewById(R.id.registration_first_name);
         secondName = (EditText) findViewById(R.id.registration_second_name);
         email = (EditText) findViewById(R.id.registration_email);
         password = (EditText) findViewById(R.id.registration_password);
         buttonRegistration = (Button) findViewById(R.id.registration_button_registration);
+        test = new FiledTest(firstName, secondName, email, password);
+        test.checkRegistrationData();
         buttonRegistration.setOnClickListener(this);
         face.setOnClickListener(this);
+        showPassword = (ToggleButton) findViewById(R.id.togglePassword);
+        showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    showPassword.setBackgroundResource(R.drawable.onn);
+                    password.setTransformationMethod(null);
+                } else {
+                    showPassword.setBackgroundResource(R.drawable.offff);
+                    password.setTransformationMethod(new PasswordTransformationMethod());
+
+                }
+                password.setSelection(password.getText().length());
+            }
+        });
     }
 
     public void checkInternet() {
@@ -128,26 +153,26 @@ public class Registration extends Activity implements View.OnClickListener {
     }
 
     public void selectImage() {
-        final CharSequence[] items = {"Сделать фотографию", "Выбрать фотографию",
-                "Отмена"};
+        final CharSequence[] items = {getString(R.string.take_a_photo), getString(R.string.select_a_photo),
+                getString(R.string.cancel)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Добавить фотографию");
+        builder.setTitle(R.string.add_photo);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Сделать фотографию")) {
+                if (items[item].equals(getString(R.string.take_a_photo))) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, REQUEST_CAMERA);
-                } else if (items[item].equals("Выбрать фотографию")) {
+                } else if (items[item].equals(getString(R.string.select_a_photo))) {
                     Intent intent = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(
-                            Intent.createChooser(intent, "Select File"),
+                            Intent.createChooser(intent, getString(R.string.select_a_photo)),
                             SELECT_FILE);
-                } else if (items[item].equals("Отмена")) {
+                } else if (items[item].equals(getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -155,11 +180,7 @@ public class Registration extends Activity implements View.OnClickListener {
         builder.show();
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        checkInternet();
-    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -233,100 +254,12 @@ public class Registration extends Activity implements View.OnClickListener {
         return s;
     }
 
-    private void registerViewsEmail(final EditText text) {
-        email.addTextChangedListener(new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Validation.isEmailAddress(email, true);
-
-            }
-
-        });
-    }
-
-    private void registerViewsPassword(final EditText text) {
-        text.addTextChangedListener(new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Validation.isPassword(text, true);
-
-            }
-
-        });
-    }
-
-    private void registerViewsFullName(final EditText text) {
-        text.addTextChangedListener(new TextWatcher() {
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Validation.isName(text, true);
-            }
-
-        });
-    }
-
-
-    private boolean checkValidationEmail(EditText text) {
-        boolean ret = true;
-        if (!Validation.isEmailAddress(text, true)) {
-            ret = false;
-        }
-        return ret;
-    }
-
-    private boolean checkValidationPassword(EditText text) {
-        boolean ret = true;
-
-        return ret;
-    }
-
-    private boolean checkValidationFullName(EditText text) {
-        boolean ret = true;
-        if (!Validation.isName(text, true)) {
-            ret = false;
-        }
-        return ret;
-    }
-
 
     public void sendRegistrationInformationToServer() {
         data = new HashMap<>();
-        if (firstName.getText().toString().length() <= 2 || secondName.getText().toString().length() <= 2) {
-            registerViewsFullName(firstName);
-            registerViewsFullName(secondName);
-            checkValidationFullName(secondName);
-            checkValidationFullName(firstName);
-        } else if (resultRegularExprensionsEmail(email) == false) {
-            registerViewsEmail(email);
-            checkValidationEmail(email);
-        } else if (password.getText().toString().length() < 6) {
-            registerViewsPassword(password);
-            checkValidationPassword(password);
-        } else if (selectedImageUri == null) {
-            Toast.makeText(Registration.this, "Установите фотографию", Toast.LENGTH_LONG).show();
-        } else {
+        if (firstName.getText().toString().length() > 2 && secondName.getText().toString().length() > 2 && password.getText().toString().length() > 6 && selectedImageUri != null && resultRegularExprensionsEmail(email) != false) {
             file = new File(getPath(selectedImageUri));
             imageFace = new TypedFile("image/*", file);
-
             data.put("first_name", String.valueOf(firstName.getText()));
             data.put("second_name", String.valueOf(secondName.getText()));
             data.put("email", String.valueOf(email.getText()));
@@ -351,10 +284,13 @@ public class Registration extends Activity implements View.OnClickListener {
                         } else if (responseFromServiseRegistration == 1) {
                             Toast.makeText(Registration.this, "Email занят", Toast.LENGTH_LONG).show();
                         } else if (responseFromServiseRegistration == 2) {
+                            preferences.saveText(email.getText().toString(), PREFERENCES_LOGIN);
+                            preferences.saveText(password.getText().toString(), PREFERENCES_PASSWORD);
+                            preferences.saveText(responseFromServiseRegistrationId.toString(), PREFERENCES_ID);
+                            preferences.saveText(responseFromServiseFullName, PREFERENCES_NAME);
+                            preferences.saveText(responseFromServiseImage, PREFERENCES_FOTO);
                             intent = new Intent(Registration.this, Agreement.class);
-                            // intent.putExtra("id",responseFromServiseRegistrationId);
                             startActivity(intent);
-                            //Toast.makeText(Registration.this,"ВСЕ ОК!!!!", Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -363,9 +299,14 @@ public class Registration extends Activity implements View.OnClickListener {
 
                 @Override
                 public void failure(RetrofitError error) {
+                    if (error.getCause() instanceof UnknownHostException) {
+                        checkInternet();
+                    }
                     Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_LONG).show();
                 }
             });
+        } else {
+            Toast.makeText(Registration.this, "Заполните все поля, и установите фото", Toast.LENGTH_SHORT).show();
         }
 
 

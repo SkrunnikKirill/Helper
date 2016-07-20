@@ -45,7 +45,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/button"
-                android:text="Зарегестрироваться" />
+                android:text="@string/registration" />
 
         </LinearLayout>
 

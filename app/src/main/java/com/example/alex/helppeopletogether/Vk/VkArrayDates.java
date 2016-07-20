@@ -1,4 +1,4 @@
-package com.example.alex.helppeopletogether.registration;
+package com.example.alex.helppeopletogether.Vk;
 
 
 import com.google.gson.annotations.SerializedName;

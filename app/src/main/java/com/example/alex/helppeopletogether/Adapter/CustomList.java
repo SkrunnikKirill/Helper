@@ -13,7 +13,7 @@ import android.widget.ToggleButton;
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
-import com.example.alex.helppeopletogether.SupportClasses.GetUserId;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 public class CustomList extends ArrayAdapter<String> {
     Dimensions dimensions;
-    GetUserId getUserId;
     String idUser;
     LayoutInflater layoutInflater;
     private Context context;
@@ -55,13 +54,11 @@ public class CustomList extends ArrayAdapter<String> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
         dimensions = new Dimensions();
-        getUserId = new GetUserId();
         View rowView = layoutInflater.inflate(R.layout.datail_news_item, parent, false);
         viewHolder = new ViewHolder();
         viewHolder.like = (ToggleButton) rowView.findViewById(R.id.datail_news_like);
         viewHolder.txtTitle = (TextView) rowView.findViewById(R.id.detail_news_theme);
-        viewHolder.timeDate = (TextView) rowView.findViewById(R.id.date_text);
-        viewHolder.test = (TextView) rowView.findViewById(R.id.detail_news_persent);
+        // viewHolder.timeDate = (TextView) rowView.findViewById(R.id.date_text);
         viewHolder.date = (TextView) rowView.findViewById(R.id.detail_news_days_left);
         viewHolder.summa = (TextView) rowView.findViewById(R.id.detail_news_summa);
         viewHolder.imageView = (ImageView) rowView.findViewById(R.id.detail_news_image);
@@ -72,12 +69,12 @@ public class CustomList extends ArrayAdapter<String> {
             idNews = new ArrayList<Integer>();
         }
 
-        viewHolder.timeDate.setText(datePublication.get(position));
+//        viewHolder.timeDate.setText(datePublication.get(position));
         viewHolder.txtTitle.setText(shortDescription.get(position));
-        viewHolder.summa.setText(expected_amount.get(position));
-        viewHolder.date.setText(finalDate.get(position));
+        viewHolder.summa.setText("необходимо:  " + expected_amount.get(position));
+        viewHolder.date.setText("до:  " + finalDate.get(position));
 
-        Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 400).centerCrop().into(viewHolder.imageView);
+        Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 550).centerCrop().into(viewHolder.imageView);
 
         if (likeNews.indexOf(idServerNews.get(position)) >= 0) {
             viewHolder.like.getText();
@@ -145,8 +142,6 @@ public class CustomList extends ArrayAdapter<String> {
 
     static class ViewHolder {
         TextView txtTitle;
-        TextView timeDate;
-        TextView test;
         TextView date;
         TextView summa;
         ImageView imageView;

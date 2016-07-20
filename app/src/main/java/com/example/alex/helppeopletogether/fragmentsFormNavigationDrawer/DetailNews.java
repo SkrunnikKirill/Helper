@@ -38,11 +38,11 @@ public class DetailNews extends Activity {
         TextView description = (TextView) findViewById(R.id.detail_news_full_description);
         TextView paymentAccount = (TextView) findViewById(R.id.detail_news_expected_amount);
         Dimensions dimensions = new Dimensions();
-        Glide.with(getApplicationContext()).load(NImage).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(DetailNews.this), 500).centerCrop().into(image);
-        expectedAmount.setText(NexpectedAmount);
+        Glide.with(getApplicationContext()).load(NImage).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(DetailNews.this), 550).centerCrop().into(image);
+        expectedAmount.setText("необходимо:  " + NexpectedAmount);
         description.setText(NDescription);
-        finalDate.setText(NfinalDate);
-        paymentAccount.setText(NPaymentAccount);
+        finalDate.setText("до:  " + NfinalDate);
+        paymentAccount.setText("Расчетный счет:  " + NPaymentAccount);
         CollapsingToolbarLayout collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
         collapsingToolbar.setTitle("Запись");
 

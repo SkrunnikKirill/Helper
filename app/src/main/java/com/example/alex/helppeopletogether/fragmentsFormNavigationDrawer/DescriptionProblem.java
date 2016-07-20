@@ -2,6 +2,7 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -14,19 +15,25 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
-import com.example.alex.helppeopletogether.registration.Login;
-import com.example.alex.helppeopletogether.registration.Registration;
+import com.example.alex.helppeopletogether.SupportClasses.ConstantPreferences;
+import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
+import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
+import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
+import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -36,6 +43,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 
@@ -47,20 +55,20 @@ import retrofit.mime.TypedFile;
 /**
  * Created by Alex on 13.04.2016.
  */
-public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
-    static final int GALLERY_REQUEST_IMAGE = 1;
-    int DIALOG_DATE = 1;
+public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, ConstantPreferences {
+
 
     ImageView imageAdvertisement;
-    int REQUEST_CAMERA = 0, SELECT_FILE = 1;
     Uri selectedImageUri;
-    String selectedImagePath;
-    Registration registration;
-    Login login;
-    String userid;
+    String selectedImagePath, userid, currency;
     String[] nameCurrency = {"USD", "EUR", "UAH"};
-    String currency;
+    int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna};
+    GetCurensyYear year;
     NewsFragment news;
+    DatePickerDialog datePickerDialog;
+    Preferences preferences;
+    FiledTest filedTest;
+    LinearLayout linearLayout;
 
 
     private TextView day;
@@ -74,7 +82,11 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.description_problem);
+        linearLayout = (LinearLayout) findViewById(R.id.description_problem_linear_layout);
         news = new NewsFragment();
+        year = new GetCurensyYear();
+        preferences = new Preferences(DescriptionProblem.this);
+        userid = preferences.loadText(PREFERENCES_ID);
         imageAdvertisement = (ImageView) findViewById(R.id.description_problem_image);
         theme = (EditText) findViewById(R.id.description_problem_theme);
         shortDescription = (EditText) findViewById(R.id.description_problem_short_description);
@@ -83,19 +95,15 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         day = (TextView) findViewById(R.id.description_problem_day);
         account = (EditText) findViewById(R.id.description_problem_account);
         locate = (Button) findViewById(R.id.description_problem_locate);
-        registration = new Registration();
         imageAdvertisement.setOnClickListener(this);
         locate.setOnClickListener(this);
-        login = new Login();
-        if (login.userId != null) {
-            userid = String.valueOf(login.userId);
-        } else if (registration.responseFromServiseRegistrationId != null) {
-            userid = String.valueOf(registration.responseFromServiseRegistrationId);
-        }
+        filedTest = new FiledTest(theme, shortDescription, fullDescription, money, account);
+        filedTest.inspection1();
+
         dataPicker();
         spiner();
         Toolbar toolbar = (Toolbar) findViewById(R.id.description_problem_toolbar);
-        toolbar.setTitle("Информация Обьявления");
+        toolbar.setTitle(R.string.information_advertisement);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_36dp));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +115,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
 
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -114,10 +123,8 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     }
 
     private void spiner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, nameCurrency);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner spinner = (Spinner) findViewById(R.id.spinnerstate);
-        spinner.setAdapter(adapter);
+        spinner.setAdapter(new MyAdapter(this, R.layout.custom_spinner, nameCurrency));
         spinner.setPrompt("Title");
         // выделяем элемент
         spinner.setSelection(2);
@@ -149,19 +156,24 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
-                DatePickerDialog datePickerDialog = DatePickerDialog.newInstance(
+                datePickerDialog = DatePickerDialog.newInstance(
                         DescriptionProblem.this,
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)
                 );
+                datePickerDialog.setMinDate(calendar);
                 datePickerDialog.setAccentColor(Color.parseColor("#03a9f4"));
                 datePickerDialog.setThemeDark(true);
                 datePickerDialog.dismissOnPause(true);
+                int startYear = year.getCurrentYear();
+                int nextYear = year.getCurrentYear() + 5;
+                datePickerDialog.setYearRange(startYear, nextYear);
                 datePickerDialog.show(getFragmentManager(), "Datepickerdialog");
             }
         });
     }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -206,26 +218,26 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     }
 
     public void selectImage() {
-        final CharSequence[] items = {"Сделать фотографию", "Выбрать фотографию",
-                "Отмена"};
+        final CharSequence[] items = {getString(R.string.take_a_photo), getString(R.string.select_a_photo),
+                getString(R.string.cancel)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(DescriptionProblem.this);
-        builder.setTitle("Добавить фотографию");
+        builder.setTitle(R.string.add_photo);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Сделать фотографию")) {
+                if (items[item].equals(getString(R.string.take_a_photo))) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, REQUEST_CAMERA);
-                } else if (items[item].equals("Выбрать фотографию")) {
+                } else if (items[item].equals(getString(R.string.select_a_photo))) {
                     Intent intent = new Intent(
                             Intent.ACTION_PICK,
                             android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     intent.setType("image/*");
                     startActivityForResult(
-                            Intent.createChooser(intent, "Select File"),
+                            Intent.createChooser(intent, getString(R.string.select_a_photo)),
                             SELECT_FILE);
-                } else if (items[item].equals("Отмена")) {
+                } else if (items[item].equals(getString(R.string.cancel))) {
                     dialog.dismiss();
                 }
             }
@@ -305,12 +317,10 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     }
 
     private void sendDescriptionInformationFromServise() {
-        if (account.getText().toString().length() < 20 || account.getText().toString().length() > 20) {
-            Toast.makeText(DescriptionProblem.this, "Расчетный счет должен состоять из 20 символов", Toast.LENGTH_SHORT).show();
-        } else if (theme.getText().toString().length() > 50 || shortDescription.getText().toString().length() > 100 || fullDescription.getText().toString().length() > 1000) {
-            Toast.makeText(DescriptionProblem.this, "Превышено максимальное количество символов", Toast.LENGTH_SHORT).show();
-        } else if (theme.getText().toString().length() > 0 && shortDescription.getText().toString().length() > 0 && fullDescription.getText().toString().length() > 0 &&
-                money.getText().toString().length() > 0 && day.getText().toString().length() > 0 && account.getText().toString().length() > 0 && selectedImageUri != null) {
+        if (theme.getText().toString().length() > 0 && shortDescription.getText().toString().length() > 0 && fullDescription.getText().toString().length() > 0 &&
+                money.getText().toString().length() > 0 && day.getText().toString().length() > 0 && account.getText().toString().length() > 0 && selectedImageUri != null
+                && theme.getText().toString().length() <= 50 && shortDescription.getText().toString().length() <= 100 && fullDescription.getText().toString().length() <= 1500
+                && account.getText().toString().length() <= 20) {
             dataAdvertisement = new LinkedHashMap<>();
             dataAdvertisement.put("title", String.valueOf(theme.getText()));
             dataAdvertisement.put("short_description", String.valueOf(shortDescription.getText()));
@@ -325,7 +335,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             Retrofit.sendAdvertisement(dataAdvertisement, image, new Callback<RegistrationResponseFromServer>() {
                 @Override
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
-
                     Intent intent = new Intent(DescriptionProblem.this, NewsNavigationDrawer.class);
                     startActivityForResult(intent, 1);
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
@@ -333,13 +342,20 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
 
                 @Override
                 public void failure(RetrofitError error) {
-                    Toast.makeText(DescriptionProblem.this, "Все плохо", Toast.LENGTH_LONG).show();
+                    if (error.getCause() instanceof UnknownHostException) {
+                        checkInternet();
+                    }
                 }
             });
         } else {
-            Toast.makeText(DescriptionProblem.this, "Заполните все поля и установите изображение", Toast.LENGTH_LONG).show();
+            Toast.makeText(DescriptionProblem.this, R.string.all_field_and_photo, Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public void checkInternet() {
+        InternetCheck internetCheck = new InternetCheck(DescriptionProblem.this, linearLayout);
+        internetCheck.execute();
     }
 
 
@@ -348,5 +364,30 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         String finalDay = dayOfMonth + "/" + (++monthOfYear) + "/" + year;
 
         day.setText(finalDay);
+    }
+
+    public class MyAdapter extends ArrayAdapter<String> {
+        public MyAdapter(Context ctx, int txtViewResourceId, String[] objects) {
+            super(ctx, txtViewResourceId, objects);
+        }
+
+        @Override
+        public View getView(int pos, View cnvtView, ViewGroup prnt) {
+            return getCustomView(pos, cnvtView, prnt);
+        }
+
+        @Override
+        public View getDropDownView(int position, View cnvtView, ViewGroup prnt) {
+            return getCustomView(position, cnvtView, prnt);
+        }
+
+
+        public View getCustomView(int position, View convertView, ViewGroup parent) {
+            LayoutInflater inflater = getLayoutInflater();
+            View mySpinner = inflater.inflate(R.layout.custom_spinner, parent, false);
+            ImageView left_icon = (ImageView) mySpinner.findViewById(R.id.left_pic);
+            left_icon.setImageResource(total_images[position]);
+            return mySpinner;
+        }
     }
 }

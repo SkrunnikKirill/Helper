@@ -20,14 +20,13 @@ public class Agreement extends Activity implements View.OnClickListener {
     private TextView licenseText;
     private CheckBox licenseCheckBox;
     private Button registration;
-    private String text, userId;
+    private String text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.agreement);
         intent = getIntent();
-        //userId = intent.getStringExtra("id");
         licenseText = (TextView)findViewById(R.id.agreement_license_text);
         licenseCheckBox = (CheckBox)findViewById(R.id.agreement_license_checkbox);
         registration = (Button)findViewById(R.id.agreement_registration_button);
@@ -90,9 +89,7 @@ public class Agreement extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.agreement_registration_button:
                 intent = new Intent(Agreement.this, NewsNavigationDrawer.class);
-                //intent.putExtra("idUser", userId);
                 startActivity(intent);
-                // sendRegistrationInformationToServer();
                 break;
         }
     }

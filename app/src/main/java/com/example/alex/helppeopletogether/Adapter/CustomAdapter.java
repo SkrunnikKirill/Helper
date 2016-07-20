@@ -1,4 +1,4 @@
-package com.example.alex.helppeopletogether.SupportClasses;
+package com.example.alex.helppeopletogether.Adapter;
 
 import android.content.Context;
 import android.view.View;

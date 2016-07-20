@@ -7,7 +7,6 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.alex.helppeopletogether.R;
@@ -22,21 +21,23 @@ import java.net.URL;
  */
 public class InternetCheck extends AsyncTask<String, String, Boolean> {
     Context context;
-    RelativeLayout relativeLayout;
-    private ProgressDialog nDialog;
+    View view;
+    ProgressDialog nDialog;
 
-    public InternetCheck(Context context, RelativeLayout relativeLayout) {
+
+    public InternetCheck(Context context, View view) {
         this.context = context;
-        this.relativeLayout = relativeLayout;
+        this.view = view;
+
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         nDialog = new ProgressDialog(context);
-        nDialog.setTitle("Проверка подключения к интернету");
-        nDialog.setMessage("Пожалуйста подождите");
-        nDialog.setIndeterminate(false);
+        nDialog.setTitle(context.getString(R.string.check_internet_connection));
+        nDialog.setMessage(context.getString(R.string.please_wait));
+        nDialog.setIndeterminate(true);
         nDialog.setCancelable(false);
         nDialog.show();
     }
@@ -76,15 +77,18 @@ public class InternetCheck extends AsyncTask<String, String, Boolean> {
     }
 
     public void snackBar() {
-        Snackbar snackbar = Snackbar
-                .make(relativeLayout, "Нет интернет соеденения", Snackbar.LENGTH_LONG);
-        // Changing message text color
-        // Changing action button text color
-        View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextColor(context.getResources().getColor(R.color.blue));
-        textView.setTextSize(27);
-        snackbar.show();
+        try {
+            Snackbar snackbar = Snackbar.make(view, R.string.no_internet, Snackbar.LENGTH_SHORT);
+            // Changing message text color
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(context.getResources().getColor(R.color.blue));
+            textView.setTextSize(27);
+            snackbar.show();
+        } catch (NullPointerException e) {
+            return;
+        }
     }
 }
 

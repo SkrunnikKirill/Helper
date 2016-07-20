@@ -1,133 +1,294 @@
 package com.example.alex.helppeopletogether.SupportClasses;
 
 
-import android.view.View;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.EditText;
-import android.widget.TextView;
 
-/**
- * Created by PM on 30.06.2016.
- */
+
 public class FiledTest {
-    EditText theme, shortDescription, fullDescription, money, account;
-    TextView day;
+    EditText theme, shortDescription, fullDescription, money, account, firstName, secondName, email, password, city, region, phoneNumber;
 
-    public FiledTest(EditText theme, EditText shortDescription, EditText fullDescription, EditText money, EditText account, TextView day) {
+
+    public FiledTest(EditText theme, EditText shortDescription, EditText fullDescription, EditText money, EditText account) {
         this.theme = theme;
         this.shortDescription = shortDescription;
         this.fullDescription = fullDescription;
         this.money = money;
         this.account = account;
-        this.day = day;
+
+
     }
+
+    public FiledTest(EditText firstName, EditText secondName, EditText email, EditText password) {
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public FiledTest(EditText city, EditText region, EditText phoneNumber) {
+        this.city = city;
+        this.region = region;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void checkPostAdvertisementData() {
+        city.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(city);
+            }
+        });
+
+        region.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(region);
+            }
+        });
+
+        phoneNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                final String text = phoneNumber.getText().toString().trim();
+                if (text.length() == 0) {
+                    phoneNumber.setError("обязательные");
+                } else if (text.length() < 13) {
+                    phoneNumber.setError("не коректный номер");
+                } else {
+                    phoneNumber.setError(null);
+                }
+            }
+        });
+    }
+
+    public void checkRegistrationData() {
+        email.addTextChangedListener(new TextWatcher() {
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Validation.isEmailAddress(email, true);
+            }
+
+        });
+
+        firstName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(firstName);
+            }
+        });
+
+        secondName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(secondName);
+            }
+        });
+
+        password.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                final String text = password.getText().toString().trim();
+                if (text.length() == 0) {
+                    password.setError("обязательное");
+                } else if (text.length() < 6) {
+                    password.setError("больше 6 символов");
+                } else {
+                    password.setError(null);
+                }
+            }
+        });
+    }
+
 
     public void inspection1() {
-        theme.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        theme.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (theme.getText().toString().isEmpty()) {
-                    theme.setError("обязательные");
-                } else if (theme.getText().toString().length() > 50) {
-                    theme.setError("количество символов");
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(theme, 50);
+
+            }
+        });
+        shortDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(shortDescription, 100);
+
             }
         });
 
-        shortDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        fullDescription.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (shortDescription.getText().toString().isEmpty()) {
-                    shortDescription.setError("обязательные");
-                } else if (shortDescription.getText().toString().length() > 100) {
-                    shortDescription.setError("количество символов");
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(fullDescription, 1500);
+
             }
         });
 
-        fullDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        money.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (fullDescription.getText().toString().isEmpty()) {
-                    fullDescription.setError("обязательные");
-                } else if (fullDescription.getText().toString().length() > 1000) {
-                    fullDescription.setError("количество символов");
-                }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                check(money);
             }
         });
 
-        money.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        account.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (money.getText().toString().isEmpty()) {
-                    money.setError("обязательные");
-                }
-            }
-        });
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        account.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            }
+
             @Override
-            public void onFocusChange(View view, boolean b) {
-                if (account.getText().toString().isEmpty()) {
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                final String text = account.getText().toString().trim();
+                if (text.length() == 0) {
                     account.setError("обязательные");
-                    b = false;
-                } else if (account.getText().toString().length() > 20) {
-                    account.setError("количество символов");
-                    b = false;
+                } else if (text.length() < 20) {
+                    account.setError("введите 20 символов");
+                } else {
+                    account.setError(null);
                 }
             }
         });
-    }
-
-    public boolean inspection() {
-
-        if (theme.getText().toString().isEmpty()) {
-            theme.setError("обязательные");
-            return false;
-        }
-        if (shortDescription.getText().toString().isEmpty()) {
-            shortDescription.setError("обязательные");
-            return false;
-        }
-        if (fullDescription.getText().toString().isEmpty()) {
-            fullDescription.setError("обязательные");
-            return false;
-
-        }
-        if (money.getText().toString().isEmpty()) {
-            money.setError("обязательные");
-            return false;
-
-        }
-        if (account.getText().toString().isEmpty()) {
-            account.setError("обязательные");
-            return false;
-
-        }
-        if (theme.getText().toString().length() > 50) {
-            theme.setError("количество символов");
-            return false;
-        }
-        if (shortDescription.getText().length() > 100) {
-            shortDescription.setError("количество символов");
-            return false;
-        }
-        if (fullDescription.getText().length() > 1000) {
-            fullDescription.setError("количество символов");
-            return false;
-        }
-        if (account.getText().length() > 20) {
-            account.setError("количество символов");
-            return false;
-        }
-        return true;
 
 
     }
 
-    public void registeView(EditText text) {
-        text.setError("обязательные");
-
+    public void check(EditText editText, int number) {
+        final String text = editText.getText().toString().trim();
+        if (text.length() == 0) {
+            editText.setError("обязательные");
+        } else if (text.length() == number) {
+            editText.setError("максимальное количество символов");
+        } else {
+            editText.setError(null);
+        }
     }
+
+    public void check(EditText editText) {
+        final String text = editText.getText().toString().trim();
+        if (text.length() == 0) {
+            editText.setError("обязательные");
+        } else {
+            editText.setError(null);
+        }
+    }
+
+
 
 
 }

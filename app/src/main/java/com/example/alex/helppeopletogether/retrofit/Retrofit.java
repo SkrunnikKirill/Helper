@@ -59,8 +59,8 @@ public class Retrofit {
         postInterfaceSocialNetworks.sendSocialNetworks(social, callback);
     }
 
-    public static void sendEditInformationFromServer(Map<String, String> edit, TypedFile file, Callback<RegistrationResponseFromServer> callback) {
-        advertisementEditFromServer.setEditData(edit, file, callback);
+    public static void sendEditInformationFromServer(Map<String, ?> edit, Callback<RegistrationResponseFromServer> callback) {
+        advertisementEditFromServer.setEditData(edit, callback);
     }
 
     public static void sendAdvertisementEdit(String userId, String newsId, Callback<ResponseFromServerEditAdvertisement> callback) {
@@ -117,7 +117,7 @@ public class Retrofit {
     interface AdvertisementEditFromServer {
         @Multipart
         @POST("/update_adver.php")
-        void setEditData(@PartMap Map<String, String> edit, @Part("imageAdvertisement") TypedFile file, Callback<RegistrationResponseFromServer> callback);
+        void setEditData(@PartMap Map<String, ?> edit, Callback<RegistrationResponseFromServer> callback);
     }
 
     interface LikeNews {

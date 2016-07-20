@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
@@ -54,24 +55,24 @@ public class SelectedAdapter extends BaseAdapter {
             view = layoutInflater.inflate(R.layout.datail_news_item,parent,false);
             viewHolder = new ViewHolder();
             viewHolder.txtTitle = (TextView) view.findViewById(R.id.detail_news_theme);
-            viewHolder.timeDate = (TextView) view.findViewById(R.id.date_text);
-            viewHolder.test = (TextView) view.findViewById(R.id.detail_news_persent);
+            // viewHolder.timeDate = (TextView) view.findViewById(R.id.date_text);
             viewHolder.date = (TextView) view.findViewById(R.id.detail_news_days_left);
             viewHolder.summa = (TextView) view.findViewById(R.id.detail_news_summa);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.detail_news_image);
+            viewHolder.button = (ToggleButton) view.findViewById(R.id.datail_news_like);
             view.setTag(viewHolder);
 
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.timeDate.setText(selectedNews.created_at);
+//        viewHolder.timeDate.setText(selectedNews.created_at);
         viewHolder.txtTitle.setText(selectedNews.short_description);
-        viewHolder.summa.setText(selectedNews.expected_amount);
-        viewHolder.date.setText(selectedNews.final_date);
-
+        viewHolder.summa.setText("необходимо:  " + selectedNews.expected_amount);
+        viewHolder.date.setText("до:  " + selectedNews.final_date);
+        viewHolder.button.setVisibility(View.GONE);
         Dimensions dimensions = new Dimensions();
-        Glide.with(context).load(selectedNews.image).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(context), 400).centerCrop().into(viewHolder.imageView);
+        Glide.with(context).load(selectedNews.image).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(context), 550).centerCrop().into(viewHolder.imageView);
 
 
         return view;
@@ -84,10 +85,10 @@ public class SelectedAdapter extends BaseAdapter {
     static class ViewHolder {
         TextView txtTitle;
         TextView timeDate;
-        TextView test;
         TextView date;
         TextView summa;
         ImageView imageView;
+        ToggleButton button;
 
     }
 
