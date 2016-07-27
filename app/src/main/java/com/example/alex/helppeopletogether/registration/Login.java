@@ -388,7 +388,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Go
                     if (responseLogin == null) {
                         Toast.makeText(Login.this, R.string.error_data_from_server, Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
                         responseFromServiseLogin = responseLogin.response_login;
                         userId = responseLogin.user_id;
                         fullName = responseLogin.full_name;

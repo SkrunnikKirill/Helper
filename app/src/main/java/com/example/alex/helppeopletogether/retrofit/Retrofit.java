@@ -26,6 +26,7 @@ public class Retrofit {
     private static PostInterfaceDescriptionProblem postInterfaceDescriptionProblem;
     private static NewsJsonArray arrays;
     private static MyAdvertisementJsonArray myAdvertisementArrays;
+    private static DetailNewsComentInformation detailNewsComentInformation;
     private static LikeNews likeNews;
     private static SelectedNews selectedNews;
     private static AdvertisementEdit advertisementEdit;
@@ -49,6 +50,7 @@ public class Retrofit {
         postInterfaceDescriptionProblem = postAdapter.create(PostInterfaceDescriptionProblem.class);
         arrays = postAdapter.create(NewsJsonArray.class);
         myAdvertisementArrays = postAdapter.create(MyAdvertisementJsonArray.class);
+        detailNewsComentInformation = postAdapter.create(DetailNewsComentInformation.class);
         advertisementEdit = postAdapter.create(AdvertisementEdit.class);
         advertisementEditFromServer = postAdapter.create(AdvertisementEditFromServer.class);
         likeNews = postAdapter.create(LikeNews.class);
@@ -57,6 +59,10 @@ public class Retrofit {
 
     public static void sendSocialNetworks(Map<String, String> social, Callback<RegistrationResponseFromServer> callback) {
         postInterfaceSocialNetworks.sendSocialNetworks(social, callback);
+    }
+
+    public static void setCommentInformation(Map<String, String> commentInformation, Callback<RegistrationResponseFromServer> callback) {
+        detailNewsComentInformation.setCommentInfo(commentInformation, callback);
     }
 
     public static void sendEditInformationFromServer(Map<String, ?> edit, Callback<RegistrationResponseFromServer> callback) {
@@ -107,6 +113,12 @@ public class Retrofit {
         @Multipart
         @POST("/user_advers.php")
         void getMyAdvertisementArrays(@Part("user_id") String userId, Callback<RegistrationResponseFromServer> callback);
+    }
+
+    interface DetailNewsComentInformation {
+        @Multipart
+        @POST("/add_comments.php")
+        void setCommentInfo(@PartMap Map<String, String> commentInformation, Callback<RegistrationResponseFromServer> callback);
     }
 
     interface AdvertisementEdit {

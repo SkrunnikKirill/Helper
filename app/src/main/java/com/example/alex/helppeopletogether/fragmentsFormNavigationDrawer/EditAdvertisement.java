@@ -77,8 +77,8 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
     private TypedFile editImage;
     private FragmentManager fragmentManager;
     private Integer answerFromServer;
-    private String[] nameCurrency = {"USD", "EUR", "UAH"};
-    private int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna};
+    private String[] nameCurrency = {"USD", "EUR", "UAH", ""};
+    private int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna, 0};
     private String eAId, eAThema, eACreatedat, eAShortDescription, eADescription, eAImage, eAExpectedAmount, eAFinalDate, eAPaymentAccount, selectedImagePath, currencySimvol,
             imageFile, userId, newsId;
 
@@ -191,7 +191,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
         currency.setAdapter(new SpinerAdapter(this, R.layout.custom_spinner, nameCurrency));
         currency.setPrompt("Title");
         // выделяем элемент
-        currency.setSelection(2);
+        currency.setSelection(3);
         // устанавливаем обработчик нажатия
         currency.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -204,6 +204,8 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
                     currencySimvol = "€";
                 } else if (currencySimvol == "UAH") {
                     currencySimvol = "₴";
+                } else if (currencySimvol == "") {
+                    currencySimvol = "";
                 }
 
 

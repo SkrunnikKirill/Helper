@@ -10,6 +10,7 @@ android {
     }
     repositories {
         mavenCentral()
+        maven { url "https://dl.bintray.com/terrakok/terramaven" }
     }
 
     defaultConfig {
@@ -49,6 +50,7 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.wdullaer:materialdatetimepicker:2.3.0'
+    compile "com.terrakok.phonematter:phonematter:1.0@aar"
 
 
 }

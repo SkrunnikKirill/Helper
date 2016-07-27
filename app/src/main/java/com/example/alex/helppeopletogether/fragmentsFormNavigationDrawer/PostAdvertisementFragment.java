@@ -28,6 +28,7 @@ import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
+import com.terrakok.phonematter.PhoneFormat;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.net.UnknownHostException;
@@ -110,8 +111,6 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         relativeLayout = (RelativeLayout) root.findViewById(R.id.post_advertisemet_relative_layout);
         next.setOnClickListener(this);
         dataPicker();
-
-
         regionAdapter = new ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, arrayRegion);
         cityAdapter = new ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, arrayCity);
 
@@ -215,7 +214,6 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
                         nextActivity();
                         region.setText("");
                         city.setText("");
-                        phoneNumber.setText("+380");
                         dayOfBirth.setText("");
                     }
                 }

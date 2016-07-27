@@ -151,8 +151,10 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 String detailNewsFinalDate = finalDate.get(position);
                 String detailNewsDescription = description.get(position);
                 String detailPaymentAccount = paymentAccount.get(position).toString();
+                String detailPaymentNewsId = idServerNews.get(position).toString();
                 Intent news = new Intent(getActivity(), DetailNews.class);
                 news.putExtra("image", detailNewsImage);
+                news.putExtra("idNews", detailPaymentNewsId);
                 news.putExtra("shortDescription", detailNewsShortDescription);
                 news.putExtra("expectedAmount", detailNewsExpectedAmount);
                 news.putExtra("finalDate", detailNewsFinalDate);
