@@ -78,7 +78,7 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getActivity();
-        likeNews = new ArrayList<>();
+        //likeNews = new ArrayList<>();
         prodialog = new ProDialog();
         preferences = new Preferences(context);
         userId = preferences.loadText(PREFERENCES_ID);

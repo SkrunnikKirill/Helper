@@ -13,14 +13,12 @@
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/main_collapsing"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
 
             <ImageView
                 android:id="@+id/detail_news_image"
@@ -34,10 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin" />
-
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -68,7 +64,6 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textSize="17sp" />
 
-
                     <TextView
                         android:id="@+id/detail_news_days_left"
                         android:layout_width="wrap_content"
@@ -77,7 +72,6 @@
                         android:text="14"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textSize="17sp" />
-
 
                     <TextView
                         android:id="@+id/detail_news_expected_amount"
@@ -91,7 +85,6 @@
                         android:text="Medium Text"
                         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-
                     <TextView
                         android:id="@+id/detail_news_full_description"
                         android:layout_width="match_parent"
@@ -104,56 +97,39 @@
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
+            <ListView
+                android:id="@+id/detail_news_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:dividerHeight="0dp"></ListView>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/detail_news_coment"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="16dp">
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="8"
+                    android:textColor="@color/black" />
 
-                    <ListView
-                        android:id="@+id/detail_news_list"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:divider="@null"
-                        android:dividerHeight="0dp"></ListView>
+                <ImageView
+                    android:id="@+id/detail_news_enter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:clickable="true"
+                    android:src="@drawable/ic_enter_icon" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/detail_news_list"
-                        android:orientation="horizontal"
-                        android:weightSum="10">
-
-                        <EditText
-                            android:id="@+id/detail_news_coment"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_weight="8"
-                            android:textColor="@color/black" />
-
-                        <ImageView
-                            android:id="@+id/detail_news_enter"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:clickable="true"
-                            android:src="@drawable/ic_enter_icon" />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-
-            </android.support.v7.widget.CardView>
-
+            </LinearLayout>
         </LinearLayout>
 
-
     </android.support.v4.widget.NestedScrollView>
+
 
 </android.support.design.widget.CoordinatorLayout>

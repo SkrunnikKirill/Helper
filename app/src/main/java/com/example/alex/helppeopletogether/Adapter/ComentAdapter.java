@@ -59,9 +59,9 @@ public class ComentAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.fullName.setText(comentInformation.fullName);
-        viewHolder.userComent.setText(comentInformation.coment);
-        Glide.with(context).load(comentInformation.foto).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(60, 60).centerCrop().into(viewHolder.foto);
+        viewHolder.fullName.setText(comentInformation.full_name);
+        viewHolder.userComent.setText(comentInformation.comment);
+        Glide.with(context).load(comentInformation.avatar).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(60, 60).centerCrop().into(viewHolder.foto);
 
         return view;
     }

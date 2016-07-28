@@ -1,5 +1,7 @@
 package com.example.alex.helppeopletogether.retrofit;
 
+import com.example.alex.helppeopletogether.SupportClasses.ComentInformation;
+
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ public class Retrofit {
     private static PostInterfaceDescriptionProblem postInterfaceDescriptionProblem;
     private static NewsJsonArray arrays;
     private static MyAdvertisementJsonArray myAdvertisementArrays;
+    private static DetailNewsGetCommentInformation detailNewsGetCommentInformation;
     private static DetailNewsComentInformation detailNewsComentInformation;
     private static LikeNews likeNews;
     private static SelectedNews selectedNews;
@@ -51,6 +54,7 @@ public class Retrofit {
         arrays = postAdapter.create(NewsJsonArray.class);
         myAdvertisementArrays = postAdapter.create(MyAdvertisementJsonArray.class);
         detailNewsComentInformation = postAdapter.create(DetailNewsComentInformation.class);
+        detailNewsGetCommentInformation = postAdapter.create(DetailNewsGetCommentInformation.class);
         advertisementEdit = postAdapter.create(AdvertisementEdit.class);
         advertisementEditFromServer = postAdapter.create(AdvertisementEditFromServer.class);
         likeNews = postAdapter.create(LikeNews.class);
@@ -61,7 +65,11 @@ public class Retrofit {
         postInterfaceSocialNetworks.sendSocialNetworks(social, callback);
     }
 
-    public static void setCommentInformation(Map<String, String> commentInformation, Callback<RegistrationResponseFromServer> callback) {
+    public static void getCommentInformation(String newsId, Callback<List<ComentInformation>> callback) {
+        detailNewsGetCommentInformation.getCommentInfo(newsId, callback);
+    }
+
+    public static void sendCommentInformation(Map<String, String> commentInformation, Callback<RegistrationResponseFromServer> callback) {
         detailNewsComentInformation.setCommentInfo(commentInformation, callback);
     }
 
@@ -113,6 +121,12 @@ public class Retrofit {
         @Multipart
         @POST("/user_advers.php")
         void getMyAdvertisementArrays(@Part("user_id") String userId, Callback<RegistrationResponseFromServer> callback);
+    }
+
+    interface DetailNewsGetCommentInformation {
+        @Multipart
+        @POST("/get_comment_by_adver_id.php")
+        void getCommentInfo(@Part("adver_id") String newsId, Callback<List<ComentInformation>> callback);
     }
 
     interface DetailNewsComentInformation {

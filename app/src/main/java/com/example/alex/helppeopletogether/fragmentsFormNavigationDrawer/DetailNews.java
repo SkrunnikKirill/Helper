@@ -15,14 +15,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.alex.helppeopletogether.Adapter.ComentAdapter;
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.ComentInformation;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -30,10 +34,13 @@ import retrofit.client.Response;
 
 
 public class DetailNews extends Activity implements Constant, View.OnClickListener {
-    private String nImage, nshortDescription, nexpectedAmount, nfinalDate, nDescription, nPaymentAccount, userId, nIdNews;
+    private String nImage, nshortDescription, nexpectedAmount, nfinalDate, nDescription, nPaymentAccount, userId, nIdNews,
+            commentId, createdAt, fullName, foto, userComment;
     private ImageView image, enter;
     private ListView listView;
+    private ComentAdapter comentAdapter;
     private EditText comment;
+    private ArrayList<ComentInformation> commentList;
     private TextView shortDescription, theme, expectedAmount, finalDate, description, paymentAccount;
     private Dimensions dimensions;
     private CollapsingToolbarLayout collapsingToolbar;
@@ -47,19 +54,23 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_news);
-        context = DetailNews.this;
         Intent intent = getIntent();
+        nIdNews = intent.getStringExtra("idNews");
+
+        context = DetailNews.this;
         nImage = intent.getStringExtra("image");
         nshortDescription = intent.getStringExtra("shortDescription");
         nexpectedAmount = intent.getStringExtra("expectedAmount");
         nfinalDate = intent.getStringExtra("finalDate");
         nDescription = intent.getStringExtra("description");
         nPaymentAccount = intent.getStringExtra("paymentAccount");
-        nIdNews = intent.getStringExtra("idNews");
+        commentList = new ArrayList<>();
+        comentAdapter = new ComentAdapter(context, commentList);
+        listView = (ListView) findViewById(R.id.detail_news_list);
+        getComment();
         comentData = new HashMap<>();
         preferences = new Preferences(context);
         userId = preferences.loadText(PREFERENCES_ID);
-        listView = (ListView) findViewById(R.id.detail_news_list);
         image = (ImageView) findViewById(R.id.detail_news_image);
         enter = (ImageView) findViewById(R.id.detail_news_enter);
         enter.setOnClickListener(this);
@@ -93,7 +104,7 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
 
     }
 
-    public void setComent() {
+    private void setComent() {
         final String checkComentText = comment.getText().toString().trim();
         if (checkComentText.length() == 0) {
             comment.setError("Введите текст");
@@ -101,7 +112,7 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
             comentData.put("comment", comment.getText().toString());
             comentData.put("user_id", userId);
             comentData.put("adver_id", nIdNews);
-            Retrofit.setCommentInformation(comentData, new Callback<RegistrationResponseFromServer>() {
+            Retrofit.sendCommentInformation(comentData, new Callback<RegistrationResponseFromServer>() {
                 @Override
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                     if (registrationResponseFromServer == null) {
@@ -123,6 +134,30 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
                 }
             });
         }
+    }
+
+    private void getComment() {
+        Retrofit.getCommentInformation(nIdNews, new Callback<List<ComentInformation>>() {
+            @Override
+            public void success(final List<ComentInformation> comentInformations, Response response) {
+                if (comentInformations == null) {
+                    Toast.makeText(DetailNews.this, R.string.error_data_from_server, Toast.LENGTH_SHORT).show();
+                } else {
+                    for (int i = 0; i < comentInformations.size(); i++) {
+                        commentList.add(new ComentInformation(comentInformations.get(i).full_name,
+                                comentInformations.get(i).avatar, comentInformations.get(i).comment));
+                        listView.setAdapter(comentAdapter);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 
 
