@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
@@ -34,11 +36,11 @@ import retrofit.client.Response;
 
 
 public class DetailNews extends Activity implements Constant, View.OnClickListener {
+    ComentAdapter comentAdapter;
     private String nImage, nshortDescription, nexpectedAmount, nfinalDate, nDescription, nPaymentAccount, userId, nIdNews,
             commentId, createdAt, fullName, foto, userComment;
     private ImageView image, enter;
-    private ListView listView;
-    private ComentAdapter comentAdapter;
+    private RecyclerView recyclerView;
     private EditText comment;
     private ArrayList<ComentInformation> commentList;
     private TextView shortDescription, theme, expectedAmount, finalDate, description, paymentAccount;
@@ -66,7 +68,7 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
         nPaymentAccount = intent.getStringExtra("paymentAccount");
         commentList = new ArrayList<>();
         comentAdapter = new ComentAdapter(context, commentList);
-        listView = (ListView) findViewById(R.id.detail_news_list);
+        recyclerView = (RecyclerView) findViewById(R.id.detail_news_list);
         getComment();
         comentData = new HashMap<>();
         preferences = new Preferences(context);
@@ -152,7 +154,8 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
                     for (int i = comentInformations.size() - 1; i > 0; i--) {
                         commentList.add(new ComentInformation(comentInformations.get(i).full_name,
                                 comentInformations.get(i).avatar, comentInformations.get(i).comment));
-                        listView.setAdapter(comentAdapter);
+                        recyclerView.setAdapter(comentAdapter);
+                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     }
                 }
 
