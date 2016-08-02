@@ -26,7 +26,6 @@ public class ComentAdapter extends RecyclerView.Adapter<ComentAdapter.MyViewHold
     public ComentAdapter(Context context, ArrayList<ComentInformation> coment) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
-        //layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.coment = coment;
     }
 
@@ -37,22 +36,15 @@ public class ComentAdapter extends RecyclerView.Adapter<ComentAdapter.MyViewHold
         return holder;
     }
 
-//    @Override
-//    public int getCount() {
-//        return coment.size();
-//    }
-//
-//    @Override
-//    public Object getItem(int position) {
-//        return coment.get(position);
-//    }
+
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         ComentInformation comentInformation = coment.get(position);
         holder.fullName.setText(comentInformation.full_name);
         holder.userComent.setText(comentInformation.comment);
-        Glide.with(context).load(comentInformation.avatar).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(60, 60).centerCrop().into(holder.foto);
+        holder.commentTime.setText(comentInformation.created_at);
+        Glide.with(context).load(comentInformation.avatar).into(holder.foto);
     }
 
     @Override
@@ -66,47 +58,16 @@ public class ComentAdapter extends RecyclerView.Adapter<ComentAdapter.MyViewHold
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView fullName;
-        TextView userComent;
+        TextView userComent, fullName, commentTime;
         ImageView foto;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             fullName = (TextView) itemView.findViewById(R.id.coment_adapter_full_name);
             userComent = (TextView) itemView.findViewById(R.id.coment_adapter_coment);
+            commentTime = (TextView) itemView.findViewById(R.id.coment_adapter_time);
             foto = (ImageView) itemView.findViewById(R.id.coment_adapter_foto);
         }
     }
 
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        View view = convertView;
-//        ViewHolder viewHolder;
-//        ComentInformation comentInformation = getComent(position);
-//        if (view == null) {
-//            view = layoutInflater.inflate(R.layout.coment_adapter, parent, false);
-//            viewHolder = new ViewHolder();
-//            viewHolder.fullName = (TextView) view.findViewById(R.id.coment_adapter_full_name);
-//            viewHolder.userComent = (TextView) view.findViewById(R.id.coment_adapter_coment);
-//            viewHolder.foto = (ImageView) view.findViewById(R.id.coment_adapter_foto);
-//            view.setTag(viewHolder);
-//        } else {
-//            viewHolder = (ViewHolder) view.getTag();
-//        }
-//        viewHolder.fullName.setText(comentInformation.full_name);
-//        viewHolder.userComent.setText(comentInformation.comment);
-//        Glide.with(context).load(comentInformation.avatar).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(60, 60).centerCrop().into(viewHolder.foto);
-//
-//        return view;
-//    }
-
-//    ComentInformation getComent(int position) {
-//        return ((ComentInformation) getItem(position));
-//    }
-//
-//    static class ViewHolder {
-//        TextView fullName;
-//        TextView userComent;
-//        ImageView foto;
-//    }
 }

@@ -7,7 +7,16 @@
     <ImageView
         android:id="@+id/coment_adapter_foto"
         android:layout_width="60dp"
-        android:layout_height="60dp" />
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:id="@+id/coment_adapter_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="3dp" />
 
     <TextView
         android:id="@+id/coment_adapter_full_name"
@@ -24,7 +33,8 @@
         android:layout_below="@+id/coment_adapter_foto"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="10dp"
+        android:gravity="center" />
 
 
 </RelativeLayout>

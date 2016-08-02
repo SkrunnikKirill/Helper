@@ -151,9 +151,10 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
                 if (comentInformations == null) {
                     Toast.makeText(DetailNews.this, R.string.error_data_from_server, Toast.LENGTH_SHORT).show();
                 } else {
-                    for (int i = comentInformations.size() - 1; i > 0; i--) {
+                    for (int i = comentInformations.size() - 1; i >= 0; i--) {
                         commentList.add(new ComentInformation(comentInformations.get(i).full_name,
-                                comentInformations.get(i).avatar, comentInformations.get(i).comment));
+                                comentInformations.get(i).avatar, comentInformations.get(i).comment,
+                                comentInformations.get(i).created_at));
                         recyclerView.setAdapter(comentAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     }
