@@ -124,7 +124,9 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
                     if (registrationResponseFromServer.response == 1) {
                         comment.setText("");
                         Toast.makeText(DetailNews.this, "Все ок", Toast.LENGTH_SHORT).show();
-                        restartActivity();
+                        getComment();
+                        comentAdapter.notifyDataSetChanged();
+                        // restartActivity();
                     } else if (registrationResponseFromServer.response == 2) {
                         Toast.makeText(DetailNews.this, "Данные не отправлены", Toast.LENGTH_SHORT).show();
                     }
