@@ -9,6 +9,12 @@
     <dimen name="marging_text_input_edit_text">25dp</dimen>
     <dimen name="pading_text_input_edit_text">10dp</dimen>
 
+    // activity main
+    <dimen name="margin_top_button">370dp</dimen>
+    <dimen name="layout_width">270dp</dimen>
+    <dimen name="margin_between_buttons">20dp</dimen>
+    <dimen name="margin_between_button_and_text">13dp</dimen>
+    <dimen name="margin_between_text_and_buttons">5dp</dimen>
 
     <dimen name="marTop">128dp</dimen>
 

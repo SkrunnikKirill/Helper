@@ -23,9 +23,11 @@ import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
+import com.vk.sdk.util.VKUtil;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -145,7 +147,9 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+
                 String detailNewsImage = image.get(position);
+                Log.d("News", detailNewsImage);
                 String detailNewsShortDescription = shortDescription.get(position);
                 String detailNewsExpectedAmount = expectedAmount.get(position);
                 String detailNewsFinalDate = finalDate.get(position);
@@ -160,7 +164,6 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 news.putExtra("finalDate", detailNewsFinalDate);
                 news.putExtra("description", detailNewsDescription);
                 news.putExtra("paymentAccount", detailPaymentAccount);
-
                 startActivity(news);
 
             }

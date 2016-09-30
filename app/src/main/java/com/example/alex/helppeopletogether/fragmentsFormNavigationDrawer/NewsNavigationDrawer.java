@@ -127,7 +127,6 @@ public class NewsNavigationDrawer extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         android.support.v4.app.FragmentTransaction ftrans = getSupportFragmentManager().beginTransaction();
-
         if (id == R.id.nav_my_advertisement) {
             toolbar.setTitle("Мои Объявления");
             ftrans.replace(R.id.container, advertisement);
