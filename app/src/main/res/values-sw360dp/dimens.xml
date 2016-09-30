@@ -16,7 +16,17 @@
     <dimen name="margin_between_button_and_text">13dp</dimen>
     <dimen name="margin_between_text_and_buttons">5dp</dimen>
 
-    <dimen name="marTop">128dp</dimen>
+    //Login screen
+    <dimen name="relative_marginTop">185dp</dimen>
+    <dimen name="blocks_marginTop">45dp</dimen>
+    <dimen name="button_marginTop">60dp</dimen>
+    <dimen name="padding_login">50dp</dimen>
+
+    //Registration screen
+    <dimen name="between_image_name">20dp</dimen>
+    <dimen name="between_blocks_reg_marginTop">23dp</dimen>
+    <dimen name="button_reg_marginTop">35dp</dimen>
+    <dimen name="padding_reg">25dp</dimen>
 
 
 </resources>
