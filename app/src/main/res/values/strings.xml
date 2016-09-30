@@ -19,15 +19,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="email">email</string>
-    <string name="password">password</string>
+    <string name="Email">Email</string>
+    <string name="password">Password</string>
     <string name="sig_in_with_help">ВОЙТИ С ПОМОЩЮ</string>
     <string name="registration">Зарегистрироваться</string>
-    <string name="sign_in">Войти</string>
-    <string name="name">Имя</string>
-    <string name="second_name">Фамилия</string>
-    <string name="password_registration">Пароль</string>
-    <string name="next">Далее</string>
+    <string name="sign_in">Sign in</string>
+    <string name="name">First name</string>
+    <string name="second_name">Last name</string>
+    <string name="password_registration">Password</string>
+    <string name="next">Sign up</string>
     <string name="theme">Тема</string>
     <string name="short_description">Краткое описание проблемы</string>
     <string name="full_description">Полное описание проблемы</string>

@@ -9,8 +9,17 @@
     <dimen name="marging_text_input_edit_text">25dp</dimen>
     <dimen name="pading_text_input_edit_text">10dp</dimen>
 
+    //Login screen
+    <dimen name="relative_marginTop">225dp</dimen>
+    <dimen name="blocks_marginTop">55dp</dimen>
+    <dimen name="button_marginTop">100dp</dimen>
+    <dimen name="padding_login">50dp</dimen>
 
-    <dimen name="marTop">200dp</dimen>
+    //Registration screen
+    <dimen name="between_image_name">30dp</dimen>
+    <dimen name="between_blocks_reg_marginTop">35dp</dimen>
+    <dimen name="button_reg_marginTop">45dp</dimen>
+    <dimen name="padding_reg">30dp</dimen>
 
 
 </resources>

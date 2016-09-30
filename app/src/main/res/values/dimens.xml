@@ -8,4 +8,9 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="marging_text_input_edit_text">25dp</dimen>
     <dimen name="pading_text_input_edit_text">10dp</dimen>
+
+
+    <dimen name="marTop">200dp</dimen>
+
+
 </resources>
