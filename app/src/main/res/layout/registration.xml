@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/relativeLayoutRegistration"
+                android:id="@+id/registration_first_relative_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/regbackground"
@@ -9,13 +9,13 @@
                 android:padding="@dimen/padding_reg">
 
     <RelativeLayout
-        android:id="@+id/blocks_layout"
+        android:id="@+id/registration_second_relative_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_reg">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/registration_face_image"
+            android:id="@+id/registration_avatar_image"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
@@ -24,15 +24,15 @@
             android:src="@drawable/foto"/>
 
         <LinearLayout
-            android:id="@+id/name"
+            android:id="@+id/registration_first_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/registration_face_image"
+            android:layout_below="@+id/registration_avatar_image"
             android:layout_marginTop="@dimen/between_image_name"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/thumb_img2"
+                android:id="@+id/registration_first_person_image"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_weight="1"
@@ -43,7 +43,7 @@
                 android:id="@+id/registration_first_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="5"
                 android:background="@drawable/divider"
                 android:hint="@string/name"
@@ -59,15 +59,15 @@
 
 
         <LinearLayout
-            android:id="@+id/second_name"
+            android:id="@+id/registration_second_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/name"
+            android:layout_below="@+id/registration_first_linear_layout"
             android:layout_marginTop="@dimen/between_blocks_reg_marginTop"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/thumb_img3"
+                android:id="@+id/registration_second_person_image"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_weight="1"
@@ -96,16 +96,16 @@
 
 
         <LinearLayout
-            android:id="@+id/email"
+            android:id="@+id/registration_third_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/second_name"
+            android:layout_below="@+id/registration_second_linear_layout"
             android:layout_marginTop="@dimen/between_blocks_reg_marginTop"
             android:orientation="horizontal">
 
 
             <ImageView
-                android:id="@+id/thumb_img4"
+                android:id="@+id/registration_cover_image"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_weight="1"
@@ -134,15 +134,15 @@
 
 
         <LinearLayout
-            android:id="@+id/password"
+            android:id="@+id/registration_fourth_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/email"
+            android:layout_below="@+id/registration_third_linear_layout"
             android:layout_marginTop="@dimen/between_blocks_reg_marginTop"
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/thumb_img5"
+                android:id="@+id/registration_key_image"
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_weight="1"
@@ -173,7 +173,7 @@
             android:id="@+id/registration_button_registration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/password"
+            android:layout_below="@+id/registration_fourth_linear_layout"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/button_reg_marginTop"
             android:background="@drawable/button_sign_in"
