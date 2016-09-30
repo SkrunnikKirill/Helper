@@ -61,7 +61,7 @@ public class CustomList extends ArrayAdapter<String> {
         // viewHolder.timeDate = (TextView) rowView.findViewById(R.id.date_text);
         viewHolder.date = (TextView) rowView.findViewById(R.id.detail_news_days_left);
         viewHolder.summa = (TextView) rowView.findViewById(R.id.detail_news_summa);
-        viewHolder.imageView = (ImageView) rowView.findViewById(R.id.detail_newse_image);
+        viewHolder.imageView = (ImageView) rowView.findViewById(R.id.login_cover_image);
 
 
         if (idNews == null) {

@@ -38,7 +38,7 @@
 
 
         <ImageView
-            android:id="@+id/detail_newse_image"
+            android:id="@+id/login_cover_image"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:layout_below="@+id/detail_news_theme"
@@ -46,10 +46,10 @@
 
 
         <RelativeLayout
-            android:id="@+id/relativeLayout"
+            android:id="@+id/login_second_relative_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/detail_newse_image"
+            android:layout_alignBottom="@+id/login_cover_image"
             android:background="@color/blue_grey"
             android:orientation="horizontal">
 

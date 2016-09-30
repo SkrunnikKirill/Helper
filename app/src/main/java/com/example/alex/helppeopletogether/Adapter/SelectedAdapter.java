@@ -58,7 +58,7 @@ public class SelectedAdapter extends BaseAdapter {
             // viewHolder.timeDate = (TextView) view.findViewById(R.id.date_text);
             viewHolder.date = (TextView) view.findViewById(R.id.detail_news_days_left);
             viewHolder.summa = (TextView) view.findViewById(R.id.detail_news_summa);
-            viewHolder.imageView = (ImageView) view.findViewById(R.id.detail_newse_image);
+            viewHolder.imageView = (ImageView) view.findViewById(R.id.login_cover_image);
             viewHolder.button = (ToggleButton) view.findViewById(R.id.datail_news_like);
             view.setTag(viewHolder);
 

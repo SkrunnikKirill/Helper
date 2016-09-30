@@ -57,6 +57,9 @@
     <string name="all_filed">Не все поля заполнены, заполнети все поля</string>
     <string name="edit_advertisement">Редактировать объявление</string>
     <string name="sign_up">Sign up</string>
+    <string name="login_busy">Логин занят</string>
+    <string name="email_busy">Email занят</string>
+    <string name="instal_data">Заполните все поля, и установите фото</string>
 
 
 </resources>

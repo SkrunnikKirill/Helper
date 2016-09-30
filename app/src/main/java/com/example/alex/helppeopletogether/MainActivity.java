@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private GoogleApiClient mGoogleApiClient;
     private ProfileTracker profileTracker;
     private Profile profile;
-    private LinkedHashMap<String, String> loginData, socialUserData;
+    private LinkedHashMap<String, String> socialUserData;
     private Integer responseFromServiseLogin, responseFromServiseSocialNetwork, userId;
     private Intent intentNextStep;
     private ConnectionResult mConnectionResult;

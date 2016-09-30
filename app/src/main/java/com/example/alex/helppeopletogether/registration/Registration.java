@@ -4,6 +4,7 @@ package com.example.alex.helppeopletogether.registration;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -21,6 +22,7 @@ import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
+import com.example.alex.helppeopletogether.SupportClasses.MyToast;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
@@ -52,6 +54,7 @@ public class Registration extends Activity implements View.OnClickListener, Cons
     private CircleImageView face;
     private Button buttonRegistration;
     private HashMap<String, String> data;
+    private Context context;
     private boolean result;
     private File file;
     private TypedFile imageFace;
@@ -62,33 +65,17 @@ public class Registration extends Activity implements View.OnClickListener, Cons
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registration);
         preferences = new Preferences(Registration.this);
-        relativeLayoutRegistrationSnackBar = (RelativeLayout) findViewById(R.id.relativeLayoutRegistration);
-        checkInternet();
-        face = (CircleImageView) findViewById(R.id.registration_face_image);
+        context = Registration.this;
+        relativeLayoutRegistrationSnackBar = (RelativeLayout) findViewById(R.id.registration_first_relative_layout);
+        face = (CircleImageView) findViewById(R.id.registration_avatar_image);
         firstName = (EditText) findViewById(R.id.registration_first_name);
         secondName = (EditText) findViewById(R.id.registration_second_name);
         email = (EditText) findViewById(R.id.registration_email);
         password = (EditText) findViewById(R.id.registration_password);
         buttonRegistration = (Button) findViewById(R.id.registration_button_registration);
-        test = new FiledTest(firstName, secondName, email, password);
-        test.checkRegistrationData();
         buttonRegistration.setOnClickListener(this);
         face.setOnClickListener(this);
-//        showPassword = (ToggleButton) findViewById(R.id.togglePassword);
-//        showPassword.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked) {
-//                    showPassword.setBackgroundResource(R.drawable.onn);
-//                    password.setTransformationMethod(null);
-//                } else {
-//                    showPassword.setBackgroundResource(R.drawable.offff);
-//                    password.setTransformationMethod(new PasswordTransformationMethod());
-//
-//                }
-//                password.setSelection(password.getText().length());
-//            }
-        //  }//);
+
     }
 
     public void checkInternet() {
@@ -121,11 +108,11 @@ public class Registration extends Activity implements View.OnClickListener, Cons
     @Override
     protected void onStop() {
         super.onStop();
-//        firstName.setText("");
-//        secondName.setText("");
-//        email.setText("");
-//        password.setText("");
-//        face.setImageResource(R.drawable.photoicon);
+        firstName.setText("");
+        secondName.setText("");
+        email.setText("");
+        password.setText("");
+        face.setImageResource(R.drawable.photoicon);
     }
 
     @Override
@@ -134,7 +121,7 @@ public class Registration extends Activity implements View.OnClickListener, Cons
             case R.id.registration_button_registration:
                 sendRegistrationInformationToServer();
                 break;
-            case R.id.registration_face_image:
+            case R.id.registration_avatar_image:
                 CropImage.startPickImageActivity(this);
                 break;
         }
@@ -223,19 +210,18 @@ public class Registration extends Activity implements View.OnClickListener, Cons
                 @Override
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                     if (registrationResponseFromServer == null) {
-                        Toast.makeText(Registration.this, R.string.error_data_from_server, Toast.LENGTH_SHORT).show();
+                        MyToast.error(context, context.getString(R.string.error_data_from_server));
                     } else {
-                        Toast.makeText(getApplication(), "Data sent", Toast.LENGTH_SHORT).show();
                         responseFromServiseRegistration = registrationResponseFromServer.response;
                         responseFromServiseRegistrationId = registrationResponseFromServer.user_id;
                         responseFromServiseFullName = registrationResponseFromServer.full_name;
                         responseFromServiseImage = registrationResponseFromServer.avatar;
                         if (responseFromServiseRegistration == 4) {
-                            Toast.makeText(Registration.this, R.string.image_is_not_sent_to_server, Toast.LENGTH_LONG).show();
+                            MyToast.info(context, context.getString(R.string.image_is_not_sent_to_server));
                         } else if (responseFromServiseRegistration == 3) {
-                            Toast.makeText(Registration.this, "Логин занят", Toast.LENGTH_LONG).show();
+                            MyToast.info(context, context.getString(R.string.login_busy));
                         } else if (responseFromServiseRegistration == 1) {
-                            Toast.makeText(Registration.this, "Email занят", Toast.LENGTH_LONG).show();
+                            MyToast.info(context, context.getString(R.string.email_busy));
                         } else if (responseFromServiseRegistration == 2) {
                             preferences.saveText(email.getText().toString(), PREFERENCES_LOGIN);
                             preferences.saveText(password.getText().toString(), PREFERENCES_PASSWORD);
@@ -255,11 +241,10 @@ public class Registration extends Activity implements View.OnClickListener, Cons
                     if (error.getCause() instanceof UnknownHostException) {
                         checkInternet();
                     }
-                    Toast.makeText(getApplication(), error.toString(), Toast.LENGTH_LONG).show();
                 }
             });
         } else {
-            Toast.makeText(Registration.this, "Заполните все поля, и установите фото", Toast.LENGTH_SHORT).show();
+            MyToast.info(context, context.getString(R.string.instal_data));
         }
 
 
