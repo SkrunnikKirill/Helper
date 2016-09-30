@@ -153,8 +153,10 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
                 String detailNewsFinalDate = finalDate.get(position);
                 String detailNewsDescription = description.get(position);
                 String detailNewsPaymentAccount = paymentAccount.get(position).toString();
-                Intent news = new Intent(getActivity(), DetailNews.class);
+                String detailNewsId = idNews.get(position).toString();
+                Intent news = new Intent(getActivity(), DetailNewsLike.class);
                 news.putExtra("image", detailNewsImage);
+                news.putExtra("idNews", detailNewsId);
                 news.putExtra("shortDescription", detailNewsShortDescription);
                 news.putExtra("expectedAmount", detailNewsExpectedAmount);
                 news.putExtra("finalDate", detailNewsFinalDate);

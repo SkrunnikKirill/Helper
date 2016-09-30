@@ -1,10 +1,13 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -36,6 +39,8 @@ import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.io.ByteArrayOutputStream;
@@ -47,6 +52,7 @@ import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -74,7 +80,8 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
 
     private EditText theme, shortDescription, fullDescription, money, account;
     private Button locate;
-    private ImageView down, imageAdvertisement;
+    private ImageView down;
+    private CircleImageView imageAdvertisement;
     private LinkedHashMap<String, String> dataAdvertisement;
 
     @Override
@@ -86,7 +93,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         year = new GetCurensyYear();
         preferences = new Preferences(DescriptionProblem.this);
         userid = preferences.loadText(PREFERENCES_ID);
-        imageAdvertisement = (ImageView) findViewById(R.id.description_problem_image);
+        imageAdvertisement = (CircleImageView) findViewById(R.id.description_problem_image);
         theme = (EditText) findViewById(R.id.description_problem_theme);
         shortDescription = (EditText) findViewById(R.id.description_problem_short_description);
         fullDescription = (EditText) findViewById(R.id.description_problem_full_description);
@@ -96,9 +103,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         locate = (Button) findViewById(R.id.description_problem_locate);
         imageAdvertisement.setOnClickListener(this);
         locate.setOnClickListener(this);
-        filedTest = new FiledTest(theme, shortDescription, fullDescription, money, account);
-        filedTest.inspection1();
-
         dataPicker();
         spiner();
         Toolbar toolbar = (Toolbar) findViewById(R.id.description_problem_toolbar);
@@ -210,97 +214,64 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
                 sendDescriptionInformationFromServise();
                 break;
             case R.id.description_problem_image:
-                selectImage();
+                CropImage.startPickImageActivity(this);
                 break;
         }
     }
 
-    public void selectImage() {
-        final CharSequence[] items = {getString(R.string.take_a_photo), getString(R.string.select_a_photo),
-                getString(R.string.cancel)};
+    @Override
+    @SuppressLint("NewApi")
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // handle result of pick image chooser
+        if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            Uri imageUri = CropImage.getPickImageResultUri(this, data);
+            getLink(data);
+            // For API >= 23 we need to check specifically that we have permissions to read external storage.
+            if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
+                // request permissions and handle the result in onRequestPermissionsResult()
+                imageUri = imageUri;
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+            } else {
+                // no permissions required or already grunted, can start crop image activity
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(DescriptionProblem.this);
-        builder.setTitle(R.string.add_photo);
-        builder.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals(getString(R.string.take_a_photo))) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(intent, REQUEST_CAMERA);
-                } else if (items[item].equals(getString(R.string.select_a_photo))) {
-                    Intent intent = new Intent(
-                            Intent.ACTION_PICK,
-                            android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    intent.setType("image/*");
-                    startActivityForResult(
-                            Intent.createChooser(intent, getString(R.string.select_a_photo)),
-                            SELECT_FILE);
-                } else if (items[item].equals(getString(R.string.cancel))) {
-                    dialog.dismiss();
-                }
+                startCropImageActivity(imageUri);
             }
-        });
-        builder.show();
+        }
+
+        // handle result of CropImageActivity
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                imageAdvertisement.setImageURI(result.getUri());
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == SELECT_FILE)
-                onSelectFromGalleryResult(data, imageAdvertisement);
-            else if (requestCode == REQUEST_CAMERA)
-                onCaptureImageResult(data, imageAdvertisement);
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (selectedImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // required permissions granted, start crop image activity
+            startCropImageActivity(selectedImageUri);
+        } else {
+            Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
         }
     }
 
-    public void onCaptureImageResult(Intent data, ImageView image) {
-        selectedImageUri = data.getData();
-        Bitmap thumbnail = (Bitmap) data.getExtras().get("data");
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        thumbnail.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
-
-        File destination = new File(Environment.getExternalStorageDirectory(),
-                System.currentTimeMillis() + ".jpg");
-
-        FileOutputStream fo;
-        try {
-            destination.createNewFile();
-            fo = new FileOutputStream(destination);
-            fo.write(bytes.toByteArray());
-            fo.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        image.setImageBitmap(thumbnail);
+    /**
+     * Start crop image activity for the given image.
+     */
+    private void startCropImageActivity(Uri imageUri) {
+        CropImage.activity(imageUri)
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setMultiTouchEnabled(true)
+                .start(this);
     }
 
-    @SuppressWarnings("deprecation")
-    public void onSelectFromGalleryResult(Intent data, ImageView image) {
+    private void getLink(Intent data) {
         selectedImageUri = data.getData();
-        String[] projection = {MediaStore.MediaColumns.DATA};
-        Cursor cursor = managedQuery(selectedImageUri, projection, null, null,
-                null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
-        cursor.moveToFirst();
-        selectedImagePath = cursor.getString(column_index);
-        Bitmap bm;
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(selectedImagePath, options);
-        final int REQUIRED_SIZE = 200;
-        int scale = 1;
-        while (options.outWidth / scale / 2 >= REQUIRED_SIZE
-                && options.outHeight / scale / 2 >= REQUIRED_SIZE)
-            scale *= 2;
-        options.inSampleSize = scale;
-        options.inJustDecodeBounds = false;
-        bm = BitmapFactory.decodeFile(selectedImagePath, options);
-
-        image.setImageBitmap(bm);
     }
 
     public String getPath(Uri uri) {

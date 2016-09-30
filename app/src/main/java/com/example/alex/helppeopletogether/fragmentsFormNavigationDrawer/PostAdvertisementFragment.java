@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,7 @@ import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
-import com.terrakok.phonematter.PhoneFormat;
+import com.vicmikhailau.maskededittext.MaskedEditText;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.net.UnknownHostException;
@@ -51,7 +52,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     private RelativeLayout relativeLayout;
     private GetCurensyYear year;
     private FiledTest test;
-    private EditText phoneNumber;
+    private MaskedEditText phoneNumber;
     private AutoCompleteTextView region;
     private AutoCompleteTextView city;
     private TextView dayOfBirth;
@@ -103,9 +104,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         city = (AutoCompleteTextView) root.findViewById(R.id.post_advertisement_city);
         dayOfBirth = (TextView) root.findViewById(R.id.post_advertisement_date_of_birth);
         next = (Button) root.findViewById(R.id.post_advertisement_next);
-        phoneNumber = (EditText) root.findViewById(R.id.post_advertisement_phone_number);
-        test = new FiledTest(city, region, phoneNumber);
-        test.checkPostAdvertisementData();
+        phoneNumber = (MaskedEditText) root.findViewById(R.id.post_advertisement_phone_number);
         region.addTextChangedListener(this);
         city.addTextChangedListener(this);
         relativeLayout = (RelativeLayout) root.findViewById(R.id.post_advertisemet_relative_layout);
@@ -209,7 +208,9 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
                 public void success(RegistrationResponseFromServer registrationResponseFromServer, Response response) {
                     int answer = registrationResponseFromServer.response_add_user_information;
                     if (answer == 1) {
-                        Toast.makeText(getActivity(), "Данные не отпраленны", Toast.LENGTH_LONG).show();
+                        Toast toast = Toast.makeText(getActivity(), "Данные не отпраленны", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.NO_GRAVITY, 0, 0);
+                        toast.show();
                     } else if (answer == 2) {
                         nextActivity();
                         region.setText("");

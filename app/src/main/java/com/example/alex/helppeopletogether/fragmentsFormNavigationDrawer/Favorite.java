@@ -38,7 +38,7 @@ import retrofit.client.Response;
  * Created by Alex on 04.04.2016.
  */
 public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshListener, Constant {
-    private String userId, detailNewsImage, detailNewsShortDescription, detailNewsExpectedAmount, detailNewsFinalDate, detailNewsDescription, detailNewsPaymentAccount;
+    private String userId, detailNewsImage, detailNewsShortDescription, detailNewsExpectedAmount, detailNewsFinalDate, detailNewsDescription, detailNewsPaymentAccount, detailNewsId;
     private ArrayList<SelectedNews> likeNews;
     private ListView list;
     private SelectedAdapter selectedAdapter;
@@ -136,8 +136,10 @@ public class Favorite extends Fragment implements SwipeRefreshLayout.OnRefreshLi
                                 detailNewsFinalDate = selectedNews.get(position).final_date;
                                 detailNewsDescription = selectedNews.get(position).description;
                                 detailNewsPaymentAccount = selectedNews.get(position).payment_account;
+                                detailNewsId = selectedNews.get(position).id;
                                 news = new Intent(getActivity(), DetailNews.class);
                                 news.putExtra("image", detailNewsImage);
+                                news.putExtra("idNews", detailNewsId);
                                 news.putExtra("shortDescription", detailNewsShortDescription);
                                 news.putExtra("expectedAmount", detailNewsExpectedAmount);
                                 news.putExtra("finalDate", detailNewsFinalDate);

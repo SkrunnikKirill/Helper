@@ -38,9 +38,9 @@
 
 
         <ImageView
-            android:id="@+id/detail_news_image"
+            android:id="@+id/detail_newse_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="350dp"
             android:layout_below="@+id/detail_news_theme"
             android:layout_centerHorizontal="true" />
 
@@ -49,7 +49,7 @@
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/detail_news_image"
+            android:layout_alignBottom="@+id/detail_newse_image"
             android:background="@color/blue_grey"
             android:orientation="horizontal">
 

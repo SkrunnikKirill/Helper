@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayoutLogin"
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:background="@drawable/secondbackground">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/relativeLayoutLogin"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/secondbackground">
 
 
     <RelativeLayout
@@ -26,7 +26,7 @@
                 android:layout_height="35dp"
                 android:layout_weight="1"
                 android:src="@drawable/email"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"/>
 
 
             <EditText
@@ -36,7 +36,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="5"
                 android:background="@drawable/divider"
-                android:hint="@string/Email"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress|textNoSuggestions"
                 android:padding="9dp"
                 android:paddingBottom="5dp"
@@ -45,7 +45,7 @@
                 android:textColorHint="@color/white"
                 android:textSize="16sp"
                 android:textStyle="normal"
-                tools:ignore="Deprecated,RtlHardcoded" />
+                tools:ignore="Deprecated,RtlHardcoded"/>
 
 
         </LinearLayout>
@@ -65,7 +65,7 @@
                 android:layout_height="33dp"
                 android:layout_weight="1"
                 android:src="@drawable/password"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"/>
 
 
             <EditText
@@ -82,7 +82,7 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="16sp"
-                tools:ignore="RtlHardcoded" />
+                tools:ignore="RtlHardcoded"/>
 
         </LinearLayout>
 

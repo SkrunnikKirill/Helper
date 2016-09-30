@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.example.alex.helppeopletogether.MainActivity;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
-import com.example.alex.helppeopletogether.registration.Login;
 
 
 public class ExitFragment extends Fragment implements Constant {
@@ -27,7 +27,7 @@ public class ExitFragment extends Fragment implements Constant {
         preferences.remove(PREFERENCES_LOGIN);
         preferences.remove(PREFERENCES_ID);
 
-        intent = new Intent(getActivity(), Login.class);
+        intent = new Intent(getActivity(), MainActivity.class);
         getActivity().startActivity(intent);
 
     }

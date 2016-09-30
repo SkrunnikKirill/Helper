@@ -90,10 +90,8 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
         description.setText(nDescription);
         finalDate.setText("до:  " + nfinalDate);
         paymentAccount.setText("Расчетный счет:  " + nPaymentAccount);
-        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.main_collapsing);
+        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.detail_news_collapsing);
         collapsingToolbar.setTitle("Запись");
-
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_36dp));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -127,7 +125,8 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
                         commentList.clear();
                         getComment();
                         comentAdapter.notifyDataSetChanged();
-                        // restartActivity();
+                        collapsingToolbar.setTitle("Запись");
+
                     } else if (registrationResponseFromServer.response == 2) {
                         Toast.makeText(DetailNews.this, "Данные не отправлены", Toast.LENGTH_SHORT).show();
                     }
@@ -141,11 +140,6 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
         }
     }
 
-    private void restartActivity() {
-        Intent mIntent = getIntent();
-        finish();
-        startActivity(mIntent);
-    }
 
     private void getComment() {
         Retrofit.getCommentInformation(nIdNews, new Callback<List<ComentInformation>>() {
@@ -183,4 +177,5 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
         }
     }
 }
+
 

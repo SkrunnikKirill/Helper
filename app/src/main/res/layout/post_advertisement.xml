@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/post_advertisemet_relative_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_alignParentBottom="true"
-    android:background="@color/blue"
-    android:orientation="vertical">
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/post_advertisemet_relative_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:background="@color/blue"
+                android:orientation="vertical">
 
 
     <ScrollView
@@ -86,27 +87,21 @@
             </android.support.design.widget.TextInputLayout>
 
 
-
-            <android.support.design.widget.TextInputLayout
+            <com.vicmikhailau.maskededittext.MaskedEditText
+                android:id="@+id/post_advertisement_phone_number"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textColorHint="@color/white">
+                android:layout_below="@+id/post_advertisement_city"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/divider"
+                android:hint="@string/phone_number"
+                android:inputType="phone"
+                android:maxLength="19"
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                app:mask="+38 (0**) *** **-**"/>
 
-                <EditText
-                    android:id="@+id/post_advertisement_phone_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/post_advertisement_city"
-                    android:background="@drawable/divider"
-                    android:digits="0123456789+"
-                    android:hint="@string/phone_number"
-                    android:inputType="phone"
-                    android:maxLength="13"
-                    android:singleLine="true"
-                    android:text="@string/number"
-                    android:textColor="@color/white" />
-            </android.support.design.widget.TextInputLayout>
 
 
         </LinearLayout>

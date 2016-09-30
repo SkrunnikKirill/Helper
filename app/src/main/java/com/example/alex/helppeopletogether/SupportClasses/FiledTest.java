@@ -3,11 +3,16 @@ package com.example.alex.helppeopletogether.SupportClasses;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+
+import com.vicmikhailau.maskededittext.MaskedEditText;
 
 
 public class FiledTest {
-    EditText theme, shortDescription, fullDescription, money, account, firstName, secondName, email, password, city, region, phoneNumber;
+    EditText theme, shortDescription, fullDescription, money, account, firstName, secondName, email, password;
+    MaskedEditText phoneNumber;
+    AutoCompleteTextView city, region;
 
 
     public FiledTest(EditText theme, EditText shortDescription, EditText fullDescription, EditText money, EditText account) {
@@ -27,7 +32,7 @@ public class FiledTest {
         this.password = password;
     }
 
-    public FiledTest(EditText city, EditText region, EditText phoneNumber) {
+    public FiledTest(AutoCompleteTextView city, AutoCompleteTextView region, MaskedEditText phoneNumber) {
         this.city = city;
         this.region = region;
         this.phoneNumber = phoneNumber;
