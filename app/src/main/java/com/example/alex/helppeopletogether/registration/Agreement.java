@@ -23,7 +23,7 @@ public class Agreement extends Activity implements View.OnClickListener {
     private String text;
 
     // test
-    //secondtest
+    //secondtestt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
