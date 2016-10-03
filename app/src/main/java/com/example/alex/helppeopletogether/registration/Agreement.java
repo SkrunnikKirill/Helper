@@ -23,6 +23,8 @@ public class Agreement extends Activity implements View.OnClickListener {
     private String text;
 
     //sdsdsd
+    //dfsdfsdfsdfsdfsdfsdf
+    //dfsdfsdfsdfsdfsdfsdf
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
