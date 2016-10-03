@@ -24,6 +24,9 @@ public class Agreement extends Activity implements View.OnClickListener {
 
     // test
     //secondtestt
+    //sdsdsd
+    //dfsdfsdfsdfsdfsdfsdf
+    //dfsdfsdfsdfsdfsdfsdf
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
