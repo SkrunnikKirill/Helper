@@ -24,6 +24,7 @@ import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.MyToast;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
+import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsNavigationDrawer;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -112,7 +113,7 @@ public class Registration extends Activity implements View.OnClickListener, Cons
         secondName.setText("");
         email.setText("");
         password.setText("");
-        face.setImageResource(R.drawable.photoicon);
+        face.setImageResource(R.drawable.foto);
     }
 
     @Override
@@ -228,7 +229,7 @@ public class Registration extends Activity implements View.OnClickListener, Cons
                             preferences.saveText(responseFromServiseRegistrationId.toString(), PREFERENCES_ID);
                             preferences.saveText(responseFromServiseFullName, PREFERENCES_NAME);
                             preferences.saveText(responseFromServiseImage, PREFERENCES_FOTO);
-                            intent = new Intent(Registration.this, Agreement.class);
+                            intent = new Intent(Registration.this, NewsNavigationDrawer.class);
                             startActivity(intent);
                         }
                     }

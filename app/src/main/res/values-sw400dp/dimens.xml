@@ -13,19 +13,25 @@
     <dimen name="relative_marginTop">225dp</dimen>
     <dimen name="blocks_marginTop">55dp</dimen>
     <dimen name="button_marginTop">100dp</dimen>
-    <dimen name="padding_login">50dp</dimen>
+    <dimen name="padding_login">30dp</dimen>
     // activity main
-    <dimen name="margin_top_button">440dp</dimen>
+    <dimen name="margin_top_button">420dp</dimen>
     <dimen name="layout_width">300dp</dimen>
     <dimen name="margin_between_buttons">30dp</dimen>
-    <dimen name="margin_between_button_and_text">25dp</dimen>
-    <dimen name="margin_between_text_and_buttons">10dp</dimen>
+    <dimen name="margin_between_button_and_text">-22dp</dimen>
+    <dimen name="margin_between_text_and_buttons">8dp</dimen>
 
     //Registration screen
     <dimen name="between_image_name">30dp</dimen>
     <dimen name="between_blocks_reg_marginTop">35dp</dimen>
     <dimen name="button_reg_marginTop">45dp</dimen>
     <dimen name="padding_reg">30dp</dimen>
-
+    // Header Navigation drawer
+    <dimen name="header">200dp</dimen>
+    <dimen name="marginBot">35dp</dimen>
+    //Post_advertisement
+    <dimen name="btn_mar_bot">20dp</dimen>
+    <dimen name="text_view_marTop">30dp</dimen>
+    <dimen name="auto_text_view_marTop">15dp</dimen>
 
 </resources>

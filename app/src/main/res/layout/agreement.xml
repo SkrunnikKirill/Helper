@@ -36,16 +36,16 @@
                 android:text="Я согласен(а) с условиями регистрации"
                 android:textSize="17dp" />
 
-            <Button
-                android:id="@+id/agreement_registration_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/page3_checkBox"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/button"
-                android:text="@string/registration" />
+            <!--<Button-->
+            <!--android:id="@+id/agreement_registration_button"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_below="@+id/page3_checkBox"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:background="@drawable/button"-->
+            <!--android:text="@string/registration" />-->
 
         </LinearLayout>
 

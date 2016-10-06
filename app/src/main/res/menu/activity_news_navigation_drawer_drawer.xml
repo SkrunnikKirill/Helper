@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_my_advertisement"
-            android:icon="@drawable/profile"
+            android:icon="@drawable/my_news"
             android:title="Мои Обьявления" />
         <item
             android:id="@+id/nav_news"
-            android:icon="@drawable/news"
+            android:icon="@drawable/news_feed"
             android:title="Новости" />
         <item
             android:id="@+id/nav_my_message"
-            android:icon="@drawable/favourite"
+            android:icon="@drawable/elect_like"
             android:title="Избранные" />
         <item
             android:id="@+id/nav_post_advertisement"
-            android:icon="@drawable/newannouncement"
+            android:icon="@drawable/post_announcements"
             android:title="Разместить обьявление" />
 
         <item
             android:id="@+id/nav_exit"
-            android:icon="@drawable/logout"
+            android:icon="@drawable/log_out"
             android:title="Выйти" />
+
     </group>
 
 

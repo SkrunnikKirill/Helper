@@ -4,179 +4,207 @@
     android:id="@+id/edit_advertisement_linear_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
+    android:background="@drawable/drawer_gradient"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/edit_advertisement_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@color/drawer_background"
         android:subtitleTextColor="@color/white"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+
+    <FrameLayout
+        android:id="@+id/activity_edit_advertisement_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="15dp">
 
-
+            <TextView
+                android:id="@+id/name_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:hint="Фото для обложки новости"
+                android:textColorHint="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
             <ImageView
                 android:id="@+id/edit_advertisement_image"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_below="@+id/name_photo"
+                android:layout_centerHorizontal="true"
                 android:layout_gravity="center"
                 android:clickable="true"
-                android:src="@drawable/photoicon" />
+                android:src="@drawable/dest_edit_photo" />
+
+            <TextView
+                android:id="@+id/text_block_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_advertisement_image"
+                android:layout_marginLeft="20dp"
+                android:hint="@string/theme"
+                android:textColorHint="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/edit_advertisement_theme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/text_block_one"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/divider"
+                android:maxLength="50"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/text_block_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_advertisement_theme"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="@string/short_description"
                 android:textColorHint="@color/white"
-                app:counterEnabled="true"
-                app:counterMaxLength="50"
-                app:counterOverflowTextAppearance="@string/theme"
-                app:counterTextAppearance="@style/counterText">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_advertisement_theme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/marging_text_input_edit_text"
-                    android:layout_marginRight="@dimen/marging_text_input_edit_text"
-                    android:background="@drawable/divider"
-                    android:gravity="center_horizontal"
-                    android:hint="@string/theme"
-                    android:maxLength="50"
-                    android:paddingTop="@dimen/pading_text_input_edit_text"
-                    android:textColorHint="@color/white" />
-            </android.support.design.widget.TextInputLayout>
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/edit_advertisement_short_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/text_block_two"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/divider"
+                android:maxLength="50"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/text_block_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_advertisement_short_description"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="@string/full_description"
                 android:textColorHint="@color/white"
-                app:counterEnabled="true"
-                app:counterMaxLength="100"
-                app:counterOverflowTextAppearance="@style/counterOverride"
-                app:counterTextAppearance="@style/counterText">
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_advertisement_short_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/marging_text_input_edit_text"
-                    android:layout_marginRight="@dimen/marging_text_input_edit_text"
-                    android:background="@drawable/divider"
-                    android:gravity="center_horizontal"
-                    android:hint="@string/short_description"
-                    android:maxLength="100"
-                    android:paddingTop="@dimen/pading_text_input_edit_text"
-                    android:textColorHint="@color/white" />
-            </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/edit_advertisement_full_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/text_block_three"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/divider"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/text_block_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_advertisement_full_description"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="@string/account"
                 android:textColorHint="@color/white"
-                app:counterEnabled="true"
-                app:counterMaxLength="1500"
-                app:counterOverflowTextAppearance="@style/counterOverride"
-                app:counterTextAppearance="@style/counterText">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_advertisement_full_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/marging_text_input_edit_text"
-                    android:layout_marginRight="@dimen/marging_text_input_edit_text"
-                    android:background="@drawable/divider"
-                    android:gravity="center_horizontal"
-                    android:hint="@string/full_description"
-                    android:maxLength="1500"
-                    android:paddingTop="@dimen/pading_text_input_edit_text"
-                    android:textColorHint="@color/white" />
-            </android.support.design.widget.TextInputLayout>
+                android:textSize="15sp"
+                android:textStyle="bold" />
 
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
+                android:id="@+id/edit_advertisement_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColorHint="@color/white"
-                app:counterEnabled="true"
-                app:counterMaxLength="20"
-                app:counterOverflowTextAppearance="@style/counterOverride"
-                app:counterTextAppearance="@style/counterText">
+                android:layout_below="@+id/text_block_four"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/divider"
+                android:inputType="number"
+                android:maxLength="20"
+                android:singleLine="true" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_advertisement_account"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/marging_text_input_edit_text"
-                    android:layout_marginRight="@dimen/marging_text_input_edit_text"
-                    android:background="@drawable/divider"
-                    android:gravity="center_horizontal"
-                    android:hint="@string/account"
-                    android:inputType="number"
-                    android:maxLength="20"
-                    android:paddingTop="@dimen/pading_text_input_edit_text"
-                    android:singleLine="true"
-                    android:textColorHint="@color/white" />
-            </android.support.design.widget.TextInputLayout>
 
             <TextView
                 android:id="@+id/edit_advertisement_day"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/marging_text_input_edit_text"
-                android:layout_marginRight="@dimen/marging_text_input_edit_text"
-                android:layout_marginTop="10dp"
+                android:layout_height="55dp"
+                android:layout_below="@+id/edit_advertisement_account"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/divider"
                 android:clickable="true"
-                android:gravity="center"
                 android:hint="@string/day_of_fee"
                 android:maxLength="9"
-                android:paddingTop="@dimen/pading_text_input_edit_text"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
-                android:textSize="17sp" />
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/text_block_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edit_advertisement_day"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="@string/money"
+                android:textColorHint="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
 
             <LinearLayout
+                android:id="@+id/need_money"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/marging_text_input_edit_text"
-                android:layout_marginRight="@dimen/marging_text_input_edit_text"
-                android:layout_marginTop="20dp"
+                android:layout_below="@+id/text_block_five"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
                 android:background="@drawable/divider"
                 android:orientation="horizontal">
 
-                <android.support.design.widget.TextInputLayout
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_advertisement_money"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:background="@null"
+                    android:digits="0123456789"
+                    android:inputType="number"
+                    android:maxLength="7"
+                    android:singleLine="true"
                     android:textColorHint="@color/white"
-                    app:counterOverflowTextAppearance="@style/counterOverride"
-                    app:counterTextAppearance="@style/counterText">
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
-                    <android.support.design.widget.TextInputEditText
-                        android:id="@+id/edit_advertisement_money"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:digits="0123456789"
-                        android:gravity="center"
-                        android:hint="@string/money"
-                        android:inputType="number"
-                        android:maxLength="7"
-                        android:paddingTop="@dimen/pading_text_input_edit_text"
-                        android:singleLine="true" />
-                </android.support.design.widget.TextInputLayout>
 
                 <Spinner
                     android:id="@+id/edit_advertisement_spinnerstate"
@@ -190,20 +218,16 @@
                 android:id="@+id/edit_advertisement_edit_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/need_money"
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="@dimen/marging_text_input_edit_text"
-                android:background="@drawable/button"
+                android:background="@drawable/edit_button"
                 android:text="@string/edit_advertisement"
                 android:textColor="@color/white" />
-        </LinearLayout>
+        </RelativeLayout>
     </ScrollView>
-
-    <FrameLayout
-        android:id="@+id/activity_edit_advertisement_container"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
 </LinearLayout>
 

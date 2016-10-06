@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     private Preferences preferences;
     private Context context;
     private InternetCheck internet;
-    private RelativeLayout relativeLayout;
+    private LinearLayout linearLayout;
     private GetCurensyYear year;
     private FiledTest test;
     private MaskedEditText phoneNumber;
@@ -107,7 +108,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         phoneNumber = (MaskedEditText) root.findViewById(R.id.post_advertisement_phone_number);
         region.addTextChangedListener(this);
         city.addTextChangedListener(this);
-        relativeLayout = (RelativeLayout) root.findViewById(R.id.post_advertisemet_relative_layout);
+        linearLayout = (LinearLayout) root.findViewById(R.id.post_advertisemet_relative_layout);
         next.setOnClickListener(this);
         dataPicker();
         regionAdapter = new ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, arrayRegion);
@@ -222,7 +223,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
                 @Override
                 public void failure(RetrofitError error) {
                     if (error.getCause() instanceof UnknownHostException) {
-                        internet = new InternetCheck(context, relativeLayout);
+                        internet = new InternetCheck(context, linearLayout);
                         internet.execute();
                     }
                 }

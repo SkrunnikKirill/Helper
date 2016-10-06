@@ -13,5 +13,13 @@
     <color name="white_grey">#FFF5F5F5</color>
     <color name="select_color">#c8455a64</color>
     <color name="drawer_item_text">#A1A1A1</color>
-    <color name="drawer_background">#252525</color>
+    <color name="drawer_background">#483a49</color>
+    <color name="yellow_icon_drawer">#fbc02d</color>
+    <color name="yellow_text">#fbc02d</color>
+    <color name="accent_translucent">#50fbc02d</color>
+    <color name="selected_color">#5f5360</color>
+    <color name="black_drawer">#b91c1c1c</color>
+    <color name="black_drawer_drawer">#b9000000</color>
+    <color name="drawer_background_toolbar">#1a0d1a</color>
+
 </resources>

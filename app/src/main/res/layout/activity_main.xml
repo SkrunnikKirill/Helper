@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background"
-                tools:context="com.example.alex.helppeopletogether.MainActivity"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="com.example.alex.helppeopletogether.MainActivity">
 
     <RelativeLayout
         android:id="@+id/first_relative_layout"
-        android:layout_width="@dimen/layout_width"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/margin_top_button">
+        android:layout_marginTop="@dimen/margin_top_button"
+        android:padding="@dimen/padding_login">
 
         <Button
             android:id="@+id/sign_in_button"
@@ -24,7 +24,7 @@
             android:background="@drawable/selector"
             android:text="@string/sign_in"
             android:textColor="@color/white"
-            />
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/sign_up_button"
@@ -36,7 +36,8 @@
             android:layout_marginTop="@dimen/margin_between_buttons"
             android:background="@drawable/selector"
             android:text="@string/sign_up"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="16sp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -54,7 +55,7 @@
             android:layout_centerHorizontal="true"
             android:text="Sign in with"
             android:textColor="@color/white"
-            android:textSize="15dp"/>
+            android:textSize="16dp" />
 
         <RelativeLayout
             android:id="@+id/fragment_login_relativeLayout_second"
@@ -70,7 +71,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginRight="30dp"
-                android:background="@drawable/vk_button_selector"/>
+                android:background="@drawable/vk_button_selector" />
 
             <ImageButton
                 android:id="@+id/button_facebook"
@@ -80,7 +81,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_toEndOf="@+id/button_google_plus"
                 android:layout_toRightOf="@+id/button_google_plus"
-                android:background="@drawable/facebook_button_selector"/>
+                android:background="@drawable/facebook_button_selector" />
 
             <ImageButton
                 android:id="@+id/button_google_plus"
@@ -91,7 +92,7 @@
                 android:layout_marginRight="35dp"
                 android:layout_toEndOf="@+id/button_vk"
                 android:layout_toRightOf="@+id/button_vk"
-                android:background="@drawable/google_plus_button_selector"/>
+                android:background="@drawable/google_plus_button_selector" />
         </RelativeLayout>
 
 

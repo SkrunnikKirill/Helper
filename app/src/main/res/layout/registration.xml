@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/registration_first_relative_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/regbackground"
-                android:orientation="horizontal"
-                android:padding="@dimen/padding_reg">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/registration_first_relative_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/regbackground"
+    android:orientation="horizontal"
+    android:padding="@dimen/padding_reg">
 
     <RelativeLayout
         android:id="@+id/registration_second_relative_layout"
@@ -21,7 +21,7 @@
             android:layout_centerHorizontal="true"
             android:clickable="true"
             android:padding="4dp"
-            android:src="@drawable/foto"/>
+            android:src="@drawable/foto" />
 
         <LinearLayout
             android:id="@+id/registration_first_linear_layout"
@@ -36,7 +36,7 @@
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_weight="1"
-                android:src="@drawable/full_name_boy"/>
+                android:src="@drawable/full_name_boy" />
 
 
             <EditText
@@ -52,7 +52,7 @@
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="16sp"
-                tools:ignore="RtlHardcoded"/>
+                tools:ignore="RtlHardcoded" />
 
 
         </LinearLayout>
@@ -71,7 +71,7 @@
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_weight="1"
-                android:src="@drawable/full_name_boy"/>
+                android:src="@drawable/full_name_boy" />
 
 
             <EditText
@@ -89,7 +89,7 @@
                 android:textColorHint="@color/white"
                 android:textSize="16sp"
                 android:textStyle="normal"
-                tools:ignore="Deprecated,RtlHardcoded"/>
+                tools:ignore="Deprecated,RtlHardcoded" />
 
 
         </LinearLayout>
@@ -109,7 +109,7 @@
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_weight="1"
-                android:src="@drawable/email"/>
+                android:src="@drawable/email" />
 
 
             <EditText
@@ -128,7 +128,7 @@
                 android:textColorHint="@color/white"
                 android:textSize="16sp"
                 android:textStyle="normal"
-                tools:ignore="Deprecated,RtlHardcoded"/>
+                tools:ignore="Deprecated,RtlHardcoded" />
 
         </LinearLayout>
 
@@ -146,7 +146,7 @@
                 android:layout_width="33dp"
                 android:layout_height="33dp"
                 android:layout_weight="1"
-                android:src="@drawable/password"/>
+                android:src="@drawable/password" />
 
 
             <EditText
@@ -165,7 +165,7 @@
                 android:textColorHint="@color/white"
                 android:textSize="16sp"
                 android:textStyle="normal"
-                tools:ignore="Deprecated,RtlHardcoded"/>
+                tools:ignore="Deprecated,RtlHardcoded" />
 
 
         </LinearLayout>
@@ -180,7 +180,8 @@
             android:layout_marginTop="@dimen/button_reg_marginTop"
             android:background="@drawable/button_sign_in"
             android:text="@string/next"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
 
     </RelativeLayout>

@@ -1,125 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/post_advertisemet_relative_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:background="@color/blue"
-                android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/post_advertisemet_relative_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/drawer_gradient"
+    android:orientation="vertical">
 
-
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/blue"
-            android:orientation="vertical"
-            tools:context="com.wdullaer.materialdatetimepicker.PostAdvertisement">
-
-            <TextView
-                android:id="@+id/post_advertisement_date_of_birth"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/post_advertisement_therd_name"
-                android:background="@drawable/divider"
-                android:clickable="true"
-                android:hint="@string/day_of_birthday"
-                android:padding="7dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="20dp" />
-
-
-
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textColorHint="@color/white">
-
-                <AutoCompleteTextView
-                    android:id="@+id/post_advertisement_region"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/post_advertisement_date_of_birth"
-                    android:background="@drawable/divider"
-                    android:completionThreshold="2"
-                    android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
-                ЯЧСМИТЬБЮ"
-                    android:hint="@string/region"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
-                    android:textColor="@color/white" />
-            </android.support.design.widget.TextInputLayout>
-
-
-
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:textColorHint="@color/white">
-
-                <AutoCompleteTextView
-                    android:id="@+id/post_advertisement_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/post_advertisement_region"
-                    android:background="@drawable/divider"
-                    android:completionThreshold="2"
-                    android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
-                ЯЧСМИТЬБЮ"
-                    android:hint="@string/city"
-                    android:imeOptions="actionNext"
-                    android:singleLine="true"
-                    android:textColor="@color/white" />
-            </android.support.design.widget.TextInputLayout>
-
-
-            <com.vicmikhailau.maskededittext.MaskedEditText
-                android:id="@+id/post_advertisement_phone_number"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/post_advertisement_city"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/divider"
-                android:hint="@string/phone_number"
-                android:inputType="phone"
-                android:maxLength="19"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                app:mask="+38 (0**) *** **-**"/>
-
-
-
-        </LinearLayout>
-    </ScrollView>
-
-
-    <Button
-        android:id="@+id/post_advertisement_next"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/button"
-        android:text="@string/next"
-        android:textColor="@color/white" />
+        android:layout_marginTop="30dp"
+        android:background="@drawable/drawer_gradient"
+        android:orientation="vertical"
+        tools:context="com.wdullaer.materialdatetimepicker.PostAdvertisement">
+
+        <TextView
+            android:id="@+id/name_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/day_of_birthday"
+            android:textColorHint="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/post_advertisement_date_of_birth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_date"
+            android:background="@drawable/divider"
+            android:clickable="true"
+            android:padding="7dp"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:textSize="20dp" />
 
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/name_obl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_advertisement_date_of_birth"
+            android:layout_marginTop="@dimen/text_view_marTop"
+            android:hint="@string/region"
+            android:textColorHint="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
+        <AutoCompleteTextView
+            android:id="@+id/post_advertisement_region"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_obl"
+            android:layout_marginTop="@dimen/auto_text_view_marTop"
+            android:background="@drawable/divider"
+            android:completionThreshold="2"
+            android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
+                ЯЧСМИТЬБЮ"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:id="@+id/name_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_advertisement_region"
+            android:layout_marginTop="@dimen/text_view_marTop"
+            android:hint="@string/city"
+            android:textColorHint="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
+        <AutoCompleteTextView
+            android:id="@+id/post_advertisement_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_city"
+            android:layout_marginTop="@dimen/auto_text_view_marTop"
+            android:background="@drawable/divider"
+            android:completionThreshold="2"
+            android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
+                ЯЧСМИТЬБЮ"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
+            android:textColor="@color/white" />
+
+
+        <TextView
+            android:id="@+id/name_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/post_advertisement_city"
+            android:layout_marginTop="@dimen/text_view_marTop"
+            android:hint="Мобильный номер"
+            android:textColorHint="@color/white"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+
+        <com.vicmikhailau.maskededittext.MaskedEditText
+            android:id="@+id/post_advertisement_phone_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/name_number"
+            android:layout_marginTop="@dimen/auto_text_view_marTop"
+            android:background="@drawable/divider"
+            android:hint="@string/phone_number"
+            android:inputType="phone"
+            android:maxLength="19"
+            android:singleLine="true"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:mask="+38 (0**) *** **-**" />
+
+        <Button
+            android:id="@+id/post_advertisement_next"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/btn_mar_bot"
+            android:background="@drawable/edit_button"
+            android:text="@string/next"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+
+</LinearLayout>

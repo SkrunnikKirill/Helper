@@ -74,14 +74,10 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     private Preferences preferences;
     private FiledTest filedTest;
     private LinearLayout linearLayout;
-
-
     private TextView day;
-
     private EditText theme, shortDescription, fullDescription, money, account;
     private Button locate;
-    private ImageView down;
-    private CircleImageView imageAdvertisement;
+    private ImageView down, imageAdvertisement;
     private LinkedHashMap<String, String> dataAdvertisement;
 
     @Override
@@ -93,7 +89,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         year = new GetCurensyYear();
         preferences = new Preferences(DescriptionProblem.this);
         userid = preferences.loadText(PREFERENCES_ID);
-        imageAdvertisement = (CircleImageView) findViewById(R.id.description_problem_image);
+        imageAdvertisement = (ImageView) findViewById(R.id.description_problem_image);
         theme = (EditText) findViewById(R.id.description_problem_theme);
         shortDescription = (EditText) findViewById(R.id.description_problem_short_description);
         fullDescription = (EditText) findViewById(R.id.description_problem_full_description);
