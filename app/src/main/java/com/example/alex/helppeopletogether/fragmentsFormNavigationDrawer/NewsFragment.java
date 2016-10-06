@@ -23,11 +23,10 @@ import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.SupportClasses.ProDialog;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
-import com.vk.sdk.util.VKUtil;
 
+import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -134,6 +133,11 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     internet.execute();
                     proDialog.connectionProgressBar();
                 }
+                if (error.getCause() instanceof ConnectException) {
+                    internet = new InternetCheck(context, swipeRefreshLayout);
+                    internet.execute();
+                    proDialog.connectionProgressBar();
+                }
 
             }
         });
@@ -184,6 +188,12 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
             @Override
             public void failure(RetrofitError error) {
                 if (error.getCause() instanceof UnknownHostException) {
+                    internet = new InternetCheck(context, swipeRefreshLayout);
+                    internet.execute();
+                    proDialog.connectionProgressBar();
+                }
+
+                if (error.getCause() instanceof ConnectException) {
                     internet = new InternetCheck(context, swipeRefreshLayout);
                     internet.execute();
                     proDialog.connectionProgressBar();

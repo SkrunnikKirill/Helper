@@ -5,16 +5,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.ComentInformation;
-import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
 
 import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Alex on 26.07.2016.
@@ -59,14 +58,14 @@ public class ComentAdapter extends RecyclerView.Adapter<ComentAdapter.MyViewHold
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView userComent, fullName, commentTime;
-        ImageView foto;
+        CircleImageView foto;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             fullName = (TextView) itemView.findViewById(R.id.coment_adapter_full_name);
             userComent = (TextView) itemView.findViewById(R.id.coment_adapter_coment);
             commentTime = (TextView) itemView.findViewById(R.id.coment_adapter_time);
-            foto = (ImageView) itemView.findViewById(R.id.coment_adapter_foto);
+            foto = (CircleImageView) itemView.findViewById(R.id.coment_adapter_foto);
         }
     }
 

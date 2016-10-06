@@ -1,19 +1,25 @@
 package com.example.alex.helppeopletogether.Adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.CustomImageView;
 import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -50,6 +56,28 @@ public class CustomList extends ArrayAdapter<String> {
 
     }
 
+    public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = 12;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+
+        return output;
+    }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
@@ -61,7 +89,7 @@ public class CustomList extends ArrayAdapter<String> {
         // viewHolder.timeDate = (TextView) rowView.findViewById(R.id.date_text);
         viewHolder.date = (TextView) rowView.findViewById(R.id.detail_news_days_left);
         viewHolder.summa = (TextView) rowView.findViewById(R.id.detail_news_summa);
-        viewHolder.imageView = (ImageView) rowView.findViewById(R.id.login_cover_image);
+        viewHolder.imageView = (CustomImageView) rowView.findViewById(R.id.login_cover_image);
 
 
         if (idNews == null) {
@@ -71,10 +99,10 @@ public class CustomList extends ArrayAdapter<String> {
 
 //        viewHolder.timeDate.setText(datePublication.get(position));
         viewHolder.txtTitle.setText(shortDescription.get(position));
-        viewHolder.summa.setText("необходимо:  " + expected_amount.get(position));
+        viewHolder.summa.setText(expected_amount.get(position));
         viewHolder.date.setText("до:  " + finalDate.get(position));
 
-        Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 550).centerCrop().into(viewHolder.imageView);
+        Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 550).centerCrop().crossFade().into(viewHolder.imageView);
 
         if (likeNews.indexOf(idServerNews.get(position)) >= 0) {
             viewHolder.like.getText();
@@ -90,7 +118,7 @@ public class CustomList extends ArrayAdapter<String> {
                         viewHolder.like.setBackgroundResource(R.drawable.like);
                         likeNews.add(idServerNews.get(position));
                     } else {
-                        viewHolder.like.setBackgroundResource(R.drawable.nolike);
+                        viewHolder.like.setBackgroundResource(R.drawable.dislike);
                         likeNews.remove(likeNews.indexOf(idServerNews.get(position)));
 
                     }
@@ -144,7 +172,7 @@ public class CustomList extends ArrayAdapter<String> {
         TextView txtTitle;
         TextView date;
         TextView summa;
-        ImageView imageView;
+        CustomImageView imageView;
         ToggleButton like;
 
     }
