@@ -18,7 +18,6 @@ import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.Vk.VkArrayDates;
 import com.example.alex.helppeopletogether.Vk.VkPersonDates;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.NewsNavigationDrawer;
-import com.example.alex.helppeopletogether.registration.Agreement;
 import com.example.alex.helppeopletogether.registration.Login;
 import com.example.alex.helppeopletogether.registration.Registration;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
@@ -303,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     preferences.saveText(userId.toString(), PREFERENCES_ID);
                     preferences.saveText(fullName, PREFERENCES_NAME);
                     preferences.saveText(UserPhoto, PREFERENCES_FOTO);
-                    intentNextStep = new Intent(MainActivity.this, Agreement.class);
+                    intentNextStep = new Intent(MainActivity.this, NewsNavigationDrawer.class);
                     startActivity(intentNextStep);
                     overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
                 }
