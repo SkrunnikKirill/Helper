@@ -12,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -90,10 +89,9 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
         description.setText(nDescription);
         finalDate.setText("до:  " + nfinalDate);
         paymentAccount.setText("Расчетный счет:  " + nPaymentAccount);
-        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.detail_news_collapsing);
-        collapsingToolbar.setTitle("Запись");
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_36dp));
+        toolbar.setTitle("Запись");
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,9 +122,6 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
                         Toast.makeText(DetailNews.this, "Все ок", Toast.LENGTH_SHORT).show();
                         commentList.clear();
                         getComment();
-                        comentAdapter.notifyDataSetChanged();
-                        collapsingToolbar.setTitle("Запись");
-
                     } else if (registrationResponseFromServer.response == 2) {
                         Toast.makeText(DetailNews.this, "Данные не отправлены", Toast.LENGTH_SHORT).show();
                     }
@@ -149,9 +144,11 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
                     Toast.makeText(DetailNews.this, R.string.error_data_from_server, Toast.LENGTH_SHORT).show();
                 } else {
                     for (int i = comentInformations.size() - 1; i >= 0; i--) {
+
                         commentList.add(new ComentInformation(comentInformations.get(i).full_name,
                                 comentInformations.get(i).avatar, comentInformations.get(i).comment,
                                 comentInformations.get(i).created_at));
+                        recyclerView.setNestedScrollingEnabled(false);
                         recyclerView.setAdapter(comentAdapter);
                         recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     }

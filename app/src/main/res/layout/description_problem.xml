@@ -11,7 +11,7 @@
         android:id="@+id/description_problem_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/drawer_background"
+        android:background="@drawable/toolbar_gradient"
         android:subtitleTextColor="@color/white"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
@@ -36,7 +36,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <ImageView
+            <com.example.alex.helppeopletogether.SupportClasses.CustomImageView
                 android:id="@+id/description_problem_image"
                 android:layout_width="95dp"
                 android:layout_height="95dp"
@@ -65,9 +65,11 @@
                 android:layout_below="@+id/text_block_one"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/divider"
-                android:maxLength="50" />
+                android:maxLength="50"
+                android:padding="5dp"
+                android:singleLine="true"/>
 
             <TextView
                 android:id="@+id/text_block_two"
@@ -89,9 +91,11 @@
                 android:layout_below="@+id/text_block_two"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/divider"
-                android:maxLength="50" />
+                android:maxLength="50"
+                android:padding="5dp"
+                android:singleLine="true"/>
 
             <TextView
                 android:id="@+id/text_block_three"
@@ -113,8 +117,10 @@
                 android:layout_below="@id/text_block_three"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/divider" />
+                android:layout_marginTop="10dp"
+                android:background="@drawable/divider"
+                android:padding="5dp"
+                android:singleLine="true"/>
 
             <TextView
                 android:id="@+id/text_block_four"
@@ -136,25 +142,41 @@
                 android:layout_below="@+id/text_block_four"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/divider"
                 android:inputType="number"
                 android:maxLength="20"
+                android:padding="5dp"
                 android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/name_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/description_problem_account"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:hint="@string/day_of_fee"
+                android:maxLength="9"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
 
 
             <TextView
                 android:id="@+id/description_problem_day"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_below="@+id/description_problem_account"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name_date"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/divider"
                 android:clickable="true"
-                android:hint="@string/day_of_fee"
                 android:maxLength="9"
+                android:padding="5dp"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="15sp"
@@ -190,10 +212,12 @@
                     android:id="@+id/description_problem_money"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:digits="0123456789"
                     android:inputType="number"
                     android:maxLength="7"
+                    android:padding="5dp"
                     android:singleLine="true"
                     android:textColorHint="@color/white"
                     android:textSize="15sp"
@@ -204,7 +228,7 @@
                     android:id="@+id/spinnerstate"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="3"
+                    android:layout_weight="4"
                     android:popupBackground="@drawable/spinner_background" />
             </LinearLayout>
 

@@ -28,6 +28,7 @@ public class ComentAdapter extends RecyclerView.Adapter<ComentAdapter.MyViewHold
         this.coment = coment;
     }
 
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.coment_adapter, parent, false);
@@ -46,6 +47,7 @@ public class ComentAdapter extends RecyclerView.Adapter<ComentAdapter.MyViewHold
         Glide.with(context).load(comentInformation.avatar).into(holder.foto);
     }
 
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -55,6 +57,7 @@ public class ComentAdapter extends RecyclerView.Adapter<ComentAdapter.MyViewHold
     public int getItemCount() {
         return coment.size();
     }
+
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView userComent, fullName, commentTime;

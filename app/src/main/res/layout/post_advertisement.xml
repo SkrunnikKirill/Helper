@@ -15,9 +15,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/drawer_gradient"
         android:orientation="vertical"
-        tools:context="com.wdullaer.materialdatetimepicker.PostAdvertisement">
+        tools:context="com.wdullaer.materialdatetimepicker.PostAdvertisement"
+        tools:ignore="UselessParent">
 
         <TextView
             android:id="@+id/name_date"
@@ -38,7 +38,8 @@
             android:padding="7dp"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            tools:ignore="SpUsage"/>
 
 
         <TextView
@@ -64,7 +65,6 @@
             android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
                 ЯЧСМИТЬБЮ"
             android:imeOptions="actionNext"
-            android:singleLine="true"
             android:textColor="@color/white" />
 
 
@@ -91,7 +91,6 @@
             android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
                 ЯЧСМИТЬБЮ"
             android:imeOptions="actionNext"
-            android:singleLine="true"
             android:textColor="@color/white" />
 
 
@@ -104,7 +103,8 @@
             android:hint="Мобильный номер"
             android:textColorHint="@color/white"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:ignore="HardcodedText"/>
 
 
         <com.vicmikhailau.maskededittext.MaskedEditText
@@ -117,10 +117,10 @@
             android:hint="@string/phone_number"
             android:inputType="phone"
             android:maxLength="19"
-            android:singleLine="true"
+            android:maxLines="1"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            app:mask="+38 (0**) *** **-**" />
+            app:mask="+38 (0**) *** **-**"/>
 
         <Button
             android:id="@+id/post_advertisement_next"

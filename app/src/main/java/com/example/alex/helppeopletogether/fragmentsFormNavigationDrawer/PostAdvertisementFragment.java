@@ -16,9 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -115,8 +113,8 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         cityAdapter = new ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, arrayCity);
 
 
-        region.setDropDownBackgroundResource(R.color.blue);
-        city.setDropDownBackgroundResource(R.color.blue);
+        region.setDropDownBackgroundResource(R.color.purple);
+        city.setDropDownBackgroundResource(R.color.purple);
         region.setAdapter(regionAdapter);
         city.setAdapter(cityAdapter);
 
@@ -156,7 +154,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)
                 );
-                birthDay.setAccentColor(Color.parseColor("#03a9f4"));
+                birthDay.setAccentColor(Color.parseColor("#461149"));
                 birthDay.setThemeDark(true);
                 birthDay.dismissOnPause(true);
                 birthDay.setYearRange(nextYear, startYear);

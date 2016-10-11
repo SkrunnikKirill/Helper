@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,7 +16,6 @@ import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer.EditAdvertisement;
-import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.ArrayList;
 
@@ -65,7 +65,7 @@ public class AdvertisementAdapter extends ArrayAdapter<String> implements Consta
             //viewHolder.timeDate = (TextView) rowView.findViewById(R.id.advertisement_adapter_date_text);
             viewHolder.date = (TextView) rowView.findViewById(R.id.advertisement_adapter_days_left);
             viewHolder.summa = (TextView) rowView.findViewById(R.id.advertisement_adapter_summa);
-            viewHolder.imageView = (RoundedImageView) rowView.findViewById(R.id.advertisement_adapter_image);
+            viewHolder.imageView = (ImageView) rowView.findViewById(R.id.advertisement_adapter_image);
             rowView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) rowView.getTag();
@@ -73,7 +73,7 @@ public class AdvertisementAdapter extends ArrayAdapter<String> implements Consta
 
         //viewHolder.timeDate.setText(datePublication.get(position));
         viewHolder.txtTitle.setText(shortDescription.get(position));
-        viewHolder.summa.setText("необходимо:  " + expected_amount.get(position));
+        viewHolder.summa.setText("Необходимо:  " + expected_amount.get(position));
         viewHolder.date.setText("до:  " + finalDate.get(position));
         Dimensions dimensions = new Dimensions();
         Glide.with(context).load(image.get(position)).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(getContext()), 550).centerCrop().into(viewHolder.imageView);
@@ -95,7 +95,7 @@ public class AdvertisementAdapter extends ArrayAdapter<String> implements Consta
         TextView timeDate;
         TextView date;
         TextView summa;
-        RoundedImageView imageView;
+        ImageView imageView;
         Button edit;
 
     }

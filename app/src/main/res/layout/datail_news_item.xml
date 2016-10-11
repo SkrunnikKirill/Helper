@@ -17,7 +17,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/background_drawer"
+        android:src="@drawable/background"
         />
 
 
@@ -45,16 +45,6 @@
             android:textColor="@color/yellow_text"
             android:textSize="17dp"/>
 
-        <TextView
-            style="@android:style/TextAppearance.Holo.Medium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/detail_news_summa"
-            android:layout_marginLeft="10dp"
-            android:text="Необходимо"
-            android:textColor="@color/yellow_text"
-            android:textSize="17dp"
-            />
 
         <ToggleButton
             android:id="@+id/datail_news_like"

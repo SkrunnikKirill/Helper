@@ -11,7 +11,7 @@
         android:id="@+id/edit_advertisement_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/drawer_background"
+        android:background="@drawable/toolbar_gradient"
         android:subtitleTextColor="@color/white"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 

@@ -3,18 +3,13 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -33,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
+import com.example.alex.helppeopletogether.SupportClasses.CustomImageView;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
@@ -43,16 +39,11 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Calendar;
 import java.util.LinkedHashMap;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -77,7 +68,8 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     private TextView day;
     private EditText theme, shortDescription, fullDescription, money, account;
     private Button locate;
-    private ImageView down, imageAdvertisement;
+    private ImageView down;
+    private CustomImageView imageAdvertisement;
     private LinkedHashMap<String, String> dataAdvertisement;
 
     @Override
@@ -89,7 +81,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         year = new GetCurensyYear();
         preferences = new Preferences(DescriptionProblem.this);
         userid = preferences.loadText(PREFERENCES_ID);
-        imageAdvertisement = (ImageView) findViewById(R.id.description_problem_image);
+        imageAdvertisement = (CustomImageView) findViewById(R.id.description_problem_image);
         theme = (EditText) findViewById(R.id.description_problem_theme);
         shortDescription = (EditText) findViewById(R.id.description_problem_short_description);
         fullDescription = (EditText) findViewById(R.id.description_problem_full_description);
@@ -103,7 +95,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         spiner();
         Toolbar toolbar = (Toolbar) findViewById(R.id.description_problem_toolbar);
         toolbar.setTitle(R.string.information_advertisement);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_36dp));
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +154,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
                         calendar.get(Calendar.DAY_OF_MONTH)
                 );
                 datePickerDialog.setMinDate(calendar);
-                datePickerDialog.setAccentColor(Color.parseColor("#03a9f4"));
+                datePickerDialog.setAccentColor(Color.parseColor("#483a49"));
                 datePickerDialog.setThemeDark(true);
                 datePickerDialog.dismissOnPause(true);
                 int startYear = year.getCurrentYear();

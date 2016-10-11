@@ -110,7 +110,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
         dataPicker();
         Toolbar toolbar = (Toolbar) findViewById(R.id.edit_advertisement_toolbar);
         toolbar.setTitle(R.string.edit_advertisement);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_36dp));
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

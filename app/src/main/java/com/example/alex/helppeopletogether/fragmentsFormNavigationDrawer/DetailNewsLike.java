@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -22,7 +21,6 @@ import com.example.alex.helppeopletogether.SupportClasses.ComentInformation;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
-import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
 import java.util.ArrayList;
@@ -54,7 +52,6 @@ public class DetailNewsLike extends Activity implements Constant {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_deteil_news_like);
         Intent intent = getIntent();
         nIdNews = intent.getStringExtra("idNews");
@@ -67,30 +64,30 @@ public class DetailNewsLike extends Activity implements Constant {
         nPaymentAccount = intent.getStringExtra("paymentAccount");
         commentList = new ArrayList<>();
         comentAdapter = new ComentAdapter(context, commentList);
-        recyclerView = (RecyclerView) findViewById(R.id.detail_news_like_list);
+        //recyclerView = (RecyclerView) findViewById(R.id.detail_news_like_list);
         getComment();
         comentData = new HashMap<>();
         preferences = new Preferences(context);
         userId = preferences.loadText(PREFERENCES_ID);
         image = (ImageView) findViewById(R.id.detail_news_like_image);
-//        enter.setOnClickListener(this);
-//        shortDescription = (TextView) findViewById(R.id.detail_news_theme);
-//        theme = (TextView) findViewById(R.id.detail_news_theme);
-//        comment = (EditText) findViewById(R.id.detail_news_coment);
-        expectedAmount = (TextView) findViewById(R.id.detail_news_like_summa);
+        //  enter.setOnClickListener(this);
+        shortDescription = (TextView) findViewById(R.id.detail_news_like_short_description);
+        theme = (TextView) findViewById(R.id.detail_news_theme);
+        comment = (EditText) findViewById(R.id.detail_news_coment);
         finalDate = (TextView) findViewById(R.id.detail_news_like_days_left);
         description = (TextView) findViewById(R.id.detail_news_like_full_description);
         paymentAccount = (TextView) findViewById(R.id.detail_news_like_expected_amount);
+        expectedAmount = (TextView) findViewById(R.id.detail_news_like_summa);
         dimensions = new Dimensions();
         Glide.with(getApplicationContext()).load(nImage).placeholder(R.drawable.no_donload_image).error(R.drawable.nointernet).override(dimensions.getWidth(DetailNewsLike.this), 550).centerCrop().into(image);
-        expectedAmount.setText("необходимо:  " + nexpectedAmount);
+        expectedAmount.setText("Необходимо: " + nexpectedAmount);
         description.setText(nDescription);
         finalDate.setText("до:  " + nfinalDate);
+        shortDescription.setText(nshortDescription);
         paymentAccount.setText("Расчетный счет:  " + nPaymentAccount);
-        collapsingToolbar = (CollapsingToolbarLayout) findViewById(R.id.detail_news_like_collapsing);
-        collapsingToolbar.setTitle("Запись");
         toolbar = (Toolbar) findViewById(R.id.detail_news_like_toolbar);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_white_36dp));
+        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back));
+        toolbar.setTitle("Новости");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,8 +115,8 @@ public class DetailNewsLike extends Activity implements Constant {
                         commentList.add(new ComentInformation(comentInformations.get(i).full_name,
                                 comentInformations.get(i).avatar, comentInformations.get(i).comment,
                                 comentInformations.get(i).created_at));
-                        recyclerView.setAdapter(comentAdapter);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+//                        recyclerView.setAdapter(comentAdapter);
+//                        recyclerView.setLayoutManager(new LinearLayoutManager(context));
                     }
                 }
 
