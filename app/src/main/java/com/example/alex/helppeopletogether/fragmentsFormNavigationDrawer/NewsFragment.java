@@ -145,6 +145,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
     public void adapter() {
+
         adapter = new CustomList(context, shortDescription, image, datePublication, expectedAmount, finalDate, likeNews, idServerNews, idNews);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 

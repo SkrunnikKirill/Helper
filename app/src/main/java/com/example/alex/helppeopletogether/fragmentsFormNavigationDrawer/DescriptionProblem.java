@@ -71,6 +71,9 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     private ImageView down;
     private CustomImageView imageAdvertisement;
     private LinkedHashMap<String, String> dataAdvertisement;
+    private File file;
+    private TypedFile image;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +215,15 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // handle result of pick image chooser
         if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                selectedImageUri = data.getData();
+                file = new File(getPath(selectedImageUri));
+                image = new TypedFile("image/*", file);
+            } else {
+                selectedImageUri = getPickImageResultUri(data);
+                file = new File(selectedImageUri.getPath());
+                image = new TypedFile("image/*", file);
+            }
             Uri imageUri = CropImage.getPickImageResultUri(this, data);
             getLink(data);
             // For API >= 23 we need to check specifically that we have permissions to read external storage.
@@ -286,8 +298,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             dataAdvertisement.put("final_date", String.valueOf(day.getText()));
             dataAdvertisement.put("payment_account", String.valueOf(account.getText()));
             dataAdvertisement.put("user_id", userid);
-            File file = new File(getPath(selectedImageUri));
-            TypedFile image = new TypedFile("image/*", file);
+
 
             Retrofit.sendAdvertisement(dataAdvertisement, image, new Callback<RegistrationResponseFromServer>() {
                 @Override
@@ -321,6 +332,24 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         String finalDay = dayOfMonth + "/" + (++monthOfYear) + "/" + year;
 
         day.setText(finalDay);
+    }
+
+    public Uri getPickImageResultUri(Intent data) {
+        boolean isCamera = true;
+        if (data != null && data.getData() != null) {
+            String action = data.getAction();
+            isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+        }
+        return isCamera ? getCaptureImageOutputUri() : data.getData();
+    }
+
+    private Uri getCaptureImageOutputUri() {
+        Uri outputFileUri = null;
+        File getImage = getExternalCacheDir();
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "pickImageResult.jpeg"));
+        }
+        return outputFileUri;
     }
 
     public class MyAdapter extends ArrayAdapter<String> {

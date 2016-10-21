@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
+import com.example.alex.helppeopletogether.SupportClasses.MyToast;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.Vk.VkArrayDates;
 import com.example.alex.helppeopletogether.Vk.VkPersonDates;
@@ -30,6 +32,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
+import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -95,10 +98,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         vk = (ImageButton) findViewById(R.id.button_vk);
         facebook = (ImageButton) findViewById(R.id.button_facebook);
         googlePlus = (ImageButton) findViewById(R.id.button_google_plus);
+        context = getApplicationContext();
         loginGoogle();
         FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         loginManager = LoginManager.getInstance();
-        context = getApplicationContext();
         preferences = new Preferences(MainActivity.this);
         callbackManager = CallbackManager.Factory.create();
         signIn.setOnClickListener(this);
@@ -106,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         vk.setOnClickListener(this);
         facebook.setOnClickListener(this);
         googlePlus.setOnClickListener(this);
+
 
 
     }
@@ -149,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onError(VKError error) {
 
-                Toast.makeText(MainActivity.this, R.string.do_not_registration_from_vk, Toast.LENGTH_LONG).show();
+
             }
         })) {
             callbackManager.onActivityResult(requestCode, resultCode, data);
@@ -259,7 +264,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         if (exception instanceof FacebookAuthorizationException) {
                             if (AccessToken.getCurrentAccessToken() != null) {
                                 LoginManager.getInstance().logOut();
+
                             }
+                            Log.d("Exception", exception.getLocalizedMessage());
+                            MyToast.info(context, context.getString(R.string.check_internet_connection));
                         }
                     }
 
@@ -337,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             googleSocialName = "Google";
             socialNetworksRegistration(googleFirstName, googleSecondName, googleSocialName, googleId, UserPhoto);
         } else {
-            Toast.makeText(MainActivity.this, R.string.no_internet_connection, Toast.LENGTH_SHORT).show();
+            MyToast.info(context, context.getString(R.string.check_internet_connection));
         }
     }
 
@@ -411,6 +419,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.button_facebook:
+
+
                 loginFacebook();
                 break;
 

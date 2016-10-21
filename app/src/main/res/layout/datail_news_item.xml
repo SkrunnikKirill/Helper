@@ -54,8 +54,9 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/dislike"
+            android:background="@drawable/selector_toggle_button"
             android:focusable="false"
+            android:focusableInTouchMode="false"
             android:textOff=""
             android:textOn=""/>
     </RelativeLayout>

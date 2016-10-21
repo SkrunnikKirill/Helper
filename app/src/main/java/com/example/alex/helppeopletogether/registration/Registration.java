@@ -47,7 +47,7 @@ public class Registration extends Activity implements View.OnClickListener, Cons
     private Integer responseFromServiseRegistrationId, responseFromServiseRegistration;
     private String responseFromServiseFullName, responseFromServiseImage, selectedImagePath, regularExprensionsEmail;
     private Intent intent;
-    private Uri selectedImageUri, imageUri;
+    private Uri selectedImageUri, mCropImageUri, selectedImageUri1;
     private RelativeLayout relativeLayoutRegistrationSnackBar;
     private Preferences preferences;
     private FiledTest test;
@@ -128,17 +128,32 @@ public class Registration extends Activity implements View.OnClickListener, Cons
         }
     }
 
+
     @Override
     @SuppressLint("NewApi")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        // Bitmap bitmap = ((BitmapDrawable)face.getDrawable()).getBitmap();
+
+
+
         // handle result of pick image chooser
         if (requestCode == CropImage.PICK_IMAGE_CHOOSER_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                selectedImageUri = data.getData();
+                file = new File(getPath(selectedImageUri));
+                imageFace = new TypedFile("image/*", file);
+            } else {
+                selectedImageUri = getPickImageResultUri(data);
+                file = new File(selectedImageUri.getPath());
+                imageFace = new TypedFile("image/*", file);
+            }
             Uri imageUri = CropImage.getPickImageResultUri(this, data);
-            getLink(data);
+
             // For API >= 23 we need to check specifically that we have permissions to read external storage.
             if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
                 // request permissions and handle the result in onRequestPermissionsResult()
-                imageUri = imageUri;
+                mCropImageUri = imageUri;
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
             } else {
                 // no permissions required or already grunted, can start crop image activity
@@ -146,12 +161,12 @@ public class Registration extends Activity implements View.OnClickListener, Cons
                 startCropImageActivity(imageUri);
             }
         }
-
         // handle result of CropImageActivity
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 face.setImageURI(result.getUri());
+                //selectedImageUri = result.getUri();
                 Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
@@ -161,9 +176,9 @@ public class Registration extends Activity implements View.OnClickListener, Cons
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        if (selectedImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (mCropImageUri != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // required permissions granted, start crop image activity
-            startCropImageActivity(selectedImageUri);
+            startCropImageActivity(mCropImageUri);
         } else {
             Toast.makeText(this, "Cancelling, required permissions are not granted", Toast.LENGTH_LONG).show();
         }
@@ -179,9 +194,7 @@ public class Registration extends Activity implements View.OnClickListener, Cons
                 .start(this);
     }
 
-    private void getLink(Intent data) {
-        selectedImageUri = data.getData();
-    }
+
 
 
     public String getPath(Uri uri) {
@@ -196,15 +209,15 @@ public class Registration extends Activity implements View.OnClickListener, Cons
     }
 
 
+
     public void sendRegistrationInformationToServer() {
         data = new HashMap<>();
-        if (firstName.getText().toString().length() > 2 && secondName.getText().toString().length() > 2 && password.getText().toString().length() > 6 && selectedImageUri != null && resultRegularExprensionsEmail(email) != false) {
-            file = new File(getPath(selectedImageUri));
-            imageFace = new TypedFile("image/*", file);
-            data.put("first_name", String.valueOf(firstName.getText()));
-            data.put("second_name", String.valueOf(secondName.getText()));
-            data.put("email", String.valueOf(email.getText()));
-            data.put("password", String.valueOf(password.getText()));
+        if (firstName.getText().toString().length() > 2 && secondName.getText().toString().length() > 2 && password.getText().toString().length() > 6 && resultRegularExprensionsEmail(email) != false) {
+
+            data.put("first_name", firstName.getText().toString());
+            data.put("second_name", secondName.getText().toString());
+            data.put("email", email.getText().toString());
+            data.put("password", password.getText().toString());
 
 
             Retrofit.sendRegistrationData(data, imageFace, new Callback<RegistrationResponseFromServer>() {
@@ -251,6 +264,24 @@ public class Registration extends Activity implements View.OnClickListener, Cons
 
     }
 
+    public Uri getPickImageResultUri(Intent data) {
+        boolean isCamera = true;
+        if (data != null && data.getData() != null) {
+            String action = data.getAction();
+            isCamera = action != null && action.equals(MediaStore.ACTION_IMAGE_CAPTURE);
+        }
+        return isCamera ? getCaptureImageOutputUri() : data.getData();
+    }
+
+    private Uri getCaptureImageOutputUri() {
+        Uri outputFileUri = null;
+        File getImage = getExternalCacheDir();
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(new File(getImage.getPath(), "pickImageResult.jpeg"));
+        }
+        return outputFileUri;
+    }
+
 
     public boolean resultRegularExprensionsEmail(EditText regularEmail) {
         regularExprensionsEmail = "(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"" +
@@ -280,5 +311,7 @@ public class Registration extends Activity implements View.OnClickListener, Cons
         super.onBackPressed();
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
+
+
 }
 

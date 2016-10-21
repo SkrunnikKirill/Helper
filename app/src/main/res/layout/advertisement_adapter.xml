@@ -50,7 +50,6 @@
             android:id="@+id/advertisement_adapter_edit"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_alignBaseline="@+id/detail_news_theme"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"

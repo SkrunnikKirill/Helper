@@ -130,8 +130,6 @@
                 android:orientation="horizontal">
 
 
-                .
-
                 <EditText
                     android:id="@+id/detail_news_coment"
                     android:layout_width="0dp"
