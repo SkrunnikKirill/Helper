@@ -4,6 +4,7 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -24,6 +25,7 @@ import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
+import com.example.alex.helppeopletogether.SupportClasses.IFonts;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
@@ -42,58 +44,25 @@ import retrofit.client.Response;
 /**
  * Created by User on 29.03.2016.
  */
-public class PostAdvertisementFragment extends Fragment implements TextWatcher, View.OnClickListener, DatePickerDialog.OnDateSetListener, Constant {
+public class PostAdvertisementFragment extends Fragment implements TextWatcher, View.OnClickListener, DatePickerDialog.OnDateSetListener, Constant, IFonts {
 
 
+    Context context;
+    AutoCompleteTextView region, city;
+    TextView dayOfBirth, regionText, cityText, dayOfBirthText, phoneNumberText;
+    Button next;
     private Preferences preferences;
-    private Context context;
     private InternetCheck internet;
     private LinearLayout linearLayout;
     private GetCurensyYear year;
     private FiledTest test;
     private MaskedEditText phoneNumber;
-    private AutoCompleteTextView region;
-    private AutoCompleteTextView city;
-    private TextView dayOfBirth;
     private ArrayAdapter<String> regionAdapter, cityAdapter;
-    private Button next;
     private Calendar calendar;
     private LinkedHashMap<String, String> advertisementData;
     private int installedYear, installedMonth, installedDay;
     private String id;
-    private String[] arrayRegion =
-            {"Винницкая область", "Волынская область", "Днепропетровская область",
-                    "Донецкая область", "Житомирская область", "Закарпатская область", "Запорожская область",
-                    "Ивано-Франковская область", "Киевская область", "Кировоградская область",
-                    "Луганская область", "Львовская область", "Николаевская область", "Одесская область",
-                    "Полтавская область", "Ровненская область", "Сумская область", "Тернопольская область",
-                    "Харьковская область", "Херсонская область", "Хмельницкая область", "Черкасская область",
-                    "Черниговская область", "Черновицкая область", "Киев", "Севастополь", "Автономная Республика Крым"};
-
-    private String[] arrayCity = {
-            "Симферополь", "Евпатория", "Керчь", "Партенит", "Плодовое", "Феодосия",
-            "Щёлкино", "Ялта", "Винница", "Балановка", " Ладыжин", "Луцк", "Владимир-Волынский", "Ковель",
-            "Нововолынск", "Днепропетровск", "Булаховка", "Днепродзержинск", "Жёлтые Воды", "Зеленодольск",
-            "Кривой Рог", "Кринички", "Марганец", "Никополь", "Новомосковск", "Павлоград", "Донецк",
-            "Андреевка", "Артёмовск", "Безимянное", "Белосарайская Коса", "Бересток", "Волноваха",
-            "Горловка", "Енакиево", "Зугрес", "Константиновка", "Краматорск", "Красноармейск",
-            "Курахово", "Макеевка", "Мариуполь", "Николаевка", "Райгородок", "Светлодарск", "Севастополь",
-            "Святогорск", "Славянск", "Снежное", "Торез", "Шахтёрск", "Житомир", "Андреевка",
-            "Бердичев", "Коростень", "Новоград-Волынский", "Ужгород", "Берегово", "Виноградов", "Иршава",
-            "Мукачево", "Рахов", "Свалява", "Тячев", "Хуст", "Запорожье", "Бердянск", "Днепрорудное",
-            "Камыш-Заря", "Мелитополь", "Токмак", "Энергодар", "Ивано-Франковск", "Бурштын", "Калуш",
-            "КоломыяБелая Церковь", "Борисполь", "Бровары", "Вышгород", "Припять", "Кировоград", "Александрия",
-            "Луганск", "Алчевск", "Антрацит", "Белолуцк", "Ирмно", "Краснодон", "Красный Луч",
-            "Лисичанск", "Ровеньки", "Рубежное", "Свердловск", "Северодонецк", "Старобельск", "Стаханов", "Счастье",
-            "Чернухино", "Львов", "Дрогобыч", "Красное", "Стрый", "Червоноград", "Николаев", "Вознесенск", "Луч",
-            "Первомайск", "Южноукраинск", "Одесса", "Белгород-Днестровский", "Жовтень", "Измаил", "Ильичевск",
-            "Каменское", "Орловка", "Петровка", "Полтава", "Красногоровка", "Кременчуг", "Лубны", "Ровно", "Антополь",
-            "Кузнецовск", "Сумы", "Ахтырка", "Белополье", "Конотоп", "Ромны", "Шостка", "Тернополь", "Харьков",
-            "Барвенково", "Змиёв", "Изюм", "Кегичёвка", "Комсомольское", "Мерефа", "Лозовая", "Подворки", "Тарановка", "Херсон",
-            "Васильевка", "Геническ", "Большая Александровка", "Новая Каховка", "Новотроицкое", "Рыбальче", "Чаплинка",
-            "Хмельницкий", "Волочиск", "Каменец-Подольский", "Нетешин", "Черкассы", "Буки", "Смела", "Умань", "Чернигов", "Козелець", "Крути",
-            "Нежин", "Новгород-Северский", "Прилуки", "Черновцы", "Киев"
-    };
+    private String[] arrayRegion, arrayCity;
 
 
     @Override
@@ -102,6 +71,10 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         region = (AutoCompleteTextView) root.findViewById(R.id.post_advertisement_region);
         city = (AutoCompleteTextView) root.findViewById(R.id.post_advertisement_city);
         dayOfBirth = (TextView) root.findViewById(R.id.post_advertisement_date_of_birth);
+        regionText = (TextView) root.findViewById(R.id.name_region);
+        cityText = (TextView) root.findViewById(R.id.name_city);
+        dayOfBirthText = (TextView) root.findViewById(R.id.description_problem_problem_date_text);
+        phoneNumberText = (TextView) root.findViewById(R.id.name_number);
         next = (Button) root.findViewById(R.id.post_advertisement_next);
         phoneNumber = (MaskedEditText) root.findViewById(R.id.post_advertisement_phone_number);
         region.addTextChangedListener(this);
@@ -109,8 +82,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         linearLayout = (LinearLayout) root.findViewById(R.id.post_advertisemet_relative_layout);
         next.setOnClickListener(this);
         dataPicker();
-        regionAdapter = new ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, arrayRegion);
-        cityAdapter = new ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, arrayCity);
+        setCityRegionAdapter();
 
 
         region.setDropDownBackgroundResource(R.color.purple);
@@ -118,8 +90,15 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         region.setAdapter(regionAdapter);
         city.setAdapter(cityAdapter);
 
-
+        fonts();
         return root;
+    }
+
+    private void setCityRegionAdapter() {
+        arrayRegion = getResources().getStringArray(R.array.region);
+        arrayCity = getResources().getStringArray(R.array.city);
+        regionAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, arrayRegion);
+        cityAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_dropdown_item_1line, arrayCity);
     }
 
 
@@ -250,5 +229,20 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     }
 
 
+    @Override
+    public void fonts() {
+        Typeface mtypeface = Typeface.createFromAsset(getActivity().getAssets(), "GothamProMedium.ttf");
+        region.setTypeface(mtypeface);
+        city.setTypeface(mtypeface);
+        phoneNumber.setTypeface(mtypeface);
+        dayOfBirth.setTypeface(mtypeface);
+        next.setTypeface(mtypeface);
+        regionText.setTypeface(mtypeface);
+        cityText.setTypeface(mtypeface);
+        dayOfBirthText.setTypeface(mtypeface);
+        phoneNumberText.setTypeface(mtypeface);
+
+
+    }
 }
 

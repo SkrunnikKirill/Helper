@@ -1,6 +1,7 @@
 package com.example.alex.helppeopletogether.Adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,6 +61,11 @@ public class SelectedAdapter extends BaseAdapter {
             viewHolder.summa = (TextView) view.findViewById(R.id.detail_news_summa);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.login_cover_image);
             viewHolder.button = (ToggleButton) view.findViewById(R.id.datail_news_like);
+
+            Typeface mtypeface = Typeface.createFromAsset(context.getAssets(), "GothamProMedium.ttf");
+            viewHolder.summa.setTypeface(mtypeface);
+            viewHolder.txtTitle.setTypeface(mtypeface);
+            viewHolder.date.setTypeface(mtypeface);
             view.setTag(viewHolder);
 
         } else {

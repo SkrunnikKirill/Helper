@@ -3,26 +3,55 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/toolbar_gradient">
+
+        <TextView
+            android:id="@+id/detail_news_toolbar_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/rec"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title_size"/>
+
+        <LinearLayout
+            android:id="@+id/detail_news_layoutBack"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="false"
+            android:layout_centerVertical="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/detail_news_back"
+                android:layout_width="24dp"
+                android:layout_height="20dp"
+                android:src="@drawable/icon_arrow_left"/>
+        </LinearLayout>
+    </RelativeLayout>
+
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/relativeLayout">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/toolbar_gradient"
-                android:subtitleTextColor="@color/white"
-                />
 
 
             <ImageView

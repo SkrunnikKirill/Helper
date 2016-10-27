@@ -20,7 +20,7 @@
         tools:ignore="UselessParent">
 
         <TextView
-            android:id="@+id/name_date"
+            android:id="@+id/description_problem_problem_date_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/day_of_birthday"
@@ -32,7 +32,7 @@
             android:id="@+id/post_advertisement_date_of_birth"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/name_date"
+            android:layout_below="@+id/description_problem_problem_date_text"
             android:background="@drawable/divider"
             android:clickable="true"
             android:padding="7dp"
@@ -43,7 +43,7 @@
 
 
         <TextView
-            android:id="@+id/name_obl"
+            android:id="@+id/name_region"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/post_advertisement_date_of_birth"
@@ -58,13 +58,14 @@
             android:id="@+id/post_advertisement_region"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/name_obl"
+            android:layout_below="@+id/name_region"
             android:layout_marginTop="@dimen/auto_text_view_marTop"
             android:background="@drawable/divider"
             android:completionThreshold="2"
             android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
                 ЯЧСМИТЬБЮ"
             android:imeOptions="actionNext"
+            android:singleLine="true"
             android:textColor="@color/white" />
 
 
@@ -91,6 +92,7 @@
             android:digits="йцукенгшщзхъфывапролджэячсмитьбюЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭ
                 ЯЧСМИТЬБЮ"
             android:imeOptions="actionNext"
+            android:singleLine="true"
             android:textColor="@color/white" />
 
 

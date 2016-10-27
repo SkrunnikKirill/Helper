@@ -4,6 +4,7 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.ComentInformation;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
+import com.example.alex.helppeopletogether.SupportClasses.IFonts;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
 
@@ -32,18 +35,19 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class DetailNewsLike extends Activity implements Constant {
+public class DetailNewsLike extends Activity implements Constant, IFonts, View.OnClickListener {
     ComentAdapter comentAdapter;
+    ImageView image, enter;
+    RecyclerView recyclerView;
+    EditText comment;
+    LinearLayout back;
+    TextView shortDescription, theme, expectedAmount, finalDate, description, paymentAccount, toolbarText;
+    Toolbar toolbar;
     private String nImage, nshortDescription, nexpectedAmount, nfinalDate, nDescription, nPaymentAccount, userId, nIdNews,
             commentId, createdAt, fullName, foto, userComment;
-    private ImageView image, enter;
-    private RecyclerView recyclerView;
-    private EditText comment;
     private ArrayList<ComentInformation> commentList;
-    private TextView shortDescription, theme, expectedAmount, finalDate, description, paymentAccount;
     private Dimensions dimensions;
     private CollapsingToolbarLayout collapsingToolbar;
-    private Toolbar toolbar;
     private HashMap<String, String> comentData;
     private Preferences preferences;
     private Context context;
@@ -73,6 +77,8 @@ public class DetailNewsLike extends Activity implements Constant {
         //  enter.setOnClickListener(this);
         shortDescription = (TextView) findViewById(R.id.detail_news_like_short_description);
         theme = (TextView) findViewById(R.id.detail_news_theme);
+        toolbarText = (TextView) findViewById(R.id.detail_news_like_toolbar_text);
+        back = (LinearLayout) findViewById(R.id.detail_news_like_layoutBack);
         comment = (EditText) findViewById(R.id.detail_news_coment);
         finalDate = (TextView) findViewById(R.id.detail_news_like_days_left);
         description = (TextView) findViewById(R.id.detail_news_like_full_description);
@@ -85,24 +91,11 @@ public class DetailNewsLike extends Activity implements Constant {
         finalDate.setText("до:  " + nfinalDate);
         shortDescription.setText(nshortDescription);
         paymentAccount.setText("Расчетный счет:  " + nPaymentAccount);
-        toolbar = (Toolbar) findViewById(R.id.detail_news_like_toolbar);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back));
-        toolbar.setTitle("Новости");
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        back.setOnClickListener(this);
+        fonts();
 
     }
 
-
-    private void restartActivity() {
-        Intent mIntent = getIntent();
-        finish();
-        startActivity(mIntent);
-    }
 
     private void getComment() {
         Retrofit.getCommentInformation(nIdNews, new Callback<List<ComentInformation>>() {
@@ -131,5 +124,24 @@ public class DetailNewsLike extends Activity implements Constant {
     }
 
 
+    @Override
+    public void fonts() {
+        Typeface mtypeface = Typeface.createFromAsset(context.getAssets(), "GothamProMedium.ttf");
+        shortDescription.setTypeface(mtypeface);
+        finalDate.setTypeface(mtypeface);
+        description.setTypeface(mtypeface);
+        paymentAccount.setTypeface(mtypeface);
+        expectedAmount.setTypeface(mtypeface);
+        toolbarText.setTypeface(mtypeface);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.detail_news_like_layoutBack:
+                finish();
+                break;
+        }
+    }
 }
 

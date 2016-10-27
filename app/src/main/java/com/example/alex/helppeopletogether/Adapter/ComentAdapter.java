@@ -1,6 +1,7 @@
 package com.example.alex.helppeopletogether.Adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +70,10 @@ public class ComentAdapter extends RecyclerView.Adapter<ComentAdapter.MyViewHold
             userComent = (TextView) itemView.findViewById(R.id.coment_adapter_coment);
             commentTime = (TextView) itemView.findViewById(R.id.coment_adapter_time);
             foto = (CircleImageView) itemView.findViewById(R.id.coment_adapter_foto);
+            Typeface mtypeface = Typeface.createFromAsset(context.getAssets(), "GothamProMedium.ttf");
+            fullName.setTypeface(mtypeface);
+            userComent.setTypeface(mtypeface);
+            commentTime.setTypeface(mtypeface);
         }
     }
 

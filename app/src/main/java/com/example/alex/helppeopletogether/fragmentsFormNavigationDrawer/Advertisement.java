@@ -38,14 +38,14 @@ public class Advertisement extends Fragment implements SwipeRefreshLayout.OnRefr
     public ArrayList<String> datePublication, title, shortDescription, description, image, expectedAmount, finalDate,
             paymentAccount;
     public ArrayList<Integer> idNews;
-    private ListView list;
+    ListView list;
+    FragmentManager fm;
+    FragmentTransaction ft;
+    Context context;
     private String idUser;
-    private FragmentManager fm;
-    private FragmentTransaction ft;
     private NoLikeData noLikeData;
     private ProDialog proDialog;
     private Preferences preferences;
-    private Context context;
     private InternetCheck internet;
     private AdvertisementAdapter adapter;
     private SwipeRefreshLayout swipeRefreshLayout;

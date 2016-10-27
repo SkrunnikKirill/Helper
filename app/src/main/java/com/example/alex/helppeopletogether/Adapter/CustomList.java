@@ -1,6 +1,7 @@
 package com.example.alex.helppeopletogether.Adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,7 +63,10 @@ public class CustomList extends ArrayAdapter<String> {
         viewHolder.date = (TextView) rowView.findViewById(R.id.detail_news_days_left);
         viewHolder.summa = (TextView) rowView.findViewById(R.id.detail_news_summa);
         viewHolder.imageView = (CustomImageView) rowView.findViewById(R.id.login_cover_image);
-
+        Typeface mtypeface = Typeface.createFromAsset(context.getAssets(), "GothamProMedium.ttf");
+        viewHolder.txtTitle.setTypeface(mtypeface);
+        viewHolder.date.setTypeface(mtypeface);
+        viewHolder.summa.setTypeface(mtypeface);
 
         if (idNews == null) {
             likeNews = new ArrayList<Integer>();
@@ -151,4 +155,3 @@ public class CustomList extends ArrayAdapter<String> {
 
 
 }
-

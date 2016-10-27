@@ -8,11 +8,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +31,7 @@ import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.CustomImageView;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
+import com.example.alex.helppeopletogether.SupportClasses.IFonts;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
@@ -52,9 +53,15 @@ import retrofit.mime.TypedFile;
 /**
  * Created by Alex on 13.04.2016.
  */
-public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, Constant {
+public class DescriptionProblem extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, Constant, IFonts {
 
 
+    LinearLayout linearLayout, back;
+    TextView day, themeText, shortDescriptionText, fullDescriptionText, moneyText, accountText, dayText, fotoText, textToolbar;
+    EditText theme, shortDescription, fullDescription, money, account;
+    Button locate;
+    CustomImageView imageAdvertisement;
+    TypedFile image;
     private Uri selectedImageUri;
     private String selectedImagePath, userid, currency;
     private String[] nameCurrency = {"USD", "EUR", "UAH"};
@@ -64,16 +71,8 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     private DatePickerDialog datePickerDialog;
     private Preferences preferences;
     private FiledTest filedTest;
-    private LinearLayout linearLayout;
-    private TextView day;
-    private EditText theme, shortDescription, fullDescription, money, account;
-    private Button locate;
-    private ImageView down;
-    private CustomImageView imageAdvertisement;
     private LinkedHashMap<String, String> dataAdvertisement;
     private File file;
-    private TypedFile image;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +85,16 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         userid = preferences.loadText(PREFERENCES_ID);
         imageAdvertisement = (CustomImageView) findViewById(R.id.description_problem_image);
         theme = (EditText) findViewById(R.id.description_problem_theme);
+        back = (LinearLayout) findViewById(R.id.description_problem_layoutBack);
+        textToolbar = (TextView) findViewById(R.id.description_problem_toolbar_text);
         shortDescription = (EditText) findViewById(R.id.description_problem_short_description);
+        themeText = (TextView) findViewById(R.id.description_problem_thema_text);
+        shortDescriptionText = (TextView) findViewById(R.id.description_problem_short_description_text);
+        fullDescriptionText = (TextView) findViewById(R.id.description_problem_full_description_text);
+        moneyText = (TextView) findViewById(R.id.description_problem_money_text);
+        accountText = (TextView) findViewById(R.id.description_problem_account_text);
+        dayText = (TextView) findViewById(R.id.description_problem_problem_date_text);
+        fotoText = (TextView) findViewById(R.id.description_problem_name_photo);
         fullDescription = (EditText) findViewById(R.id.description_problem_full_description);
         money = (EditText) findViewById(R.id.description_problem_money);
         day = (TextView) findViewById(R.id.description_problem_day);
@@ -94,20 +102,12 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
         locate = (Button) findViewById(R.id.description_problem_locate);
         imageAdvertisement.setOnClickListener(this);
         locate.setOnClickListener(this);
+        back.setOnClickListener(this);
         dataPicker();
         spiner();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.description_problem_toolbar);
-        toolbar.setTitle(R.string.information_advertisement);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-
-
+        fonts();
     }
+
 
 
     @Override
@@ -117,7 +117,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     }
 
     private void spiner() {
-        Spinner spinner = (Spinner) findViewById(R.id.spinnerstate);
+        Spinner spinner = (Spinner) findViewById(R.id.description_problem_spinerstate);
         spinner.setAdapter(new MyAdapter(this, R.layout.custom_spinner, nameCurrency));
         spinner.setPrompt("Title");
         // выделяем элемент
@@ -207,6 +207,9 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             case R.id.description_problem_image:
                 CropImage.startPickImageActivity(this);
                 break;
+            case R.id.description_problem_layoutBack:
+                finish();
+                break;
         }
     }
 
@@ -225,7 +228,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
                 image = new TypedFile("image/*", file);
             }
             Uri imageUri = CropImage.getPickImageResultUri(this, data);
-            getLink(data);
             // For API >= 23 we need to check specifically that we have permissions to read external storage.
             if (CropImage.isReadExternalStoragePermissionsRequired(this, imageUri)) {
                 // request permissions and handle the result in onRequestPermissionsResult()
@@ -270,9 +272,6 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
                 .start(this);
     }
 
-    private void getLink(Intent data) {
-        selectedImageUri = data.getData();
-    }
 
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
@@ -287,7 +286,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
 
     private void sendDescriptionInformationFromServise() {
         if (theme.getText().toString().length() > 0 && shortDescription.getText().toString().length() > 0 && fullDescription.getText().toString().length() > 0 &&
-                money.getText().toString().length() > 0 && day.getText().toString().length() > 0 && account.getText().toString().length() > 0 && selectedImageUri != null
+                money.getText().toString().length() > 0 && day.getText().toString().length() > 0 && account.getText().toString().length() > 0
                 && theme.getText().toString().length() <= 50 && shortDescription.getText().toString().length() <= 100 && fullDescription.getText().toString().length() <= 1500
                 && account.getText().toString().length() <= 20) {
             dataAdvertisement = new LinkedHashMap<>();
@@ -350,6 +349,28 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
             outputFileUri = Uri.fromFile(new File(getImage.getPath(), "pickImageResult.jpeg"));
         }
         return outputFileUri;
+    }
+
+    @Override
+    public void fonts() {
+        Typeface mtypeface = Typeface.createFromAsset(getAssets(), "GothamProMedium.ttf");
+        day.setTypeface(mtypeface);
+        theme.setTypeface(mtypeface);
+        account.setTypeface(mtypeface);
+        fullDescription.setTypeface(mtypeface);
+        shortDescription.setTypeface(mtypeface);
+        money.setTypeface(mtypeface);
+        account.setTypeface(mtypeface);
+        locate.setTypeface(mtypeface);
+        themeText.setTypeface(mtypeface);
+        fotoText.setTypeface(mtypeface);
+        shortDescriptionText.setTypeface(mtypeface);
+        fullDescriptionText.setTypeface(mtypeface);
+        accountText.setTypeface(mtypeface);
+        moneyText.setTypeface(mtypeface);
+        dayText.setTypeface(mtypeface);
+        textToolbar.setTypeface(mtypeface);
+
     }
 
     public class MyAdapter extends ArrayAdapter<String> {

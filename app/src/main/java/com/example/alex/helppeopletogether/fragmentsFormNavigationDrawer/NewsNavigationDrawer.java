@@ -1,5 +1,6 @@
 package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,25 +16,24 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
+import com.example.alex.helppeopletogether.SupportClasses.IFonts;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
-import com.example.alex.helppeopletogether.registration.Login;
-import com.example.alex.helppeopletogether.registration.Registration;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class NewsNavigationDrawer extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Constant {
+        implements NavigationView.OnNavigationItemSelectedListener, Constant, IFonts {
+    TextView fullName;
+    CircleImageView userImage;
+    Toolbar toolbar;
     private Advertisement advertisement;
     private Favorite favorite;
     private NewsFragment news;
     private PostAdvertisementFragment postAdvertisement;
     private ExitFragment exit;
-    private TextView fullName;
-    private CircleImageView userImage;
     private android.support.v4.app.FragmentManager fragmentManager;
     private String name, foto, userId;
-    private Toolbar toolbar;
     private Preferences preferences;
 
 
@@ -150,4 +150,11 @@ public class NewsNavigationDrawer extends AppCompatActivity
     }
 
 
+    @Override
+    public void fonts() {
+        Typeface mtypeface = Typeface.createFromAsset(getAssets(), "GothamProMedium.ttf");
+        fullName.setTypeface(mtypeface);
+
+
+    }
 }

@@ -4,14 +4,15 @@ package com.example.alex.helppeopletogether.fragmentsFormNavigationDrawer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.ComentInformation;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.Dimensions;
+import com.example.alex.helppeopletogether.SupportClasses.IFonts;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
 import com.example.alex.helppeopletogether.retrofit.Retrofit;
@@ -34,21 +36,21 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class DetailNews extends Activity implements Constant, View.OnClickListener {
+public class DetailNews extends Activity implements Constant, View.OnClickListener, IFonts {
     ComentAdapter comentAdapter;
-    private String nImage, nshortDescription, nexpectedAmount, nfinalDate, nDescription, nPaymentAccount, userId, nIdNews,
+    ImageView image, enter;
+    RecyclerView recyclerView;
+    EditText comment;
+    TextView shortDescription, theme, expectedAmount, finalDate, description, paymentAccount, toolbarText;
+    Toolbar toolbar;
+    Context context;
+    LinearLayout back;
+    private String nImage, nshortDescription, nexpectedAmount, nfinalDate, nDescription, nPaymentAccount, userId, nIdNews, nTitle,
             commentId, createdAt, fullName, foto, userComment;
-    private ImageView image, enter;
-    private RecyclerView recyclerView;
-    private EditText comment;
     private ArrayList<ComentInformation> commentList;
-    private TextView shortDescription, theme, expectedAmount, finalDate, description, paymentAccount;
     private Dimensions dimensions;
-    private CollapsingToolbarLayout collapsingToolbar;
-    private Toolbar toolbar;
     private HashMap<String, String> comentData;
     private Preferences preferences;
-    private Context context;
 
     @Override
 
@@ -60,6 +62,7 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
 
         context = DetailNews.this;
         nImage = intent.getStringExtra("image");
+        nTitle = intent.getStringExtra("title");
         nshortDescription = intent.getStringExtra("shortDescription");
         nexpectedAmount = intent.getStringExtra("expectedAmount");
         nfinalDate = intent.getStringExtra("finalDate");
@@ -74,10 +77,12 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
         userId = preferences.loadText(PREFERENCES_ID);
         image = (ImageView) findViewById(R.id.detail_news_image);
         enter = (ImageView) findViewById(R.id.detail_news_enter);
+        back = (LinearLayout) findViewById(R.id.detail_news_layoutBack);
+        toolbarText = (TextView) findViewById(R.id.detail_news_toolbar_text);
         enter.setOnClickListener(this);
         shortDescription = (TextView) findViewById(R.id.detail_news_theme);
         //TextView title = (TextView) findViewById(R.id.toolbar_description_tit);
-        theme = (TextView) findViewById(R.id.detail_news_theme);
+        theme = (TextView) findViewById(R.id.detail_news_like_short_description);
         comment = (EditText) findViewById(R.id.detail_news_coment);
         expectedAmount = (TextView) findViewById(R.id.detail_news_summa);
         finalDate = (TextView) findViewById(R.id.detail_news_days_left);
@@ -88,19 +93,14 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
         expectedAmount.setText("необходимо:  " + nexpectedAmount);
         description.setText(nDescription);
         finalDate.setText("до:  " + nfinalDate);
+        theme.setText(nTitle);
+        back.setOnClickListener(this);
         paymentAccount.setText("Расчетный счет:  " + nPaymentAccount);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Запись");
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        fonts();
 
 
     }
+
 
     private void setComent() {
         final String checkComentText = comment.getText().toString().trim();
@@ -144,7 +144,6 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
                     Toast.makeText(DetailNews.this, R.string.error_data_from_server, Toast.LENGTH_SHORT).show();
                 } else {
                     for (int i = comentInformations.size() - 1; i >= 0; i--) {
-
                         commentList.add(new ComentInformation(comentInformations.get(i).full_name,
                                 comentInformations.get(i).avatar, comentInformations.get(i).comment,
                                 comentInformations.get(i).created_at));
@@ -171,7 +170,22 @@ public class DetailNews extends Activity implements Constant, View.OnClickListen
             case R.id.detail_news_enter:
                 setComent();
                 break;
+            case R.id.detail_news_layoutBack:
+                finish();
+                break;
         }
+    }
+
+    @Override
+    public void fonts() {
+        Typeface mtypeface = Typeface.createFromAsset(context.getAssets(), "GothamProMedium.ttf");
+        comment.setTypeface(mtypeface);
+        theme.setTypeface(mtypeface);
+        finalDate.setTypeface(mtypeface);
+        expectedAmount.setTypeface(mtypeface);
+        description.setTypeface(mtypeface);
+        paymentAccount.setTypeface(mtypeface);
+        toolbarText.setTypeface(mtypeface);
     }
 }
 

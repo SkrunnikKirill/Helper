@@ -1,6 +1,7 @@
 package com.example.alex.helppeopletogether.Adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -47,6 +48,8 @@ public class CustomAdapter extends BaseAdapter {
         view = inflter.inflate(R.layout.custom_spinner_irems, null);
         ImageView icon = (ImageView) view.findViewById(R.id.imageView12);
         TextView names = (TextView) view.findViewById(R.id.textView12);
+        Typeface mtypeface = Typeface.createFromAsset(context.getAssets(), "GothamProMedium.ttf");
+        names.setTypeface(mtypeface);
         icon.setImageResource(flags[i]);
         names.setText(countryNames[i]);
         return view;

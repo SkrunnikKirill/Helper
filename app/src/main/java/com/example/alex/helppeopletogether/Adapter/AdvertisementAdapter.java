@@ -2,6 +2,7 @@ package com.example.alex.helppeopletogether.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,11 @@ public class AdvertisementAdapter extends ArrayAdapter<String> implements Consta
             viewHolder.date = (TextView) rowView.findViewById(R.id.advertisement_adapter_days_left);
             viewHolder.summa = (TextView) rowView.findViewById(R.id.advertisement_adapter_summa);
             viewHolder.imageView = (ImageView) rowView.findViewById(R.id.advertisement_adapter_image);
+            Typeface mtypeface = Typeface.createFromAsset(context.getAssets(), "GothamProMedium.ttf");
+            viewHolder.txtTitle.setTypeface(mtypeface);
+            viewHolder.date.setTypeface(mtypeface);
+            viewHolder.summa.setTypeface(mtypeface);
+            viewHolder.edit.setTypeface(mtypeface);
             rowView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) rowView.getTag();
@@ -89,6 +95,7 @@ public class AdvertisementAdapter extends ArrayAdapter<String> implements Consta
         });
         return rowView;
     }
+
 
     static class ViewHolder {
         TextView txtTitle;

@@ -111,6 +111,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 shortDescription = registrationResponseFromServer.short_description;
                 description = registrationResponseFromServer.description;
                 datePublication = registrationResponseFromServer.created_at;
+                title = registrationResponseFromServer.title;
                 image = registrationResponseFromServer.image;
                 expectedAmount = registrationResponseFromServer.expected_amount;
                 finalDate = registrationResponseFromServer.final_date;
@@ -157,6 +158,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 Log.d("News", detailNewsImage);
                 String detailNewsShortDescription = shortDescription.get(position);
                 String detailNewsExpectedAmount = expectedAmount.get(position);
+                String detailNewsThema = title.get(position);
                 String detailNewsFinalDate = finalDate.get(position);
                 String detailNewsDescription = description.get(position);
                 String detailPaymentAccount = paymentAccount.get(position).toString();
@@ -169,6 +171,7 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                 news.putExtra("finalDate", detailNewsFinalDate);
                 news.putExtra("description", detailNewsDescription);
                 news.putExtra("paymentAccount", detailPaymentAccount);
+                news.putExtra("title", detailNewsThema);
                 startActivity(news);
 
             }

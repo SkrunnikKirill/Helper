@@ -60,6 +60,7 @@
     <string name="login_busy">Логин занят</string>
     <string name="email_busy">Email занят</string>
     <string name="instal_data">Заполните все поля, и установите фото</string>
+    <string name="rec">Запись</string>
 
 
 </resources>

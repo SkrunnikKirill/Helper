@@ -10,12 +10,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PersistableBundle;
 import android.provider.MediaStore;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +34,7 @@ import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
 import com.example.alex.helppeopletogether.SupportClasses.GetCurensyYear;
+import com.example.alex.helppeopletogether.SupportClasses.IFonts;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
 import com.example.alex.helppeopletogether.retrofit.RegistrationResponseFromServer;
@@ -58,18 +59,19 @@ import retrofit.mime.TypedFile;
 /**
  * Created by PM on 29.06.2016.
  */
-public class EditAdvertisement extends Activity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, Constant {
-    private ImageView pictureAdvertisement;
-    private EditText theme, shortDescription, fullDescription, money, account;
-    private TextView day;
+public class EditAdvertisement extends Activity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, Constant, IFonts {
+    ImageView pictureAdvertisement;
+    EditText theme, shortDescription, fullDescription, money, account;
+    TextView day, themeText, shortDescriptionText, fullDescriptionText, moneyText, accountText, dayText, fotoText, toolbarText;
+    Button editButton;
+    Uri selectedImageUri;
+    LinearLayout linearLayout;
+    Context context;
+    LinearLayout layoutBack;
     private Spinner currency;
-    private Button editButton;
-    private Uri selectedImageUri;
     private FiledTest filedTest;
     private LinkedHashMap data;
-    private LinearLayout linearLayout;
     private InternetCheck internet;
-    private Context context;
     private Preferences preferences;
     private GetCurensyYear year;
     private NewsNavigationDrawer navigationDrawer;
@@ -94,6 +96,15 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
         userId = preferences.loadText(PREFERENCES_ID);
         newsId = preferences.loadText(PREFERENCES_ID_NEWS);
         year = new GetCurensyYear();
+        themeText = (TextView) findViewById(R.id.edit_advertisement_thema_text);
+        toolbarText = (TextView) findViewById(R.id.activity_edit_advertisement_toolbar_text);
+        layoutBack = (LinearLayout) findViewById(R.id.layoutBack);
+        shortDescriptionText = (TextView) findViewById(R.id.edit_advertisement_short_description_text);
+        dayText = (TextView) findViewById(R.id.edit_advertisement_day_text);
+        fullDescriptionText = (TextView) findViewById(R.id.edit_advertisement_full_description_text);
+        moneyText = (TextView) findViewById(R.id.edit_advertisement_money_text);
+        accountText = (TextView) findViewById(R.id.edit_advertisement_account_text);
+        fotoText = (TextView) findViewById(R.id.edit_advertisement_name_photo);
         pictureAdvertisement = (ImageView) findViewById(R.id.edit_advertisement_image);
         linearLayout = (LinearLayout) findViewById(R.id.edit_advertisement_linear_layout);
         theme = (EditText) findViewById(R.id.edit_advertisement_theme);
@@ -105,18 +116,11 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
         currency = (Spinner) findViewById(R.id.edit_advertisement_spinnerstate);
         editButton = (Button) findViewById(R.id.edit_advertisement_edit_button);
         pictureAdvertisement.setOnClickListener(this);
+        layoutBack.setOnClickListener(this);
         spiner();
-
+        fonts();
         dataPicker();
-        Toolbar toolbar = (Toolbar) findViewById(R.id.edit_advertisement_toolbar);
-        toolbar.setTitle(R.string.edit_advertisement);
-        toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.arrow_back));
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+
 
 
         Retrofit.sendAdvertisementEdit(userId, newsId, new Callback<ResponseFromServerEditAdvertisement>() {
@@ -151,6 +155,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
         filedTest.inspection1();
         editButton.setOnClickListener(this);
     }
+
 
     private void dataRecordind() {
         theme.setText(eAThema);
@@ -321,6 +326,9 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
             case R.id.edit_advertisement_image:
                 selectImage();
                 break;
+            case R.id.layoutBack:
+                finish();
+                break;
 
 
         }
@@ -422,6 +430,29 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
         day.setText(finalDay);
     }
 
+    @Override
+    public void fonts() {
+        Typeface mtypeface = Typeface.createFromAsset(getAssets(), "GothamProMedium.ttf");
+        day.setTypeface(mtypeface);
+        theme.setTypeface(mtypeface);
+        account.setTypeface(mtypeface);
+        fullDescription.setTypeface(mtypeface);
+        shortDescription.setTypeface(mtypeface);
+        money.setTypeface(mtypeface);
+        account.setTypeface(mtypeface);
+        editButton.setTypeface(mtypeface);
+        themeText.setTypeface(mtypeface);
+        fotoText.setTypeface(mtypeface);
+        shortDescriptionText.setTypeface(mtypeface);
+        fullDescriptionText.setTypeface(mtypeface);
+        accountText.setTypeface(mtypeface);
+        moneyText.setTypeface(mtypeface);
+        toolbarText.setTypeface(mtypeface);
+        toolbarText.setTypeface(mtypeface);
+        dayText.setTypeface(mtypeface);
+
+    }
+
     public class SpinerAdapter extends ArrayAdapter<String> {
         public SpinerAdapter(Context ctx, int txtViewResourceId, String[] objects) {
             super(ctx, txtViewResourceId, objects);
@@ -445,6 +476,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
             left_icon.setImageResource(total_images[position]);
             return mySpinner;
         }
+
     }
 }
 

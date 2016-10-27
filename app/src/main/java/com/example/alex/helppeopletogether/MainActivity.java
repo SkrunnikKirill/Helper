@@ -3,6 +3,7 @@ package com.example.alex.helppeopletogether;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,9 +12,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
+import com.example.alex.helppeopletogether.SupportClasses.IFonts;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.MyToast;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
@@ -68,26 +71,28 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, Constant {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener, Constant, IFonts {
     Person currentUser;
-    private Button signIn, signUp;
-    private ImageButton vk, facebook, googlePlus;
-    private CallbackManager callbackManager;
-    private Preferences preferences;
-    private Context context;
-    private LoginManager loginManager;
+    Button signIn, signUp;
+    ImageButton vk, facebook, googlePlus;
+    CallbackManager callbackManager;
+    Preferences preferences;
+    Context context;
+    TextView socialText;
+    LoginManager loginManager;
+    RelativeLayout relativeLayoutSnackBar;
+    GoogleApiClient mGoogleApiClient;
+    ProfileTracker profileTracker;
+    Profile profile;
+    ConnectionResult mConnectionResult;
     private String facebookSocialName, vkSocialName, googleSocialName, googleFirstName, googleSecondName, googleId, fullName,
             UserPhoto, vkEmail, vkId, vkFirstName, vkSecondName, facebookFirstName, facebookSecondName, facebookId;
     private InternetCheck internetCheck;
-    private RelativeLayout relativeLayoutSnackBar;
-    private GoogleApiClient mGoogleApiClient;
-    private ProfileTracker profileTracker;
-    private Profile profile;
     private LinkedHashMap<String, String> socialUserData;
     private Integer responseFromServiseLogin, responseFromServiseSocialNetwork, userId;
     private Intent intentNextStep;
-    private ConnectionResult mConnectionResult;
     private String[] scope = new String[]{VKScope.EMAIL, VKScope.PHOTOS, VKScope.MESSAGES, VKScope.FRIENDS};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         signIn = (Button) findViewById(R.id.sign_in_button);
         signUp = (Button) findViewById(R.id.sign_up_button);
+        socialText = (TextView) findViewById(R.id.text_sign_in);
         vk = (ImageButton) findViewById(R.id.button_vk);
         facebook = (ImageButton) findViewById(R.id.button_facebook);
         googlePlus = (ImageButton) findViewById(R.id.button_google_plus);
@@ -110,8 +116,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         vk.setOnClickListener(this);
         facebook.setOnClickListener(this);
         googlePlus.setOnClickListener(this);
+        fonts();
 
 
+    }
+
+    public void fonts() {
+        Typeface mtypeface = Typeface.createFromAsset(getAssets(), "GothamProMedium.ttf");
+        socialText.setTypeface(mtypeface);
+        signIn.setTypeface(mtypeface);
+        signUp.setTypeface(mtypeface);
 
     }
 

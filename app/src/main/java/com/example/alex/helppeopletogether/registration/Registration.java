@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +22,7 @@ import android.widget.ToggleButton;
 import com.example.alex.helppeopletogether.R;
 import com.example.alex.helppeopletogether.SupportClasses.Constant;
 import com.example.alex.helppeopletogether.SupportClasses.FiledTest;
+import com.example.alex.helppeopletogether.SupportClasses.IFonts;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.MyToast;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
@@ -43,23 +45,23 @@ import retrofit.client.Response;
 import retrofit.mime.TypedFile;
 
 
-public class Registration extends Activity implements View.OnClickListener, Constant {
+public class Registration extends Activity implements View.OnClickListener, Constant, IFonts {
+    Intent intent;
+    RelativeLayout relativeLayoutRegistrationSnackBar;
+    EditText firstName, secondName, email, password;
+    CircleImageView face;
+    Button buttonRegistration;
+    Context context;
+    ToggleButton showPassword;
     private Integer responseFromServiseRegistrationId, responseFromServiseRegistration;
     private String responseFromServiseFullName, responseFromServiseImage, selectedImagePath, regularExprensionsEmail;
-    private Intent intent;
     private Uri selectedImageUri, mCropImageUri, selectedImageUri1;
-    private RelativeLayout relativeLayoutRegistrationSnackBar;
     private Preferences preferences;
     private FiledTest test;
-    private EditText firstName, secondName, email, password;
-    private CircleImageView face;
-    private Button buttonRegistration;
     private HashMap<String, String> data;
-    private Context context;
     private boolean result;
     private File file;
     private TypedFile imageFace;
-    private ToggleButton showPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class Registration extends Activity implements View.OnClickListener, Cons
         buttonRegistration = (Button) findViewById(R.id.registration_button_registration);
         buttonRegistration.setOnClickListener(this);
         face.setOnClickListener(this);
-
+        fonts();
     }
 
     public void checkInternet() {
@@ -134,7 +136,6 @@ public class Registration extends Activity implements View.OnClickListener, Cons
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Bitmap bitmap = ((BitmapDrawable)face.getDrawable()).getBitmap();
-
 
 
         // handle result of pick image chooser
@@ -195,8 +196,6 @@ public class Registration extends Activity implements View.OnClickListener, Cons
     }
 
 
-
-
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -207,7 +206,6 @@ public class Registration extends Activity implements View.OnClickListener, Cons
         cursor.close();
         return s;
     }
-
 
 
     public void sendRegistrationInformationToServer() {
@@ -313,5 +311,14 @@ public class Registration extends Activity implements View.OnClickListener, Cons
     }
 
 
+    @Override
+    public void fonts() {
+        Typeface mtypeface = Typeface.createFromAsset(getAssets(), "GothamProMedium.ttf");
+        email.setTypeface(mtypeface);
+        firstName.setTypeface(mtypeface);
+        secondName.setTypeface(mtypeface);
+        password.setTypeface(mtypeface);
+        buttonRegistration.setTypeface(mtypeface);
+    }
 }
 

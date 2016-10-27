@@ -12,6 +12,7 @@
 
 
     <dimen name="marTop">200dp</dimen>
+    <dimen name="title_size">16sp</dimen>
 
 
 </resources>

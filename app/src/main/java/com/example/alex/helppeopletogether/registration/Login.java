@@ -3,6 +3,7 @@ package com.example.alex.helppeopletogether.registration;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.alex.helppeopletogether.R;
+import com.example.alex.helppeopletogether.SupportClasses.IFonts;
 import com.example.alex.helppeopletogether.SupportClasses.InternetCheck;
 import com.example.alex.helppeopletogether.SupportClasses.MyToast;
 import com.example.alex.helppeopletogether.SupportClasses.Preferences;
@@ -36,19 +38,19 @@ import static com.example.alex.helppeopletogether.SupportClasses.Constant.PREFER
 import static com.example.alex.helppeopletogether.SupportClasses.Constant.PREFERENCES_PASSWORD;
 
 
-public class Login extends AppCompatActivity implements View.OnClickListener {
-    private LoginManager loginManager;
-    private Context context;
+public class Login extends AppCompatActivity implements View.OnClickListener, IFonts {
+    LoginManager loginManager;
+    Context context;
+    EditText password, email;
+    Button buttonNext, facebook, vk, googlePlus;
+    TextView buttonNextStepRegistration;
+    RelativeLayout relativeLayoutSnackBar;
+    CallbackManager callbackManager;
     private LinkedHashMap<String, String> loginData;
     private Preferences preferences;
-    private EditText password, email;
-    private Button buttonNext, facebook, vk, googlePlus;
-    private TextView buttonNextStepRegistration;
     private InternetCheck internetCheck;
-    private RelativeLayout relativeLayoutSnackBar;
     private Integer responseFromServiseLogin, responseFromServiseSocialNetwork, userId;
     private String fullName, UserPhoto;
-    private CallbackManager callbackManager;
     private String[] scope = new String[]{VKScope.EMAIL, VKScope.PHOTOS, VKScope.MESSAGES, VKScope.FRIENDS};
 
 
@@ -65,8 +67,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         loginManager = LoginManager.getInstance();
         context = Login.this;
         preferences = new Preferences(Login.this);
-
-
+        fonts();
     }
 
     @Override
@@ -87,7 +88,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         super.onBackPressed();
         overridePendingTransition(R.anim.pull_in_left, R.anim.push_out_right);
     }
-
 
 
     @Override
@@ -185,8 +185,13 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     }
 
 
-
-
+    @Override
+    public void fonts() {
+        Typeface mtypeface = Typeface.createFromAsset(getAssets(), "GothamProMedium.ttf");
+        email.setTypeface(mtypeface);
+        buttonNext.setTypeface(mtypeface);
+        password.setTypeface(mtypeface);
+    }
 }
 
 
