@@ -51,18 +51,18 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
     AutoCompleteTextView region, city;
     TextView dayOfBirth, regionText, cityText, dayOfBirthText, phoneNumberText;
     Button next;
-    private Preferences preferences;
-    private InternetCheck internet;
-    private LinearLayout linearLayout;
-    private GetCurensyYear year;
-    private FiledTest test;
-    private MaskedEditText phoneNumber;
-    private ArrayAdapter<String> regionAdapter, cityAdapter;
-    private Calendar calendar;
-    private LinkedHashMap<String, String> advertisementData;
-    private int installedYear, installedMonth, installedDay;
-    private String id;
-    private String[] arrayRegion, arrayCity;
+   private Preferences preferences;
+   private InternetCheck internet;
+   private LinearLayout linearLayout;
+   private GetCurensyYear year;
+   private FiledTest test;
+   private MaskedEditText phoneNumber;
+   private ArrayAdapter<String> regionAdapter, cityAdapter;
+   private Calendar calendar;
+   private LinkedHashMap<String, String> advertisementData;
+   private int installedYear, installedMonth, installedDay;
+   private String id;
+   private String[] arrayRegion, arrayCity;
 
 
     @Override
@@ -77,6 +77,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
         phoneNumberText = (TextView) root.findViewById(R.id.name_number);
         next = (Button) root.findViewById(R.id.post_advertisement_next);
         phoneNumber = (MaskedEditText) root.findViewById(R.id.post_advertisement_phone_number);
+        phoneNumber.setSelection(phoneNumber.getText().length());
         region.addTextChangedListener(this);
         city.addTextChangedListener(this);
         linearLayout = (LinearLayout) root.findViewById(R.id.post_advertisemet_relative_layout);
@@ -133,7 +134,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)
                 );
-                birthDay.setAccentColor(Color.parseColor("#461149"));
+                birthDay.setAccentColor(Color.parseColor("#fbc02d "));
                 birthDay.setThemeDark(true);
                 birthDay.dismissOnPause(true);
                 birthDay.setYearRange(nextYear, startYear);
@@ -194,6 +195,7 @@ public class PostAdvertisementFragment extends Fragment implements TextWatcher, 
                         region.setText("");
                         city.setText("");
                         dayOfBirth.setText("");
+                        phoneNumber.setText("");
                     }
                 }
 

@@ -80,7 +80,7 @@ public class EditAdvertisement extends Activity implements View.OnClickListener,
     private FragmentManager fragmentManager;
     private Integer answerFromServer;
     private String[] nameCurrency = {"USD", "EUR", "UAH", ""};
-    private int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna, 0};
+    private int total_images[] = {R.drawable.dollar, R.drawable.evro, R.drawable.hrivna, 0};
     private String eAId, eAThema, eACreatedat, eAShortDescription, eADescription, eAImage, eAExpectedAmount, eAFinalDate, eAPaymentAccount, selectedImagePath, currencySimvol,
             imageFile, userId, newsId;
 

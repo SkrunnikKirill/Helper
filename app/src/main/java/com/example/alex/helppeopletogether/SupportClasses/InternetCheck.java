@@ -79,8 +79,6 @@ public class InternetCheck extends AsyncTask<String, String, Boolean> {
     public void snackBar() {
         try {
             Snackbar snackbar = Snackbar.make(view, R.string.no_internet, Snackbar.LENGTH_SHORT);
-            // Changing message text color
-            // Changing action button text color
             View sbView = snackbar.getView();
             TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
             textView.setTextColor(context.getResources().getColor(R.color.blue));

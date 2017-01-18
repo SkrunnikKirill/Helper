@@ -44,14 +44,31 @@ public class CustomAdapter extends BaseAdapter {
 
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.custom_spinner_irems, null);
-        ImageView icon = (ImageView) view.findViewById(R.id.imageView12);
-        TextView names = (TextView) view.findViewById(R.id.textView12);
-        Typeface mtypeface = Typeface.createFromAsset(context.getAssets(), "GothamProMedium.ttf");
-        names.setTypeface(mtypeface);
-        icon.setImageResource(flags[i]);
-        names.setText(countryNames[i]);
+    public View getView(int position, View convertView, ViewGroup viewGroup) {
+        View view = convertView;
+        ViewHolder viewHolder;
+        if (view == null){
+            viewHolder = new ViewHolder();
+            view = inflter.inflate(R.layout.custom_spinner_irems, null);
+            viewHolder.icon = (ImageView) view.findViewById(R.id.imageView12);
+             viewHolder.names = (TextView) view.findViewById(R.id.textView12);
+            Typeface mtypeface = Typeface.createFromAsset(context.getAssets(), "GothamProMedium.ttf");
+            viewHolder.names.setTypeface(mtypeface);
+            view.setTag(viewHolder);
+        }else{
+            viewHolder = (ViewHolder)view.getTag();
+        }
+
+
+
+        viewHolder.icon.setImageResource(flags[position]);
+        viewHolder.names.setText(countryNames[position]);
         return view;
+    }
+
+    static class ViewHolder{
+        ImageView icon;
+        TextView names;
+
     }
 }

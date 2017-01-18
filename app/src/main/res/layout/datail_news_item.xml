@@ -1,24 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="15dp">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp">
 
     <com.example.alex.helppeopletogether.SupportClasses.CustomImageView
         android:id="@+id/login_cover_image"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/background"
-        />
+        android:src="@drawable/bg" />
 
 
     <RelativeLayout
@@ -32,8 +24,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
             android:textColor="@color/white"
-            android:textSize="17dp"
-            />
+            android:textSize="17dp" />
 
         <TextView
             android:id="@+id/detail_news_summa"
@@ -43,7 +34,7 @@
             android:layout_below="@+id/detail_news_theme"
             android:layout_marginLeft="10dp"
             android:textColor="@color/yellow_text"
-            android:textSize="17dp"/>
+            android:textSize="17dp" />
 
 
         <ToggleButton
@@ -58,7 +49,7 @@
             android:focusable="false"
             android:focusableInTouchMode="false"
             android:textOff=""
-            android:textOn=""/>
+            android:textOn="" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -79,8 +70,7 @@
             android:maxHeight="10dip"
             android:minHeight="10dip"
             android:progress="0"
-            android:progressDrawable="@drawable/greenprogress"
-            />
+            android:progressDrawable="@drawable/greenprogress" />
 
         <TextView
             android:id="@+id/detail_news_days_left"
@@ -89,16 +79,10 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/detail_news_progress_bar"
             android:layout_marginBottom="20dp"
-            android:layout_marginRight="60dp"
+            android:layout_marginRight="61dp"
             android:layout_marginTop="10dp"
             android:textColor="@color/white"
-            android:textSize="17dp"/>
+            android:textSize="17dp" />
     </RelativeLayout>
 
 </RelativeLayout>
-
-
-
-
-
-

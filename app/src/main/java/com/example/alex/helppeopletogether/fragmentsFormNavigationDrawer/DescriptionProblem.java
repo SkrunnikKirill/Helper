@@ -65,7 +65,7 @@ public class DescriptionProblem extends AppCompatActivity implements View.OnClic
     private Uri selectedImageUri;
     private String selectedImagePath, userid, currency;
     private String[] nameCurrency = {"USD", "EUR", "UAH"};
-    private int total_images[] = {R.drawable.ic_dollar, R.drawable.ic_evro, R.drawable.ic_hrivna};
+    private int total_images[] = {R.drawable.dollar, R.drawable.evro, R.drawable.hrivna};
     private GetCurensyYear year;
     private NewsFragment news;
     private DatePickerDialog datePickerDialog;
